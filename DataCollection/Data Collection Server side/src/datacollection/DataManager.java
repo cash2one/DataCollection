@@ -71,7 +71,7 @@ public class DataManager
 		AccessToken token = new AccessToken(accessToken, null);
 		
 		session = new FacebookFactory().getInstance();
-		session.setOAuthAppId("", "");
+		session.setOAuthAppId("442864129167674", "f2140fbb0148c5db21db0d07b92e6ade");
 		session.setOAuthAccessToken(token);
 	}
 	

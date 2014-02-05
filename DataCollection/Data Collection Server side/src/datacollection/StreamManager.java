@@ -69,7 +69,7 @@ public class StreamManager
 			{
 				//Extract the JSON data
 				JSONArray streamList = session.executeFQL(fqlQuery);
-				System.out.println("HERE: " + streamList.toString(1));
+				System.out.println(streamList.toString(1));
 				
 				//If there is only blank JSON data, we've loaded everything
 				if (streamList.length() == 0)

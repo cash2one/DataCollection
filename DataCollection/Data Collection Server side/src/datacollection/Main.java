@@ -23,7 +23,7 @@ public class Main
 		for (StreamObject so : manager.getStreamObjects())
 		{
 			Facebook session = manager.getSession();
-			System.out.println(session.executeFQL("SELECT fromid, text, id, username FROM comments WHERE post_id = \"" + so.getPostID() + "\"").toString(1));
+			System.out.println(session.executeFQL("SELECT fromid, text, id, username FROM comment WHERE post_id = \"" + so.getPostID() + "\"").toString(1));
 		}
 		
 		

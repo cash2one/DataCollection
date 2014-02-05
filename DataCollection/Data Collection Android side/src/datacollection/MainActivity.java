@@ -117,6 +117,8 @@ public class MainActivity extends Activity
 		
 		//Create the user interface
 		setupUI();
+		System.out.println(Session.getActiveSession().getAccessToken());
+		System.out.println(Session.getActiveSession().getApplicationId());
 	}
 	
 	/**
