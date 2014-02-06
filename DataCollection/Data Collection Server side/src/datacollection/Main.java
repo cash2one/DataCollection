@@ -19,10 +19,11 @@ public class Main
 					  		false, //Limit to one month
 					  		true, //Collect stream
 					  		false); //Load old data
-		
+
+		Facebook session = manager.getSession();
 		for (StreamObject so : manager.getStreamObjects())
 		{
-			Facebook session = manager.getSession();
+			System.out.println(so.getPostID());
 			System.out.println(session.executeFQL("SELECT fromid, text, id, username FROM comment WHERE post_id = \"" + so.getPostID() + "\"").toString(1));
 		}
 		
