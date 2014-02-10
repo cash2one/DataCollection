@@ -11,7 +11,7 @@ import facebook4j.internal.org.json.JSONObject;
  * @author Tom
  *
  */
-public class StreamObject
+public class StreamObject implements Comparable<StreamObject>
 {
 	/**
 	 * The JSON data for this stream object
@@ -82,5 +82,12 @@ public class StreamObject
 	public String getPostID()
 	{
 		return postID;
+	}
+
+
+	@Override
+	public int compareTo(StreamObject o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

@@ -287,11 +287,11 @@ public class DataManager
 		
 		//Don't download data we already have
 		for (String id : idNameMatches.keySet())
-			userSet.remove(new User(id));
+			userSet.remove(new User(id,1));
 		
 		HashMap<String, String> fqlQueries = new HashMap<String, String>();
 		for (User u : userSet)
-			fqlQueries.put(u.getId(), "SELECT name FROM user WHERE uid = " + u.getId());
+			fqlQueries.put(u.getFacebookId(), "SELECT name FROM user WHERE uid = " + u.getFacebookId());
 		
 		try
 		{

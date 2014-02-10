@@ -110,7 +110,7 @@ public class Conversation
 			
 			
 			for (int i = 0; i < recip.length(); i++)
-				participants[i] = new User("" + recip.getLong(i));
+				participants[i] = new User("" + recip.getLong(i),1);
 			
 			
 			if (conversationJSON.has("messages"))
@@ -238,6 +238,14 @@ String fqlQuery = "SELECT message_id, thread_id, author_id, body, created_time, 
 		for (int i = 0; i < messageArray.length() && !newMessagesLoaded; i++)
 		{
 			JSONObject jsonMessage = messageArray.getJSONObject(i);
+			
+			ArrayList<User> toList=new ArrayList<User>();
+			for(int j=0;j<participants.length;j++){
+				if(!(jsonMessage.getLong("author_id")+"").equals(participants[j].getFacebookId()))
+					toList.add(participants[j]);
+			}
+			jsonMessage.put("to", toList);
+			
 			Message message = new Message(jsonMessage);
 			
 			if (restrictToOneMonthBack)

@@ -64,6 +64,13 @@ public class StreamManager
 					+ "updated_time, tagged_ids, message_tags, comments, likes FROM stream "
 					+ "WHERE source_id = me() AND created_time > strtotime(\"-1 week\") "
 					+ "LIMIT 40 offset " + offset;
+			
+			// FQL query to get the posts which are not wrote on the user's wall.
+			String fqlQuery1 = "SELECT message, description, type, post_id, "
+					+ "source_id, comment_info, like_info, created_time, "
+					+ "updated_time, tagged_ids, message_tags, comments, likes FROM stream "
+					+ "WHERE actor_id = me() AND filter_key=\"nf\"  AND source_id<>me() AND created_time > strtotime(\"-1 week\") "
+					+ "LIMIT 40 offset " + offset;
 
 			try
 			{
@@ -71,13 +78,23 @@ public class StreamManager
 				JSONArray streamList = session.executeFQL(fqlQuery);
 				System.out.println(streamList.toString(1));
 				
+				//Extract the JSON data
+				JSONArray streamList1 = session.executeFQL(fqlQuery1);
+				System.out.println(streamList1.toString(1));
+				
 				//If there is only blank JSON data, we've loaded everything
-				if (streamList.length() == 0)
+				if (streamList.length() ==0&&streamList1.length()==0)
 					streamLoaded = true;
 
 				for (int i = 0; i < streamList.length(); i++)
 				{
 					streamObjects.add(new StreamObject(streamList
+							.getJSONObject(i)));
+				}
+				
+				for (int i = 0; i < streamList1.length(); i++)
+				{
+					streamObjects.add(new StreamObject(streamList1
 							.getJSONObject(i)));
 				}
 			}
