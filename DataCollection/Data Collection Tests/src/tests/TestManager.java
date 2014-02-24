@@ -305,6 +305,14 @@ public class TestManager
 		return result;
 	}
 	
+	/**
+	 * This function tests collecting group Facebook messages by creating one
+	 * and having three friends sending messages to each other. We then check
+	 * to make sure that the messages are collected by each person's data
+	 * manager.
+	 * @return
+	 * @throws FacebookException
+	 */
 	public TestResult imGroupConversationTest() throws FacebookException
 	{
 		TestResult result = new TestResult("IM Group Conversation Test", System.out);
