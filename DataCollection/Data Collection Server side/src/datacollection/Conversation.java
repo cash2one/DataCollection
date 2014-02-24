@@ -392,4 +392,13 @@ String fqlQuery = "SELECT message_id, thread_id, author_id, body, created_time, 
 	{
 		this.messages = messages;
 	}
+
+	//Returns if a specified userID is present in the conversation
+	public boolean hasParticipant(String userID)
+	{
+		for (int i = 0; i < participants.length; i++)
+			if (participants[i].getId().equals(userID))
+				return true;
+		return false;
+	}
 }
