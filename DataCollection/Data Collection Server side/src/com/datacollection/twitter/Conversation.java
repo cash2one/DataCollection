@@ -8,7 +8,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import twitter4j.User;
+//import twitter4j.User;
+import twitter4j.internal.org.json.JSONArray;
+import twitter4j.internal.org.json.JSONException;
+import twitter4j.internal.org.json.JSONObject;
 /**
  * assume that messageList are constructed in time order.
  * @author Tengyu
@@ -107,7 +110,7 @@ public class Conversation implements Comparable<Conversation> {
 		return another.getEndTime().compareTo(this.getEndTime());
 	}
 
-	@Override
+/*	@Override
 	public String toString() {
 		StringBuilder sb=new StringBuilder();
 		sb.append("<Conversation>\n");
@@ -120,6 +123,22 @@ public class Conversation implements Comparable<Conversation> {
 		}
 		sb.append("</Conversation>\n");
 		return sb.toString();
+	}*/
+	
+	public JSONObject getJSONRepresentation(){
+		JSONObject conversJSON=new JSONObject();
+		JSONArray mess=new JSONArray();
+		for(Message m:messageList){
+			mess.put(m.getJSONRepresentation());
+		}
+		try {
+			conversJSON.put("End Time", endTime);
+			conversJSON.put("messages", mess);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return conversJSON;
 	}
 	
 	

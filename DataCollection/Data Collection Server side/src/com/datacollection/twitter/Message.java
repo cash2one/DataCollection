@@ -7,8 +7,10 @@ import java.util.List;
 
 import twitter4j.DirectMessage;
 import twitter4j.Status;
-import twitter4j.User;
+//import twitter4j.User;
 import twitter4j.UserMentionEntity;
+import twitter4j.internal.org.json.JSONException;
+import twitter4j.internal.org.json.JSONObject;
 
 public class Message implements Comparable<Message> {
 	private String mID;
@@ -25,11 +27,15 @@ public class Message implements Comparable<Message> {
 	
 	public Message(Status status){
 		mID=String.valueOf(status.getId());
-		from=status.getUser();
+		User fromUser=new User(String.valueOf(status.getUser().getId()),2);
+		fromUser.setName(status.getUser().getName());
+		from=fromUser;
 		to=new ArrayList<User>();
 		UserMentionEntity[] toArray=status.getUserMentionEntities();
 		for(int i=0;i<toArray.length;i++){
-			//User a =new User();
+			User a =new User(String.valueOf(toArray[i].getId()),2);
+			a.setName(toArray[i].getName());
+			to.add(a);
 		}
 		text=status.getText();
 		createTime=status.getCreatedAt();
@@ -40,9 +46,12 @@ public class Message implements Comparable<Message> {
 	
 	public Message(DirectMessage msg){
 		mID=String.valueOf(msg.getId());
-		from=msg.getSender();
+		from=new User(String.valueOf(msg.getSender().getId()),2);
+		from.setName(msg.getSenderScreenName());
 		to=new ArrayList<User>();
-		to.add(msg.getRecipient());
+		User toUser=new User(String.valueOf(msg.getRecipient().getId()),2);
+		toUser.setName(msg.getRecipientScreenName());
+		to.add(toUser);
 		text=msg.getText();
 		createTime=msg.getCreatedAt();
 	}
@@ -108,7 +117,7 @@ public class Message implements Comparable<Message> {
 		return this.mID.equals(a.mID);
 	}
 
-	@Override
+	/*@Override
 	public String toString() {
 		StringBuilder sb=new StringBuilder();
 		sb.append("Message: ").append(mID).append("\n");
@@ -126,6 +135,22 @@ public class Message implements Comparable<Message> {
 		sb.append("]\n");
 		sb.append("Text: ").append(text).append("\n");;
 		return sb.toString();
+	}
+	*/
+	public JSONObject getJSONRepresentation(){
+		JSONObject result=new JSONObject();
+		try {
+			result.put("From",from.getTweetId());
+			//result.append("From", from.getName());
+			result.put("to", to);
+			result.put("Text", text);
+			result.put("CreateTime", createTime);
+			result.put("InReplytoMessageID", inReplytoMessageID);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	

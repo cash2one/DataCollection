@@ -2,13 +2,19 @@ package com.datacollection.twitter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,6 +29,8 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
+
+import com.datacollection.util.SqlHelper;
 
 public class DataManager {
 
@@ -231,13 +239,16 @@ public class DataManager {
 		}
 	}
 
-	public void collectData() {
+	public List<Conversation> collectData() {
 		Long sinceId = (long) 1;
 		collectUserTimeLine(sinceId);
 
 		collectMentionsTimeLine(sinceId);
 
 		collectInstantMessages();
+		
+		constructConversations();
+		return conversationList;
 	}
 
 	public void constructConversations() {
@@ -337,6 +348,27 @@ public class DataManager {
 		AccessToken accessToken = getAccessToken();
 		twitter.setOAuthAccessToken(accessToken);
 	}
+	
+	public void loadAccessTokenFromDatabase(String screenName){
+		SqlHelper sqlHelper=new SqlHelper();
+		String sql="SELECT ID,TOKEN,TOKENSECRET FROM User WHERE SCREEN_NAME= \'"+screenName+"\'";
+		ResultSet rs=sqlHelper.executeQuery(sql);
+		Long id = null;
+	    String  token = null;
+	    String tokenSecret  = null;
+		try {
+			while ( rs.next() ) {
+			     id = rs.getLong("ID");
+			     token = rs.getString("TOKEN");
+			     tokenSecret  = rs.getString("TOKENSECRET");
+			     
+			  }
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		twitter.setOAuthAccessToken(new AccessToken(token, tokenSecret, id));
+	}
 
 	public AccessToken getAccessToken() {
 		File fileName = new File("accessToken.txt");
@@ -365,5 +397,56 @@ public class DataManager {
 	public List<Message> getMessageList() {
 		return msgList;
 	}
+	public String excutePost(String targetURL, String urlParameters)
+	  {
+	    URL url;
+	    HttpURLConnection connection = null;  
+	    try {
+	      //Create connection
+	      url = new URL(targetURL);
+	      connection = (HttpURLConnection)url.openConnection();
+	      connection.setRequestMethod("POST");
+	      connection.setRequestProperty("Content-Type", 
+	           "application/x-www-form-urlencoded");
+				
+	      connection.setRequestProperty("Content-Length", "" + 
+	               Integer.toString(urlParameters.getBytes().length));
+	      connection.setRequestProperty("Content-Language", "en-US");  
+				
+	      connection.setUseCaches (false);
+	      connection.setDoInput(true);
+	      connection.setDoOutput(true);
+
+	      //Send request
+	      DataOutputStream wr = new DataOutputStream (
+	                  connection.getOutputStream ());
+	      wr.writeBytes (urlParameters);
+	      wr.flush ();
+	      wr.close ();
+
+	      //Get Response	
+	      InputStream is = connection.getInputStream();
+	      BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+	      String line;
+	      StringBuffer response = new StringBuffer(); 
+	      while((line = rd.readLine()) != null) {
+	        response.append(line);
+	        response.append('\r');
+	      }
+	      rd.close();
+	      return response.toString();
+
+	    } catch (Exception e) {
+
+	      e.printStackTrace();
+	      return null;
+
+	    } finally {
+
+	      if(connection != null) {
+	        connection.disconnect(); 
+	      }
+	    }
+	  }
 
 }

@@ -1,5 +1,7 @@
 package com.datacollection.twitter;
 
+import java.util.List;
+
 
 public class Main {
 
@@ -10,16 +12,20 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 		// TODO Auto-generated method stub
 		DataManager dm=new DataManager();
-		dm.loadAccessToken();
+		String userName="TengyuWang";
+		//dm.loadAccessToken();
+		dm.loadAccessTokenFromDatabase(userName);
 		//dm.getUserAuthorization();
-		dm.collectMentionsTimeLine(Long.valueOf(1));
+		/*dm.collectMentionsTimeLine(Long.valueOf(1));
 		dm.collectUserTimeLine(Long.valueOf(1));
 		dm.collectInstantMessages();
-		dm.constructConversations();
-		int n=dm.getConversationList().size();
+		dm.constructConversations();*/
+		List<Conversation> conversationList=dm.collectData();
+
+		int n=conversationList.size();
 		for(int i=0;i<n;i++){
-			Conversation c=dm.getConversationList().get(i);
-			System.out.println(c.toString());
+			Conversation c=conversationList.get(i);
+			System.out.println(c.getJSONRepresentation().toString());
 		}
 		
 	}

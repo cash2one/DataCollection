@@ -2,6 +2,7 @@ package datacollection;
 
 import java.util.Iterator;
 
+import facebook4j.internal.org.json.JSONArray;
 import facebook4j.internal.org.json.JSONException;
 import facebook4j.internal.org.json.JSONObject;
 
@@ -22,7 +23,8 @@ public class StreamObject implements Comparable<StreamObject>
 	 * The Facebook ID of this object
 	 */
 	private String postID;
-
+	
+	private JSONArray commentArray;
 	/**
 	 * This creates a StreamObject which holds a result from the stream FQL table.
 	 * @param object The FQL JSON data
@@ -40,6 +42,9 @@ public class StreamObject implements Comparable<StreamObject>
 		}
 	}
 	
+	public void setCommentArray(JSONArray commentArray){
+		this.commentArray=commentArray;
+	}
 	
 	public String toString()
 	{
@@ -72,6 +77,12 @@ public class StreamObject implements Comparable<StreamObject>
 	 */
 	public JSONObject getJSONRepresentation()
 	{
+		try {
+			jsonObject.put("Comments", commentArray);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return jsonObject;
 	}
 
