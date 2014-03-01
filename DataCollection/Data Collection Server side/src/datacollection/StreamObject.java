@@ -2,6 +2,7 @@ package datacollection;
 
 import java.util.Iterator;
 
+import facebook4j.internal.org.json.JSONArray;
 import facebook4j.internal.org.json.JSONException;
 import facebook4j.internal.org.json.JSONObject;
 
@@ -17,6 +18,8 @@ public class StreamObject
 	 * The JSON data for this stream object
 	 */
 	private JSONObject jsonObject;
+	
+	private JSONArray commentArray;
 	
 	/**
 	 * The Facebook ID of this object
@@ -72,7 +75,17 @@ public class StreamObject
 	 */
 	public JSONObject getJSONRepresentation()
 	{
+		try {
+			jsonObject.put("comments", commentArray);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return jsonObject;
+	}
+	
+	public void setCommentArray(JSONArray commentArray){
+		this.commentArray=commentArray;
 	}
 
 	/**

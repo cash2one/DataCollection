@@ -110,6 +110,20 @@ public class StreamManager
 		return streamObjects;
 	}
 	
+	public void linkComments(Facebook session){
+		for (StreamObject so : streamObjects)
+		{
+			try {
+				JSONArray commentArray=session.executeFQL("SELECT fromid, text, id, username FROM comment WHERE post_id = \"" + so.getPostID() + "\"");
+				so.setCommentArray(commentArray);
+			} catch (FacebookException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
 	/**
 	 * 
 	 * @return the list of loaded StreamObjects
