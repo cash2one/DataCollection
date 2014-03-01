@@ -1,6 +1,5 @@
 package com.datacollection.twitter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -8,10 +7,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-//import twitter4j.User;
 import twitter4j.internal.org.json.JSONArray;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+//import twitter4j.User;
 /**
  * assume that messageList are constructed in time order.
  * @author Tengyu

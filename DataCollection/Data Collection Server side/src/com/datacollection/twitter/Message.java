@@ -1,16 +1,15 @@
 package com.datacollection.twitter;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import twitter4j.DirectMessage;
 import twitter4j.Status;
-//import twitter4j.User;
 import twitter4j.UserMentionEntity;
 import twitter4j.internal.org.json.JSONException;
 import twitter4j.internal.org.json.JSONObject;
+//import twitter4j.User;
 
 public class Message implements Comparable<Message> {
 	private String mID;

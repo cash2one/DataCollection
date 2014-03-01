@@ -20,6 +20,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
 import twitter4j.DirectMessage;
 import twitter4j.Paging;
 import twitter4j.ResponseList;
@@ -29,27 +35,103 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
+import twitter4j.internal.org.json.JSONArray;
+import twitter4j.internal.org.json.JSONException;
+import twitter4j.internal.org.json.JSONObject;
+import twitter4j.internal.org.json.JSONTokener;
 
 import com.datacollection.util.SqlHelper;
 
 public class DataManager {
+	private List<User> userList=new ArrayList<User>();
 
 	private Twitter twitter;
 
-	private List<Conversation> conversationList;
-
-	private List<Message> msgList;
-
-	private List<Message> statusList;
+	private ArrayList<ArrayList<Conversation>> listConversationList;
 
 	public DataManager() {
 		twitter = TwitterFactory.getSingleton();
-		twitter.setOAuthConsumer("8mga0W2Nfw7BQl0ixni5kA",
-				"2HAU4vqSafst4GJcumXRNYJE1Ak1m469oQkfaorfkE");
-		conversationList = new ArrayList<Conversation>();
-		msgList = new ArrayList<Message>();
-		statusList = new ArrayList<Message>();
+		/*twitter.setOAuthConsumer("8mga0W2Nfw7BQl0ixni5kA",
+				"2HAU4vqSafst4GJcumXRNYJE1Ak1m469oQkfaorfkE");*/
+		twitter.setOAuthConsumer("BaWtyknv1RwsU60jVccA", "EDopj7ySkVstUTD294ODgUlmhctGi3PBSkW2OljhhPY");
+		listConversationList = new ArrayList<ArrayList<Conversation>>();
 	}
+	
+	public List<User> getUserFromServer(){
+		User a=new User("1953004938",2);
+		a.setOauthToken("1953004938-t9XrnuScuq36s3U1q2uA6GC4nEY85VEYdcFbEDd");
+		a.setTokenSecret("oaGfOjTttivK5JPtMlQZWc9QoOgPzfWpUNTXsTdDhA5kH");
+		userList.add(a);
+		
+		User b=new User("2345736906",2);
+		b.setOauthToken("2345736906-XI8iapyuLXwxO8gQlcU76wxl8iNncbLYX15vj1H");
+		b.setTokenSecret("eCuhIAZPW9ewBy5A4w6Ln3NjEjA1Q68DSAuhZ1Y8aoXJs");
+		userList.add(b);
+		return userList;
+	}
+	
+	public List<User> getUserFromServer(final String urlAddress){
+		Thread t=new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				HttpClient client = new DefaultHttpClient();
+				HttpGet method = new HttpGet(urlAddress);
+				HttpResponse response=null;
+				try {
+					response = client.execute(method);
+				} catch (ClientProtocolException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				BufferedReader reader=null;
+				try {
+					StringBuilder builder = new StringBuilder();
+					reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+					for (String line = null; (line = reader.readLine()) != null;) {
+					    builder.append(line).append("\n");
+					}
+					System.out.println(builder.toString());
+					JSONTokener tokener = new JSONTokener(builder.toString());
+					JSONObject jsonObject = new JSONObject(tokener);
+					JSONArray jsonArray = jsonObject.getJSONArray("data");
+					for(int i=0;i<jsonArray.length();i++){
+						JSONObject userToken=jsonArray.getJSONObject(i);
+						User u=new User(userToken.getString("twitter_id"),2);
+						u.setOauthToken(userToken.getString("twitter_token"));
+						u.setTokenSecret(userToken.getString("twitter_secret"));
+						userList.add(u);
+					}
+					
+					
+				} catch (IllegalStateException
+						| IOException | JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			
+			}
+			
+		});
+		t.start();
+		try {
+			t.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return userList;
+	}
+	
+	public void loadAccessToken(User user){
+		twitter.setOAuthAccessToken(new AccessToken(user.getOauthToken(), user
+				.getTokenSecret(), Long.parseLong(user.getTweetId())));
+	}
+	
 
 	public void getUserAuthorization() throws Exception {
 		RequestToken requestToken = null;
@@ -88,7 +170,8 @@ public class DataManager {
 	 * requests per user per 15 minutes.
 	 * 
 	 */
-	public void collectUserTimeLine(Long sinceId) {
+	public List<Message> collectUserTimeLine(Long sinceId) {
+		List<Message> statusList=new ArrayList<Message>();
 		Paging paging = new Paging();
 		int count = 100;
 		paging.setCount(count);
@@ -130,6 +213,7 @@ public class DataManager {
 				statusList.add(msg);
 			}
 		}
+		return statusList;
 	}
 
 	/**
@@ -137,13 +221,14 @@ public class DataManager {
 	 * This method can return at most 800 recent mention timelines. RateLimit:
 	 * 15 requests per user per 15 minutes.
 	 */
-	public void collectMentionsTimeLine(long sinceId) {
+	public List<Message> collectMentionsTimeLine(long sinceId) {
 		Paging paging = new Paging();
 		int count = 100;
 		paging.setCount(count);
 		paging.setSinceId(sinceId);
 		ResponseList<Status> rl = null;
 		boolean collectAllData = false;
+		List<Message> statusList=new ArrayList<Message>();
 		while (!collectAllData) {
 			try {
 				ResponseList<Status> tl = twitter.getMentionsTimeline(paging);
@@ -174,6 +259,7 @@ public class DataManager {
 				statusList.add(msg);
 			}
 		}
+		return statusList;
 	}
 
 	/**
@@ -181,7 +267,8 @@ public class DataManager {
 	 * This method can return at most 800 recent direct messages. RateLimit: 15
 	 * requests per user per 15 minutes.
 	 */
-	public void collectInstantMessages() {
+	public List<Message> collectInstantMessages() {
+		List<Message> msgList=new ArrayList<Message>();
 		Paging paging = new Paging();
 		paging.setCount(100);
 		ResponseList<DirectMessage> rl = null;
@@ -197,6 +284,7 @@ public class DataManager {
 				msgList.add(msg);
 			}
 		}
+		return msgList;
 	}
 
 	/**
@@ -239,22 +327,30 @@ public class DataManager {
 		}
 	}
 
-	public List<Conversation> collectData() {
+	public ArrayList<ArrayList<Conversation>> collectData(List<User> userList) {
 		Long sinceId = (long) 1;
-		collectUserTimeLine(sinceId);
-
-		collectMentionsTimeLine(sinceId);
-
-		collectInstantMessages();
-		
-		constructConversations();
-		return conversationList;
+		for(User user:userList){
+			this.loadAccessToken(user);
+			List<Message> usertimeline=collectUserTimeLine(sinceId);
+	
+			List<Message> mentiontimeline=collectMentionsTimeLine(sinceId);
+	
+			List<Message> msgList=collectInstantMessages();
+			
+			ArrayList<Conversation> conversList=constructConversations(usertimeline,mentiontimeline,msgList);
+			listConversationList.add(conversList);
+		}
+		return listConversationList;
 	}
 
-	public void constructConversations() {
+	public ArrayList<Conversation> constructConversations(List<Message> usertimeline,List<Message> mentiontimeline, List<Message> msgList) {
 		/*
 		 * Contruct Conversations for status Message.
 		 */
+		ArrayList<Conversation> conversationList=new ArrayList<Conversation>();
+		List<Message> statusList=new ArrayList<Message>();
+		statusList.addAll(usertimeline);
+		statusList.addAll(mentiontimeline);
 		Collections.sort(statusList);
 		List<Conversation> statusConversationList = new ArrayList<Conversation>();
 		for (int i = 0; i < statusList.size(); i++) {
@@ -326,6 +422,7 @@ public class DataManager {
 		for (int i = 0; i < conversationList.size(); i++) {
 			conversationList.get(i).setStartEndTime();
 		}
+		return conversationList;
 	}
 
 	public void storeAccessToken(long id, AccessToken accessToken) {
@@ -347,6 +444,28 @@ public class DataManager {
 	public void loadAccessToken() {
 		AccessToken accessToken = getAccessToken();
 		twitter.setOAuthAccessToken(accessToken);
+	}
+	
+	public void getAccessTokenFromServer(){
+		String token = null;
+		String tokenSecret = null;
+		AccessToken accessToken=new AccessToken(token,tokenSecret);
+		twitter.setOAuthAccessToken(accessToken);
+	}
+	public void loadHardCodedToken(int i){
+		long []id=new long[10];
+		String token[]=new String[10];
+		String tokenSecret[]=new String[10];
+		id[0]=Long.parseLong("2345736906");
+		token[0]= "2345736906-XI8iapyuLXwxO8gQlcU76wxl8iNncbLYX15vj1H";
+		tokenSecret[0]= "eCuhIAZPW9ewBy5A4w6Ln3NjEjA1Q68DSAuhZ1Y8aoXJs";
+		id[1]=Long.parseLong("1953004938"); 
+		token[1]= "1953004938-t9XrnuScuq36s3U1q2uA6GC4nEY85VEYdcFbEDd"; 
+		tokenSecret[1]="oaGfOjTttivK5JPtMlQZWc9QoOgPzfWpUNTXsTdDhA5kH";
+		id[2]=Long.parseLong("2345802558");
+		token[2]="2345802558-lKz6s635ic3SRn8iGyyLJYL1sIlUHNtskHHPl96";
+		tokenSecret[3]="GrEWpWWxgMaxF3dEPjuZpcsdkXq9u6VhjMWIGyBHTzblB";
+		twitter.setOAuthAccessToken(new AccessToken(token[i], tokenSecret[i], id[i]));
 	}
 	
 	public void loadAccessTokenFromDatabase(String screenName){
@@ -390,20 +509,19 @@ public class DataManager {
 		return new AccessToken(token, tokenSecret, id);
 	}
 
-	public List<Conversation> getConversationList() {
-		return conversationList;
+	public ArrayList<ArrayList<Conversation>> getListConversationList() {
+		return listConversationList;
 	}
 
-	public List<Message> getMessageList() {
-		return msgList;
-	}
-	public String excutePost(String targetURL, String urlParameters)
+	public String excutePost(String targetURL, List<JSONObject> conversList)
 	  {
 	    URL url;
-	    HttpURLConnection connection = null;  
+	    HttpURLConnection connection = null;
+	    String urlParameters=null;
 	    try {
 	      //Create connection
 	      url = new URL(targetURL);
+	      urlParameters=conversList.toString();
 	      connection = (HttpURLConnection)url.openConnection();
 	      connection.setRequestMethod("POST");
 	      connection.setRequestProperty("Content-Type", 

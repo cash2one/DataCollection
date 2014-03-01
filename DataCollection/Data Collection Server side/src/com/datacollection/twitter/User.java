@@ -17,6 +17,10 @@ public class User
 	 */
 	private String phoneNum;
 	
+	private String oauthToken;
+	
+	private String tokenSecret;
+	
 	/**
 	 * The user's name, it can only be filled in following a Facebook graph request.
 	 */
@@ -32,6 +36,7 @@ public class User
 		this.tweetID=tid;
 		this.phoneNum=pnum;
 	}
+	
 	
 	public User(String id,int type)
 	{
@@ -120,5 +125,25 @@ public class User
 			this.name = "";
 		else
 			this.name = name;
+	}
+
+
+	public String getOauthToken() {
+		return oauthToken;
+	}
+
+
+	public void setOauthToken(String oauthToken) {
+		this.oauthToken = oauthToken;
+	}
+
+
+	public String getTokenSecret() {
+		return tokenSecret;
+	}
+
+
+	public void setTokenSecret(String tokenSecret) {
+		this.tokenSecret = tokenSecret;
 	}
 }
