@@ -1,28 +1,50 @@
 package datacollection;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.Reader;
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.concurrent.ExecutionException;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.ListView;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.messagesiphon.R;
 import com.facebook.Session;
@@ -33,73 +55,23 @@ import com.facebook.SessionState;
  * The purpose of this class is to handle the main operations of the app as well
  * as the user interface and authenticating with Facebook. It handles user input
  * and collects data with a {@link datacollection.DataManager}.
+ * 
  * @author Tom
  */
 public class MainActivity extends Activity
 {
-	/**
-	 * Button to start gathering data
-	 */
-	private Button goButton;
+	private static final String SERVER_URL = "http://128.255.45.52:7777/server/makeuser/";
+	private Button loginToFacebook;
+	private Button loginToTwitter;
+	private String oauthText;
+	private String oauthSecretText;
+	private String screenNameText;
+	private Button done;
+	private SharedPreferences sharedPreferences;
+	private EditText phoneField;
+	private TextView phoneLabel;
+	private String twitterID;
 
-	/**
-	 * Checkbox to toggle collecting Facebook messages
-	 */
-	private CheckBox collectMessagesCheckbox;
-
-	/**
-	 * Checkbox to toggle collecting stream data
-	 */
-	private CheckBox collectStreamCheckbox;
-
-	/**
-	 * Checkbox to toggle loading previously collected data
-	 */
-	private CheckBox loadOldDataCheckbox;
-
-	/**
-	 * Checkbox to toggle whether Facebook messages older than a month should
-	 * be collected
-	 */
-	private CheckBox limitToMonthCheckbox;
-
-	/**
-	 * Button to save collected data
-	 */
-	private Button saveButton;
-
-	/**
-	 * Button to delete data file
-	 */
-	private Button deleteButton;
-
-	/**
-	 * Button to load the Facebook ID to name pairings
-	 */
-	private Button showParticipantsButton;
-	
-	/**
-	 * Button to show the message display on the right side of the screen
-	 */
-	private Button showMessageDisplayButton;
-
-	/**
-	 * Button to show the stream display on the right side of the screen
-	 */
-	private Button showStreamDisplayButton;
-	
-	/**
-	 * Button to reset the app to how it was on launch
-	 */
-	private Button resetAppButton;
-
-	/**
-	 * The DataManager handles all of the loading and storing of the data,
-	 * and gives the MainActivity handles to access it
-	 */
-	private DataManager dataManager;
-	
-	
 	/**
 	 * This method initializes all of the pieces of the app - the dataManager,
 	 * the Facebook session, and the user interface.
@@ -108,123 +80,176 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-		//Get our session initialized
-		openFacebookSession();
-		
-		//Create out dataManager, giving it our initialized session
-		dataManager = new DataManager(Session.getActiveSession());
-		
-		//Create the user interface
+
+		// Create the user interface
 		setupUI();
-		System.out.println(Session.getActiveSession().getAccessToken());
-		System.out.println(Session.getActiveSession().getApplicationId());
+
+		sharedPreferences = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+
+		if (!sharedPreferences.getBoolean(
+				ConstantValues.PREFERENCE_TWITTER_IS_LOGGED_IN, false))
+		{
+			initControl();
+		}
+
 	}
-	
+
 	/**
 	 * All of the app's UI initialization goes here, it also resets all of the
 	 * UI elements
 	 */
 	private void setupUI()
-	{		
-		collectMessagesCheckbox = (CheckBox) findViewById(R.id.loadMessageCheckbox);
-		collectMessagesCheckbox.setChecked(false);
-		
-		collectStreamCheckbox = (CheckBox) findViewById(R.id.loadActivityCheckBox);
-		collectStreamCheckbox.setChecked(false);
-		
-		loadOldDataCheckbox = (CheckBox) findViewById(R.id.loadDataCheckBox);
-		loadOldDataCheckbox.setChecked(false);
-		
-		limitToMonthCheckbox = (CheckBox) findViewById(R.id.restrictMonthCheckbox);
-		limitToMonthCheckbox.setChecked(false);
-		
-		goButton = (Button) findViewById(R.id.loadDataButton);
-        goButton.setOnClickListener(new OnClickListener()
+	{
+		loginToFacebook = (Button) findViewById(R.id.loginToFacebookButton);
+		loginToFacebook.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View v)
 			{
-				dataManager.collectData(collectMessagesCheckbox.isChecked(),
-							limitToMonthCheckbox.isChecked(),
-							collectStreamCheckbox.isChecked(),
-							loadOldDataCheckbox.isChecked());
-				
-				if (collectMessagesCheckbox.isChecked() || 
-					loadOldDataCheckbox.isChecked())
-				{
-					setupConversationDisplay();
-				}
-				else
-				{
-					System.out.println("setting up stream display");
-					setupStreamDisplay();
-				}
+				openFacebookSession();
 			}
 		});
-        
-        saveButton = (Button) findViewById(R.id.saveDataButton);
-        saveButton.setOnClickListener(new OnClickListener()
+
+		loginToTwitter = (Button) findViewById(R.id.loginToTwitterButton);
+		loginToTwitter.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View v)
 			{
-				dataManager.saveJSONData();
+				SharedPreferences.Editor editor = sharedPreferences.edit();
+				editor.remove(ConstantValues.PREFERENCE_TWITTER_OAUTH_TOKEN);
+				editor.remove(ConstantValues.PREFERENCE_TWITTER_OAUTH_TOKEN_SECRET);
+				editor.remove(ConstantValues.PREFERENCE_TWITTER_IS_LOGGED_IN);
+				editor.commit();
+				openTwitterSession();
 			}
 		});
-        
-        deleteButton = (Button) findViewById(R.id.deleteDataButton);
-        deleteButton.setOnClickListener(new OnClickListener()
-		{
-			public void onClick(View v)
-			{
-				dataManager.deleteOldData();
-			}
-		});
-        
-        showParticipantsButton = (Button) findViewById(R.id.showParticipantsButton);
-        showParticipantsButton.setOnClickListener(new OnClickListener()
+
+		done = (Button) findViewById(R.id.doneButton);
+		done.setOnClickListener(new OnClickListener()
 		{
 			public void onClick(View arg0)
 			{
-				dataManager.collectParticipantInformation();
-				setupConversationDisplay();
+				savePhoneNumber();
+				uploadData();
 			}
 		});
-        
-        showMessageDisplayButton = (Button) findViewById(R.id.showMessagesButton);
-        showMessageDisplayButton.setOnClickListener(new OnClickListener()
+
+		phoneField = (EditText) findViewById(R.id.phoneInput);
+		phoneLabel = (TextView) findViewById(R.id.phoneLabel);
+	}
+
+	protected void savePhoneNumber()
+	{
+		File root = android.os.Environment.getExternalStorageDirectory();
+		File dirr = new File(root.getAbsolutePath() + "/appData");
+		dirr.mkdirs();
+		File file1 = new File(dirr, "app.txt");
+		try
 		{
-			public void onClick(View v)
-			{
-				setupConversationDisplay();
-			}
-		});
-        
-        showStreamDisplayButton = (Button) findViewById(R.id.showActivityButton);
-        showStreamDisplayButton.setOnClickListener(new OnClickListener()
+			Log.i("look", "step3");
+			FileOutputStream f1 = new FileOutputStream(file1);
+			PrintWriter pw1 = new PrintWriter(f1);
+			pw1.println(phoneField.getText().toString());
+			pw1.flush();
+			pw1.close();
+			f1.close();
+		}
+		catch (FileNotFoundException e)
 		{
-			public void onClick(View v)
-			{
-				setupStreamDisplay();
-			}
-		});
-        
-        resetAppButton = (Button) findViewById(R.id.resetButton);
-        resetAppButton.setOnClickListener(new OnClickListener()
+			e.printStackTrace();
+			Log.i("writer",
+					"******* File not found. Did you"
+							+ " add a WRITE_EXTERNAL_STORAGE permission to the manifest?");
+		}
+		catch (IOException e)
 		{
-			public void onClick(View arg0)
+			Log.i("writer", "IOEX");
+			e.printStackTrace();
+		}
+	}
+
+	private void uploadData()
+	{
+		if (Session.getActiveSession() == null || oauthText.length() == 0
+				|| oauthSecretText.length() == 0
+				|| screenNameText.length() == 0
+				|| phoneField.getText().toString().length() == 0)
+		{
+			Toast.makeText(this, "Complete logins please", Toast.LENGTH_LONG)
+					.show();
+			return;
+		}
+
+		JSONObject obj = new JSONObject();
+		try
+		{
+			obj.put("phone_number", phoneField.getText().toString());
+			obj.put("facebook_token", Session.getActiveSession()
+					.getAccessToken());
+			obj.put("facebook_appid", Session.getActiveSession()
+					.getApplicationId());
+			obj.put("twitter_token", this.oauthText);
+			obj.put("twitter_secret", this.oauthSecretText);
+			obj.put("twitter_screen_name", this.screenNameText);
+			obj.put("twitter_id", twitterID);
+			System.out.println(obj.toString(1));
+
+			AsyncTask<JSONObject, Void, JSONObject> postData = new AsyncTask<JSONObject, Void, JSONObject>()
 			{
-				//Create out dataManager, giving it our initialized session
-				dataManager = new DataManager(Session.getActiveSession());
-				
-				//Create the user interface
-				setupUI();
-				
-				final ListView postList = (ListView) findViewById(R.id.itemSelect);
-				postList.setAdapter(null);
-				final ListView postDetails = (ListView) findViewById(R.id.itemView);
-				postDetails.setAdapter(null);
-			}
-		});
+				protected JSONObject doInBackground(JSONObject... params)
+				{
+					HttpPost post = new HttpPost(SERVER_URL);
+					post.setEntity(new ByteArrayEntity(params[0].toString()
+							.getBytes()));
+					HttpResponse resp = null;
+					HttpClient httpclient = new DefaultHttpClient();
+					try
+					{
+						resp = httpclient.execute(post);
+						return readJson(resp);
+					}
+					catch (ClientProtocolException e)
+					{
+						e.printStackTrace();
+					}
+					catch (IOException e)
+					{
+						e.printStackTrace();
+					}
+					catch (JSONException e)
+					{
+						e.printStackTrace();
+					}
+					return null;
+				}
+
+			};
+			JSONObject resp = postData.execute(obj).get();
+			System.out.println(resp);
+			Toast.makeText(this, "Thank you you!", Toast.LENGTH_LONG).show();
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
+		catch (InterruptedException e)
+		{
+			e.printStackTrace();
+		}
+		catch (ExecutionException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IllegalStateException e)
+		{
+			e.printStackTrace();
+		}
+
+	}
+
+	private void openTwitterSession()
+	{
+		new TwitterAuthenticateTask().execute();
 	}
 
 	/**
@@ -232,11 +257,11 @@ public class MainActivity extends Activity
 	 */
 	private void openFacebookSession()
 	{
-		//Call this method if there is an authentication problem, it was only
-		//needed the first time getting the app authenticated with facebook,
-		//and remains for debugging purposes.
-//		getKeyIfKeyWrong();
-		
+		// Call this method if there is an authentication problem, it was only
+		// needed the first time getting the app authenticated with facebook,
+		// and remains for debugging purposes.
+		// getKeyIfKeyWrong();
+
 		// start Facebook Login
 		Session.openActiveSession(this, true, new Session.StatusCallback()
 		{
@@ -250,21 +275,24 @@ public class MainActivity extends Activity
 					ArrayList<String> permissions = new ArrayList<String>();
 					permissions.add("read_mailbox");
 					permissions.add("read_stream");
-					
+
 					// Remove callback from old session to prevent infinite loop
-					session.removeCallback(this); 
-					
-					//send our permissions request
-					Session.getActiveSession().requestNewReadPermissions(new NewPermissionsRequest(MainActivity.this, permissions));
+					session.removeCallback(this);
+
+					// send our permissions request
+					Session.getActiveSession().requestNewReadPermissions(
+							new NewPermissionsRequest(MainActivity.this,
+									permissions));
+					loginToFacebook.setEnabled(false);
+					loginToTwitter.setEnabled(true);
 				}
 			}
 		});
-		
 	}
 
 	/**
 	 * This method fixes some app authentication errors when run for the first
-	 * time before the app is published. 
+	 * time before the app is published.
 	 */
 	@SuppressWarnings("unused")
 	private void getKeyIfKeyWrong()
@@ -272,7 +300,8 @@ public class MainActivity extends Activity
 		PackageInfo info = null;
 		try
 		{
-			info = getPackageManager().getPackageInfo("com.example.messagesiphon",  PackageManager.GET_SIGNATURES);
+			info = getPackageManager().getPackageInfo(
+					"com.example.messagesiphon", PackageManager.GET_SIGNATURES);
 		}
 		catch (NameNotFoundException e1)
 		{
@@ -280,8 +309,8 @@ public class MainActivity extends Activity
 		}
 
 		for (Signature signature : info.signatures)
-	    {
-	        MessageDigest md = null;
+		{
+			MessageDigest md = null;
 			try
 			{
 				md = MessageDigest.getInstance("SHA");
@@ -290,12 +319,27 @@ public class MainActivity extends Activity
 			{
 				Log.i("ERROR:", "Couldn't make md");
 			}
-	        md.update(signature.toByteArray());
-	        Log.i("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
-	    }
+			md.update(signature.toByteArray());
+			Log.i("KeyHash:",
+					Base64.encodeToString(md.digest(), Base64.DEFAULT));
+		}
 	}
-	
-	
+
+	private void initControl()
+	{
+		Uri uri = getIntent().getData();
+		if (uri != null
+				&& uri.toString().startsWith(
+						ConstantValues.TWITTER_CALLBACK_URL))
+		{
+			String verifier = uri
+					.getQueryParameter(ConstantValues.URL_PARAMETER_TWITTER_OAUTH_VERIFIER);
+			TwitterGetAccessTokenTask t = new TwitterGetAccessTokenTask();
+			t.execute(verifier);
+
+		}
+	}
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data)
 	{
@@ -304,114 +348,106 @@ public class MainActivity extends Activity
 				resultCode, data);
 	}
 
-	/**
-	 * This method is called to initialize the itemSelect and itemView UI
-	 * pieces, the streamList is put in the itemSelect, and the itemView
-	 * is configured so that when a stream object is clicked on the appropriate
-	 * data is displayed.
-	 */
-	private void setupStreamDisplay()
+	class TwitterAuthenticateTask extends
+			AsyncTask<String, String, RequestToken>
 	{
-		final ListView postList = (ListView) findViewById(R.id.itemSelect);
-		final ListView postDetails = (ListView) findViewById(R.id.itemView);
-		final ArrayList<StreamObject> streamObjects = dataManager.getStreamObjects();
-		
-	    final ArrayList<String> list = new ArrayList<String>();
-	    for (int i = 0; i < streamObjects.size(); ++i)
-	    	list.add(streamObjects.get(i).getPostID());
 
-	    final StableArrayAdapter adapter = new StableArrayAdapter(this,
-	        android.R.layout.simple_list_item_1, list);
-	    
-	    postList.setAdapter(adapter);
-	    
-	    postList.setOnItemClickListener(new AdapterView.OnItemClickListener() 
-	    {
-	      @Override
-	      public void onItemClick(AdapterView<?> parent, final View view,
-	          int position, long id) 
-	      {
-	    	  final ArrayList<String> lines = new ArrayList<String>();
-	    	  for (String line : streamObjects.get(position).toString().split("\n"))
-	    		  lines.add(line);
-	    	  
-	    	  final StableArrayAdapter adapter2 = new StableArrayAdapter(MainActivity.this,
-	  		        android.R.layout.simple_list_item_1, lines);
-	    	  postDetails.setAdapter(adapter2);
-	      }
-	    });
-	    
-	    postList.setSelection(0);
+		@Override
+		protected void onPostExecute(RequestToken requestToken)
+		{
+			Intent intent = new Intent(Intent.ACTION_VIEW,
+					Uri.parse(requestToken.getAuthenticationURL()));
+			startActivity(intent);
+		}
+
+		@Override
+		protected RequestToken doInBackground(String... params)
+		{
+			return TwitterUtil.getInstance().getRequestToken();
+		}
 	}
-	
-	/**
-	 * This method is called to initialize the itemSelect and itemView UI
-	 * pieces, the conversation list is put in the itemSelect, and the itemView
-	 * is configured so that when a conversation is clicked on the appropriate
-	 * messages are displayed.
-	 */
-	private void setupConversationDisplay()
+
+	class TwitterGetAccessTokenTask extends
+			AsyncTask<String, String, AccessToken>
 	{
-		final ListView convoList = (ListView) findViewById(R.id.itemSelect);
-		final ListView messageList = (ListView) findViewById(R.id.itemView);
-		final ArrayList<Conversation> conversations = dataManager.getConversations();
-		
-	    final ArrayList<String> list = new ArrayList<String>();
-	    for (int i = 0; i < conversations.size(); ++i)
-	    	list.add(conversations.get(i).getParticipantString());
 
-	    final StableArrayAdapter adapter = new StableArrayAdapter(this,
-	        android.R.layout.simple_list_item_1, list);
-	    
-	    convoList.setAdapter(adapter);
-	    
-	    convoList.setOnItemClickListener(new AdapterView.OnItemClickListener() 
-	    {
-	      @Override
-	      public void onItemClick(AdapterView<?> parent, final View view,
-	          int position, long id) 
-	      {
-	    	  final ArrayList<String> mess = new ArrayList<String>();
-	    	  ArrayList<Message> messages = conversations.get(position).getMessages();
-	    	  for (int i = 0; i < messages.size(); i++)
-	    		  mess.add(messages.get(i).text());
-	    	  
-	    	  final StableArrayAdapter adapter2 = new StableArrayAdapter(MainActivity.this,
-	  		        android.R.layout.simple_list_item_1, mess);
-	    	  messageList.setAdapter(adapter2);
-	    	  
-	    	  messageList.setSelection(messageList.getCount() - 1);
-	      }
-	    });
-	    convoList.setSelection(0);
+		@Override
+		protected void onPostExecute(AccessToken accessToken)
+		{
+			if (accessToken == null)
+			{
+				oauthText = "";
+				oauthSecretText = "";
+				screenNameText = "";
+				twitterID = "";
+
+				System.out.println("Error with first attempt, trying again.");
+				openTwitterSession();
+			}
+			else
+			{
+				oauthText = (accessToken.getToken());
+				oauthSecretText = (accessToken.getTokenSecret());
+				screenNameText = (accessToken.getScreenName());
+				twitterID = "" + accessToken.getUserId();
+
+				loginToFacebook.setEnabled(false);
+				loginToTwitter.setEnabled(false);
+				phoneField.setEnabled(true);
+				phoneLabel.setEnabled(true);
+			}
+		}
+
+		@Override
+		protected AccessToken doInBackground(String... params)
+		{
+			AccessToken accessToken = TwitterUtil.getInstance().getAccessToken(
+					params[0]);
+			accessToken = TwitterUtil.getInstance().getAccessToken(params[0]);
+			if (accessToken == null)
+			{
+				return null;
+			}
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.putString(ConstantValues.PREFERENCE_TWITTER_OAUTH_TOKEN,
+					accessToken.getToken());
+			editor.putString(
+					ConstantValues.PREFERENCE_TWITTER_OAUTH_TOKEN_SECRET,
+					accessToken.getTokenSecret());
+			// editor.putBoolean(ConstantValues.PREFERENCE_TWITTER_IS_LOGGED_IN,
+			// true);
+			editor.commit();
+			return accessToken;
+		}
 	}
-	
-	/**
-	 * Private class used for the list display
-	 */
-	private class StableArrayAdapter extends ArrayAdapter<String> {
 
-	    HashMap<String, Integer> mIdMap = new HashMap<String, Integer>();
+	private String readAll(Reader rd) throws IOException
+	{
+		StringBuilder sb = new StringBuilder();
+		int cp;
+		while ((cp = rd.read()) != -1)
+		{
+			sb.append((char) cp);
+		}
+		return sb.toString();
+	}
 
-	    public StableArrayAdapter(Context context, int textViewResourceId,
-	        List<String> objects) {
-	      super(context, textViewResourceId, objects);
-	      for (int i = 0; i < objects.size(); ++i) {
-	        mIdMap.put(objects.get(i), i);
-	      }
-	    }
-
-	    @Override
-	    public long getItemId(int position) {
-	      String item = getItem(position);
-	      return mIdMap.get(item);
-	    }
-
-	    @Override
-	    public boolean hasStableIds() {
-	      return true;
-	    }
-
-	  }
-
+	private JSONObject readJson(HttpResponse resp) throws IOException,
+			JSONException
+	{
+		InputStream is = resp.getEntity().getContent();
+		try
+		{
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is,
+					Charset.forName("UTF-8")));
+			String jsonText = readAll(rd);
+			System.out.println(jsonText);
+			JSONObject json = new JSONObject(jsonText);
+			return json;
+		}
+		finally
+		{
+			is.close();
+		}
+	}
 }

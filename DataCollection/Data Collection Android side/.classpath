@@ -7,5 +7,10 @@
 	<classpathentry kind="src" path="gen"/>
 	<classpathentry kind="lib" path="C:/Users/Tom/Downloads/Install Files/facebook-android-sdk-3.5.1/facebook-android-sdk-3.5.1/facebook/bin/facebooksdk.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Tom/Downloads/Install Files/facebook-android-sdk-3.5.1/facebook-android-sdk-3.5.1/libs/android-support-v4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tom/Documents/GitHub/DataCollection/DataCollection/Data Collection Android side/libs/twitter4j-async-3.0.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tom/Documents/GitHub/DataCollection/DataCollection/Data Collection Android side/libs/twitter4j-core-3.0.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tom/Documents/GitHub/DataCollection/DataCollection/Data Collection Android side/libs/twitter4j-examples-3.0.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tom/Documents/GitHub/DataCollection/DataCollection/Data Collection Android side/libs/twitter4j-media-support-3.0.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Tom/Documents/GitHub/DataCollection/DataCollection/Data Collection Android side/libs/twitter4j-stream-3.0.5.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

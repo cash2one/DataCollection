@@ -5,7 +5,17 @@ public class User
 	/**
 	 * The User's unique Facebook ID
 	 */
-	private String id;
+	private String facebookID;
+	
+	/**
+	 * The User's Tweet ID
+	 */
+	private String tweetID;
+	
+	/**
+	 * The User's phone #
+	 */
+	private String phoneNum;
 	
 	/**
 	 * The user's name, it can only be filled in following a Facebook graph request.
@@ -16,20 +26,48 @@ public class User
 	 * This creates a User object, which is used to hold Facebook User ID's
 	 * @param id The unique Facebook ID
 	 */
-	public User(String id)
+	public User(String fid,String tid, String pnum)
 	{
-		this.id = id;
+		this.facebookID = fid;
+		this.tweetID=tid;
+		this.phoneNum=pnum;
+	}
+	
+	public User(String id,int type)
+	{
+		if(type==0){
+			this.phoneNum=id;
+		}
+		else if(type==1){
+			this.facebookID=id;
+		}
+		else this.tweetID=id;
 	}
 
 	/**
 	 * 
 	 * @return The User's unique Facebook ID
 	 */
-	public String getId()
+	public String getFacebookId()
 	{
-		return id;
+		return facebookID;
 	}
 	
+	/**
+	 * get the user's Tweeter ID
+	 */
+	
+	public String getTweetId(){
+		return tweetID;
+	}
+	
+	/**
+	 * get the user's phone #
+	 */
+	
+	public String getPhoneNum(){
+		return phoneNum;
+	}
 	/**
 	 * Overrides Object's equals method, uses the Facebook ID for comparison.
 	 */
@@ -37,7 +75,7 @@ public class User
 	{
 		if (other instanceof User)
 		{
-			return (((User)other).getId().equals(id));
+			return (((User)other).getFacebookId().equals(facebookID));
 		}
 		return false;
 	}
@@ -49,7 +87,7 @@ public class User
 	public String toString()
 	{
 		if (name.length() == 0)
-			return id;
+			return facebookID;
 		else
 			return name;
 	}
@@ -60,7 +98,7 @@ public class User
 	 */
 	public int hashCode()
 	{
-		return id.hashCode();
+		return facebookID.hashCode();
 	}
 	
 	/**

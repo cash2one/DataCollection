@@ -5,9 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import datacollection.Comment;
 import datacollection.Conversation;
 import datacollection.DataManager;
 import datacollection.Message;
+import datacollection.StreamObject;
+import datacollection.User;
 
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
@@ -15,6 +18,7 @@ import facebook4j.TestUser;
 import facebook4j.auth.AccessToken;
 import facebook4j.internal.org.json.JSONException;
 
+@SuppressWarnings("resource")
 public class TestManager
 {
 	private Facebook session;
@@ -23,9 +27,14 @@ public class TestManager
 	public TestManager(Facebook session)
 	{
 		this.session = session;
+		resetSession();
+
+	}
+	
+	private void resetSession()
+	{
 		session.setOAuthAccessToken(new AccessToken(
 				"442864129167674|m5Ss-_eSF53XoKVdkyT_nkjEhj8"));
-
 	}
 
 	
@@ -40,6 +49,7 @@ public class TestManager
 	public TestResult wallPostTest() throws FacebookException, JSONException
 	{
 		TestResult result = new TestResult("Wall Post Test", System.out);
+		result.begin();
 		
 		// Create test users and data managers
 		System.out.println("Creating test users");
@@ -61,6 +71,7 @@ public class TestManager
 		System.out.println(abbyToBob);
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
+		System.out.println();
 		
 		openLink(user2.getLoginUrl());
 		String bobToAbby = "Hi Abby, this is Bob.";
@@ -71,22 +82,39 @@ public class TestManager
 		System.out.println(comment1);
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
-
-		openLink(user1.getLoginUrl());
+		System.out.println();
+		
 		String comment2 = "Hi Bob, I'm commenting on your post.";
 		System.out.println("Please post the following comment on the wall post from Bob");
 		System.out.println(comment2);
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
-		
-		
+		System.out.println();
 		
 		data1.collectData(false, false, true, false);
 		data2.collectData(false, false, true, false);
+
+		StreamObject postFromBob = null;
+		for (StreamObject so : data1.getStreamObjects())
+			if (so.getComments().size() > 0)
+				postFromBob = so;
+		result.addResult("Abby collected Bob's post to her wall and the comment", 
+						postFromBob != null && 
+						postFromBob.getComments().get(0).getText().equals(comment2) &&
+						postFromBob.getJSONRepresentation().getString("message").equals(bobToAbby), true);
 		
 		
+		StreamObject postFromAbby = null;
+		for (StreamObject so : data2.getStreamObjects())
+			if (so.getComments().size() > 0)
+				postFromAbby = so;
+		result.addResult("Bob collected Abby's post to her wall and the comment", 
+						postFromAbby != null && 
+						postFromAbby.getComments().get(0).getText().equals(comment1) &&
+						postFromAbby.getJSONRepresentation().getString("message").equals(abbyToBob), true);
 		
-		scan.close();
+		
+
 		return result;
 	}
 
@@ -101,7 +129,8 @@ public class TestManager
 	public TestResult statusTest() throws FacebookException, JSONException
 	{
 		TestResult result = new TestResult("Status Test", System.out);
-
+		result.begin();
+		
 		System.out.println("Creating test users");
 		// Create test users and data managers
 		TestUser user1 = createTestUser("Abby Doe");
@@ -128,8 +157,8 @@ public class TestManager
 
 		// User 1 will post a status
 		System.out.println("User 1 is posting a status");
-		String statusID = session.postStatusMessage(user1.getId(),
-				"This is a test status posted by user 1");
+		String statusText = "This is a test status posted by user 1";
+		String statusID = session.postStatusMessage(user1.getId(), statusText);
 
 		// // Have the other users comment
 		session.setOAuthAccessToken(new AccessToken(user2.getAccessToken()));
@@ -143,14 +172,33 @@ public class TestManager
 		session.setOAuthAccessToken(new AccessToken(user4.getAccessToken()));
 		String testComment4 = "This is a test comment posted by user 4";
 		session.commentPost(statusID, testComment4);
-		
 
 		data1.collectData(false, false, true, false);
 		data2.collectData(false, false, true, false);
 		data3.collectData(false, false, true, false);
 		data4.collectData(false, false, true, false);
 		
+		StreamObject status = data1.getStreamObjects().get(0);
+		ArrayList<Comment> comments = status.getComments();
 		
+		result.addResult("Post ID is correctly obtained", statusID.equals(status.getPostID()), true);
+		
+		String message = status.getJSONRepresentation().getString("message");
+		result.addResult("Status text correctly obtained", message.equals(statusText), true);
+		
+		result.addResult("First comment correct",
+				comments.get(0).getText().equals(testComment2) &&
+				comments.get(0).getFromID().equals(user2.getId()),
+				true);		
+		result.addResult("Second comment correct",
+				comments.get(1).getText().equals(testComment3) &&
+				comments.get(1).getFromID().equals(user3.getId()),
+				true);		
+		result.addResult("Third comment correct",
+				comments.get(2).getText().equals(testComment4) &&
+				comments.get(2).getFromID().equals(user4.getId()),
+				true);
+		resetSession();
 		
 		return result;
 	}
@@ -217,13 +265,15 @@ public class TestManager
 		data1.collectData(true, false, false, false);
 		data2.collectData(true, false, false, false);
 		data3.collectData(true, false, false, false);
+		
+		data2.saveJSONData();
 
 		// Check that Abby had a conversation with bob and cathy
 		ArrayList<Conversation> data1Con = data1.getConversations();
 		for (Conversation c : data1Con)
 		{
-			if (c.hasParticipant(user1.getId())
-					&& c.hasParticipant(user2.getId()))
+			if (hasParticipant(c, user1.getId())
+					&& hasParticipant(c, user2.getId()))
 			{
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
@@ -233,8 +283,8 @@ public class TestManager
 						messages.get(1).getMessage().equals(bobToAbby), 
 						true);
 			}
-			if (c.hasParticipant(user1.getId())
-					&& c.hasParticipant(user3.getId()))
+			if (hasParticipant(c, user1.getId())
+					&& hasParticipant(c, user3.getId()))
 			{
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
@@ -250,8 +300,8 @@ public class TestManager
 		ArrayList<Conversation> data2Con = data2.getConversations();
 		for (Conversation c : data2Con)
 		{
-			if (c.hasParticipant(user2.getId())
-					&& c.hasParticipant(user1.getId()))
+			if (hasParticipant(c, user2.getId())
+					&& hasParticipant(c, user1.getId()))
 			{
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
@@ -261,8 +311,8 @@ public class TestManager
 						messages.get(1).getMessage().equals(bobToAbby), 
 						true);
 			}
-			if (c.hasParticipant(user2.getId())
-					&& c.hasParticipant(user3.getId()))
+			if (hasParticipant(c, user2.getId())
+					&& hasParticipant(c, user3.getId()))
 			{
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
@@ -277,8 +327,8 @@ public class TestManager
 		ArrayList<Conversation> data3Con = data3.getConversations();
 		for (Conversation c : data3Con)
 		{
-			if (c.hasParticipant(user3.getId())
-					&& c.hasParticipant(user1.getId()))
+			if (hasParticipant(c, user3.getId())
+					&& hasParticipant(c, user1.getId()))
 			{
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
@@ -288,8 +338,8 @@ public class TestManager
 						messages.get(1).getMessage().equals(cathyToAbby), 
 						true);
 			}
-			if (c.hasParticipant(user2.getId())
-					&& c.hasParticipant(user3.getId()))
+			if (hasParticipant(c, user2.getId())
+					&& hasParticipant(c, user3.getId()))
 			{
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
@@ -300,8 +350,6 @@ public class TestManager
 						true);
 			}
 		}
-
-		scan.close();
 		return result;
 	}
 	
@@ -365,8 +413,8 @@ public class TestManager
 		ArrayList<Conversation> data1Con = data1.getConversations();
 		Conversation groupConvo1 = data1Con.get(0);
 		result.addResult("Abby's ID, convo has Bob and Cathy",
-				groupConvo1.hasParticipant(user2.getId()) && 
-				groupConvo1.hasParticipant(user3.getId()), true);
+				hasParticipant(groupConvo1, user2.getId()) && 
+				hasParticipant(groupConvo1, user3.getId()), true);
 		
 		result.addResult("Abby's ID, convo has all three messages",
 				groupConvo1.getMessages().get(0).getMessage().equals(message1) &&
@@ -377,8 +425,8 @@ public class TestManager
 		ArrayList<Conversation> data2Con = data1.getConversations();
 		Conversation groupConvo2 = data2Con.get(0);
 		result.addResult("Bob's ID, convo has Abby and Cathy",
-				groupConvo2.hasParticipant(user1.getId()) && 
-				groupConvo2.hasParticipant(user3.getId()), true);
+				hasParticipant(groupConvo2, user1.getId()) && 
+				hasParticipant(groupConvo2, user3.getId()), true);
 		result.addResult("Bob's ID, convo has all three messages",
 				groupConvo2.getMessages().get(0).getMessage().equals(message1) &&
 				groupConvo2.getMessages().get(1).getMessage().equals(message2) &&
@@ -388,15 +436,15 @@ public class TestManager
 
 		ArrayList<Conversation> data3Con = data1.getConversations();
 		Conversation groupConvo3 = data3Con.get(0);
-		result.addResult("Cathy's ID, convo has Abby and Cathy",
-				groupConvo3.hasParticipant(user1.getId()) && 
-				groupConvo3.hasParticipant(user2.getId()), true);
+		result.addResult("Cathy's ID, convo has Abby and Bob",
+				hasParticipant(groupConvo3, user1.getId()) && 
+				hasParticipant(groupConvo3, user2.getId()), true);
 		result.addResult("Cathy's ID, convo has all three messages",
 				groupConvo3.getMessages().get(0).getMessage().equals(message1) &&
 				groupConvo3.getMessages().get(1).getMessage().equals(message2) &&
 				groupConvo3.getMessages().get(2).getMessage().equals(message3), true);
 
-		scan.close();
+
 		return result;
 	}
 
@@ -428,5 +476,13 @@ public class TestManager
 			e.printStackTrace();
 		}
 		return testUsers.get(username);
+	}
+	
+	private boolean hasParticipant(Conversation c, String id)
+	{
+		for (User u : c.getParticipants())
+			if (u.getFacebookId().equals(id))
+				return true;
+		return false;
 	}
 }

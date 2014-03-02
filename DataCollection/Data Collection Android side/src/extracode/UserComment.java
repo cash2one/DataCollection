@@ -15,9 +15,6 @@ public class UserComment extends UserActivity
 	//The content of the post
 	private String content;
 	
-	//String denoting the owner of the post
-	private String owner;
-	
 	public UserComment(Element tbodyContent)
 	{		
 		/*

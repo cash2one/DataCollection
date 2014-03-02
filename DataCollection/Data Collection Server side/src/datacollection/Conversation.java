@@ -110,7 +110,7 @@ public class Conversation
 			
 			
 			for (int i = 0; i < recip.length(); i++)
-				participants[i] = new User("" + recip.getLong(i));
+				participants[i] = new User("" + recip.getLong(i),1);
 			
 			
 			if (conversationJSON.has("messages"))
@@ -124,6 +124,15 @@ public class Conversation
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public Conversation(String threadID, String updatedTime)
+	{
+		id = threadID;
+		
+		//The updated field time is in seconds, we need it in milliseconds
+		this.updatedTime = new GregorianCalendar();
+		this.updatedTime.setTimeInMillis(Long.parseLong(updatedTime) * 1000);
 	}
 	
 	/**
@@ -238,6 +247,14 @@ String fqlQuery = "SELECT message_id, thread_id, author_id, body, created_time, 
 		for (int i = 0; i < messageArray.length() && !newMessagesLoaded; i++)
 		{
 			JSONObject jsonMessage = messageArray.getJSONObject(i);
+			
+			ArrayList<User> toList=new ArrayList<User>();
+			for(int j=0;j<participants.length;j++){
+				if(!(jsonMessage.getLong("author_id")+"").equals(participants[j].getFacebookId()))
+					toList.add(participants[j]);
+			}
+			jsonMessage.put("to", toList);
+			
 			Message message = new Message(jsonMessage);
 			
 			if (restrictToOneMonthBack)
@@ -357,6 +374,9 @@ String fqlQuery = "SELECT message_id, thread_id, author_id, body, created_time, 
 	 */
 	public JSONObject getJSONRepresentation()
 	{
+		if (conversationJSON == null)
+			return null;
+		
 		JSONArray mess = new JSONArray();
 		for (Message m : messages)
 		{
@@ -391,14 +411,5 @@ String fqlQuery = "SELECT message_id, thread_id, author_id, body, created_time, 
 	public void setMessages(ArrayList<Message> messages)
 	{
 		this.messages = messages;
-	}
-
-	//Returns if a specified userID is present in the conversation
-	public boolean hasParticipant(String userID)
-	{
-		for (int i = 0; i < participants.length; i++)
-			if (participants[i].getId().equals(userID))
-				return true;
-		return false;
 	}
 }

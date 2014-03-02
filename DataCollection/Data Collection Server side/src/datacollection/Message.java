@@ -1,8 +1,10 @@
 package datacollection;
 
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 
+import facebook4j.internal.org.json.JSONArray;
 import facebook4j.internal.org.json.JSONException;
 import facebook4j.internal.org.json.JSONObject;
 
@@ -20,6 +22,11 @@ public class Message implements Comparable<Message>
 	 * The user sending this message.
 	 */
 	private User from;
+	
+	/**
+	 * The list of users receiving this message
+	 */
+	private ArrayList<User> to;
 	
 	/**
 	 * The time at which this message was sent.
@@ -54,8 +61,16 @@ public class Message implements Comparable<Message>
 			id = messageJSON.getString("message_id");
 			
 			//author_id is an int
-			from = new User("" + messageJSON.getLong("author_id"));
+			from = new User("" + messageJSON.getLong("author_id"),1);
 			
+			//I need to add to here.
+			to=new ArrayList<User>();
+			JSONArray toArray=messageJSON.getJSONArray("to");
+			for(int i=0;i<toArray.length();i++){
+				String fid=toArray.getJSONObject(i).getString("facebookId");
+				to.add(new User(fid,1));
+			}
+
 			message = messageJSON.getString("body");
 			
 			//created_time is in seconds, we need it in milliseconds
@@ -162,6 +177,6 @@ public class Message implements Comparable<Message>
 	 */
 	public void populateNames(HashMap<String, String> idNameMatches)
 	{
-		from.setName(idNameMatches.get(from.getId()));
+		from.setName(idNameMatches.get(from.getFacebookId()));
 	}
 }

@@ -1,5 +1,6 @@
 package datacollection;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import facebook4j.internal.org.json.JSONArray;
@@ -12,20 +13,21 @@ import facebook4j.internal.org.json.JSONObject;
  * @author Tom
  *
  */
-public class StreamObject
+public class StreamObject implements Comparable<StreamObject>
 {
 	/**
 	 * The JSON data for this stream object
 	 */
 	private JSONObject jsonObject;
 	
-	private JSONArray commentArray;
-	
 	/**
 	 * The Facebook ID of this object
 	 */
 	private String postID;
+	
+	private JSONArray commentArray;
 
+	private ArrayList<Comment> comments = new ArrayList<Comment>();
 	/**
 	 * This creates a StreamObject which holds a result from the stream FQL table.
 	 * @param object The FQL JSON data
@@ -43,6 +45,22 @@ public class StreamObject
 		}
 	}
 	
+	public void setCommentArray(JSONArray commentArray)
+	{
+		for (int i = 0; i < commentArray.length(); i++)
+		{
+			try
+			{
+				comments .add(new Comment(commentArray.getJSONObject(i)));
+			}
+			catch (JSONException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		
+		this.commentArray=commentArray;
+	}
 	
 	public String toString()
 	{
@@ -76,16 +94,12 @@ public class StreamObject
 	public JSONObject getJSONRepresentation()
 	{
 		try {
-			jsonObject.put("comments", commentArray);
+			jsonObject.put("Comments", commentArray);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return jsonObject;
-	}
-	
-	public void setCommentArray(JSONArray commentArray){
-		this.commentArray=commentArray;
 	}
 
 	/**
@@ -95,5 +109,17 @@ public class StreamObject
 	public String getPostID()
 	{
 		return postID;
+	}
+
+
+	@Override
+	public int compareTo(StreamObject o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	public ArrayList<Comment> getComments()
+	{
+		return comments;
 	}
 }

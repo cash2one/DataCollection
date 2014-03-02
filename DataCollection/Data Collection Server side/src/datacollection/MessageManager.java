@@ -337,7 +337,7 @@ public class MessageManager
 		{
 			for (User u : c.getParticipants())
 			{
-				u.setName(idNameMatches.get(u.getId()));
+				u.setName(idNameMatches.get(u.getFacebookId()));
 			}
 			
 			for (Message m : c.getMessages())
