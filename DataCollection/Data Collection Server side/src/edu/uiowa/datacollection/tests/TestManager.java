@@ -1,9 +1,11 @@
-package tests;
+package edu.uiowa.datacollection.tests;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
+
+import twitter4j.Twitter;
 
 import edu.uiowa.datacollection.facebook.Comment;
 import edu.uiowa.datacollection.facebook.Conversation;
@@ -21,27 +23,40 @@ import facebook4j.internal.org.json.JSONException;
 @SuppressWarnings("resource")
 public class TestManager
 {
-	private Facebook session;
+	private Facebook fSession;
+	private Twitter tSession;
 	private HashMap<String, TestUser> testUsers = new HashMap<String, TestUser>();
 
-	public TestManager(Facebook session)
+	private static final AccessToken APP_ACCESS_TOKEN = new AccessToken(
+			"442864129167674|m5Ss-_eSF53XoKVdkyT_nkjEhj8");
+	private static final String FACEBOOK_APP_ID = "442864129167674";
+	private static final String FACEBOOK_APP_SECRET = "f2140fbb0148c5db21db0d07b92e6ade";
+
+	private static final String TWITTER_CONSUMER_ID = "BaWtyknv1RwsU60jVccA";
+	private static final String TWITTER_CONSUMER_SECRET = "EDopj7ySkVstUTD294ODgUlmhctGi3PBSkW2OljhhPY";
+
+	public TestManager(Facebook fSession, Twitter tSession)
 	{
-		this.session = session;
-		resetSession();
+		this.fSession = fSession;
+		this.tSession = tSession;
+
+		tSession.setOAuthConsumer(TWITTER_CONSUMER_ID, TWITTER_CONSUMER_SECRET);
+		
+		resetFacebookSession();
 
 	}
-	
-	private void resetSession()
+
+	private void resetFacebookSession()
 	{
-		session.setOAuthAccessToken(new AccessToken(
-				"442864129167674|m5Ss-_eSF53XoKVdkyT_nkjEhj8"));
+		fSession.setOAuthAppId(FACEBOOK_APP_ID, FACEBOOK_APP_SECRET);
+		fSession.setOAuthAccessToken(APP_ACCESS_TOKEN);
 	}
 
-	
 	/**
 	 * This method prompts the user to make two wall posts and then put a
 	 * comment on each one, checking that wall post conversations and comment
 	 * conversations are collected.
+	 * 
 	 * @return
 	 * @throws FacebookException
 	 * @throws JSONException
@@ -50,7 +65,7 @@ public class TestManager
 	{
 		TestResult result = new TestResult("Wall Post Test", System.out);
 		result.begin();
-		
+
 		// Create test users and data managers
 		System.out.println("Creating test users");
 		Scanner scan = new Scanner(System.in);
@@ -63,34 +78,38 @@ public class TestManager
 
 		// make them friends
 		System.out.println("Creating friendships");
-		session.makeFriendTestUser(user1, user2);
-		
+		fSession.makeFriendTestUser(user1, user2);
+
 		openLink(user1.getLoginUrl());
 		String abbyToBob = "Hi Bob, this is Abby.";
-		System.out.println("Please post the following message on Bob Doe's wall");
+		System.out
+				.println("Please post the following message on Bob Doe's wall");
 		System.out.println(abbyToBob);
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
 		System.out.println();
-		
+
 		openLink(user2.getLoginUrl());
 		String bobToAbby = "Hi Abby, this is Bob.";
 		String comment1 = "Hi Abby, I'm commenting on your post.";
-		System.out.println("Please post the following message on Abby Doe's wall");
+		System.out
+				.println("Please post the following message on Abby Doe's wall");
 		System.out.println(bobToAbby);
-		System.out.println("Please post the following comment on the wall post from Abby");
+		System.out
+				.println("Please post the following comment on the wall post from Abby");
 		System.out.println(comment1);
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
 		System.out.println();
-		
+
 		String comment2 = "Hi Bob, I'm commenting on your post.";
-		System.out.println("Please post the following comment on the wall post from Bob");
+		System.out
+				.println("Please post the following comment on the wall post from Bob");
 		System.out.println(comment2);
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
 		System.out.println();
-		
+
 		data1.collectData(false, false, true, false);
 		data2.collectData(false, false, true, false);
 
@@ -98,24 +117,28 @@ public class TestManager
 		for (StreamObject so : data1.getStreamObjects())
 			if (so.getComments().size() > 0)
 				postFromBob = so;
-		result.addResult("Abby collected Bob's post to her wall and the comment", 
-						postFromBob != null && 
-						postFromBob.getComments().get(0).getText().equals(comment2) &&
-						postFromBob.getJSONRepresentation().getString("message").equals(bobToAbby), true);
-		
-		
+		result.addResult(
+				"Abby collected Bob's post to her wall and the comment",
+				postFromBob != null
+						&& postFromBob.getComments().get(0).getText()
+								.equals(comment2)
+						&& postFromBob.getJSONRepresentation()
+								.getString("message").equals(bobToAbby), true);
+
 		StreamObject postFromAbby = null;
 		for (StreamObject so : data2.getStreamObjects())
 			if (so.getComments().size() > 0)
 				postFromAbby = so;
-		result.addResult("Bob collected Abby's post to her wall and the comment", 
-						postFromAbby != null && 
-						postFromAbby.getComments().get(0).getText().equals(comment1) &&
-						postFromAbby.getJSONRepresentation().getString("message").equals(abbyToBob), true);
+		result.addResult(
+				"Bob collected Abby's post to her wall and the comment",
+				postFromAbby != null
+						&& postFromAbby.getComments().get(0).getText()
+								.equals(comment1)
+						&& postFromAbby.getJSONRepresentation()
+								.getString("message").equals(abbyToBob), true);
 
 		System.out.println(data1.getJSONData().toString(1));
 		System.out.println(data2.getJSONData().toString(1));
-		
 
 		return result;
 	}
@@ -123,7 +146,8 @@ public class TestManager
 	/**
 	 * This method has one user post a Facebook status and then has three
 	 * friends post comments on that status, checking status collection and
-	 * comment conversation collection. 
+	 * comment conversation collection.
+	 * 
 	 * @return
 	 * @throws FacebookException
 	 * @throws JSONException
@@ -132,7 +156,7 @@ public class TestManager
 	{
 		TestResult result = new TestResult("Status Test", System.out);
 		result.begin();
-		
+
 		System.out.println("Creating test users");
 		// Create test users and data managers
 		TestUser user1 = createTestUser("Abby Doe");
@@ -148,70 +172,70 @@ public class TestManager
 
 		System.out.println("Creating friendships");
 		// make them friends
-		session.makeFriendTestUser(user1, user2);
-		session.makeFriendTestUser(user1, user3);
-		session.makeFriendTestUser(user1, user4);
+		fSession.makeFriendTestUser(user1, user2);
+		fSession.makeFriendTestUser(user1, user3);
+		fSession.makeFriendTestUser(user1, user4);
 
-		session.makeFriendTestUser(user2, user3);
-		session.makeFriendTestUser(user2, user4);
+		fSession.makeFriendTestUser(user2, user3);
+		fSession.makeFriendTestUser(user2, user4);
 
-		session.makeFriendTestUser(user3, user4);
+		fSession.makeFriendTestUser(user3, user4);
 
 		// User 1 will post a status
 		System.out.println("User 1 is posting a status");
 		String statusText = "This is a test status posted by user 1";
-		String statusID = session.postStatusMessage(user1.getId(), statusText);
+		String statusID = fSession.postStatusMessage(user1.getId(), statusText);
 
 		// // Have the other users comment
-		session.setOAuthAccessToken(new AccessToken(user2.getAccessToken()));
+		fSession.setOAuthAccessToken(new AccessToken(user2.getAccessToken()));
 		String testComment2 = "This is a test comment posted by user 2";
-		session.commentPost(statusID, testComment2);
+		fSession.commentPost(statusID, testComment2);
 
-		session.setOAuthAccessToken(new AccessToken(user3.getAccessToken()));
+		fSession.setOAuthAccessToken(new AccessToken(user3.getAccessToken()));
 		String testComment3 = "This is a test comment posted by user 3";
-		session.commentPost(statusID, testComment3);
+		fSession.commentPost(statusID, testComment3);
 
-		session.setOAuthAccessToken(new AccessToken(user4.getAccessToken()));
+		fSession.setOAuthAccessToken(new AccessToken(user4.getAccessToken()));
 		String testComment4 = "This is a test comment posted by user 4";
-		session.commentPost(statusID, testComment4);
+		fSession.commentPost(statusID, testComment4);
 
 		data1.collectData(false, false, true, false);
 		data2.collectData(false, false, true, false);
 		data3.collectData(false, false, true, false);
 		data4.collectData(false, false, true, false);
-		
+
 		StreamObject status = data1.getStreamObjects().get(0);
 		ArrayList<Comment> comments = status.getComments();
-		
-		result.addResult("Post ID is correctly obtained", statusID.equals(status.getPostID()), true);
-		
+
+		result.addResult("Post ID is correctly obtained",
+				statusID.equals(status.getPostID()), true);
+
 		String message = status.getJSONRepresentation().getString("message");
-		result.addResult("Status text correctly obtained", message.equals(statusText), true);
-		
-		result.addResult("First comment correct",
-				comments.get(0).getText().equals(testComment2) &&
-				comments.get(0).getFromID().equals(user2.getId()),
-				true);		
-		result.addResult("Second comment correct",
-				comments.get(1).getText().equals(testComment3) &&
-				comments.get(1).getFromID().equals(user3.getId()),
-				true);		
-		result.addResult("Third comment correct",
-				comments.get(2).getText().equals(testComment4) &&
-				comments.get(2).getFromID().equals(user4.getId()),
-				true);
+		result.addResult("Status text correctly obtained",
+				message.equals(statusText), true);
+
+		result.addResult("First comment correct", comments.get(0).getText()
+				.equals(testComment2)
+				&& comments.get(0).getFromID().equals(user2.getId()), true);
+		result.addResult("Second comment correct", comments.get(1).getText()
+				.equals(testComment3)
+				&& comments.get(1).getFromID().equals(user3.getId()), true);
+		result.addResult("Third comment correct", comments.get(2).getText()
+				.equals(testComment4)
+				&& comments.get(2).getFromID().equals(user4.getId()), true);
 
 		System.out.println(data1.getJSONData().toString(1));
 		System.out.println(data2.getJSONData().toString(1));
-		
-		resetSession();
-		
+
+		resetFacebookSession();
+
 		return result;
 	}
 
 	/**
-	 * This method has three friends create 3 conversations A-B, B-C, A-C
-	 * and then checks that all messages are collected.
+	 * This method has three friends create 3 conversations A-B, B-C, A-C and
+	 * then checks that all messages are collected.
+	 * 
 	 * @return
 	 * @throws FacebookException
 	 */
@@ -234,16 +258,18 @@ public class TestManager
 		DataManager data3 = new DataManager(user3.getAccessToken());
 
 		System.out.println("Making the users friends");
-		session.makeFriendTestUser(user1, user2);
-		session.makeFriendTestUser(user1, user3);
-		session.makeFriendTestUser(user2, user3);
+		fSession.makeFriendTestUser(user1, user2);
+		fSession.makeFriendTestUser(user1, user3);
+		fSession.makeFriendTestUser(user2, user3);
 
 		openLink(user1.getLoginUrl());
 		String abbyToBob = "Hi Bob, this is Abby.";
 		String abbyToCathy = "Hi Cathy, this is Abby.";
-		System.out.println("Please send the following message to your friend Bob Doe");
+		System.out
+				.println("Please send the following message to your friend Bob Doe");
 		System.out.println(abbyToBob);
-		System.out.println("Please send the following message to your friend Cathy Doe");
+		System.out
+				.println("Please send the following message to your friend Cathy Doe");
 		System.out.println(abbyToCathy);
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
@@ -251,9 +277,11 @@ public class TestManager
 		openLink(user2.getLoginUrl());
 		String bobToAbby = "Hi Abby, this is Bob.";
 		String bobToCathy = "Hi Cathy, this is Bob.";
-		System.out.println("Please send the following message to your friend Abby Doe");
+		System.out
+				.println("Please send the following message to your friend Abby Doe");
 		System.out.println(bobToAbby);
-		System.out.println("Please send the following message to your friend Cathy Doe");
+		System.out
+				.println("Please send the following message to your friend Cathy Doe");
 		System.out.println(bobToCathy);
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
@@ -261,9 +289,11 @@ public class TestManager
 		openLink(user3.getLoginUrl());
 		String cathyToAbby = "Hi Abby, this is Cathy.";
 		String cathyToBob = "Hi Bob, this is Cathy.";
-		System.out.println("Please send the following message to your friend Abby Doe");
+		System.out
+				.println("Please send the following message to your friend Abby Doe");
 		System.out.println(cathyToAbby);
-		System.out.println("Please send the following message to your friend Bob Doe");
+		System.out
+				.println("Please send the following message to your friend Bob Doe");
 		System.out.println(cathyToBob);
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
@@ -271,7 +301,6 @@ public class TestManager
 		data1.collectData(true, false, false, false);
 		data2.collectData(true, false, false, false);
 		data3.collectData(true, false, false, false);
-		
 
 		try
 		{
@@ -282,7 +311,7 @@ public class TestManager
 		{
 			e.printStackTrace();
 		}
-		
+
 		data2.saveJSONData();
 
 		// Check that Abby had a conversation with bob and cathy
@@ -295,10 +324,11 @@ public class TestManager
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
 						"Abby and Bob conversation",
-						messages.size() == 2 && 
-						messages.get(0).getMessage().equals(abbyToBob) && 
-						messages.get(1).getMessage().equals(bobToAbby), 
-						true);
+						messages.size() == 2
+								&& messages.get(0).getMessage()
+										.equals(abbyToBob)
+								&& messages.get(1).getMessage()
+										.equals(bobToAbby), true);
 			}
 			if (hasParticipant(c, user1.getId())
 					&& hasParticipant(c, user3.getId()))
@@ -306,14 +336,14 @@ public class TestManager
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
 						"Abby and Cathy conversation",
-						messages.size() == 2 && 
-						messages.get(0).getMessage().equals(abbyToCathy) && 
-						messages.get(1).getMessage().equals(cathyToAbby), 
-						true);
+						messages.size() == 2
+								&& messages.get(0).getMessage()
+										.equals(abbyToCathy)
+								&& messages.get(1).getMessage()
+										.equals(cathyToAbby), true);
 			}
 		}
-		
-		
+
 		ArrayList<Conversation> data2Con = data2.getConversations();
 		for (Conversation c : data2Con)
 		{
@@ -323,10 +353,11 @@ public class TestManager
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
 						"Bob and Abby conversation",
-						messages.size() == 2 && 
-						messages.get(0).getMessage().equals(abbyToBob) && 
-						messages.get(1).getMessage().equals(bobToAbby), 
-						true);
+						messages.size() == 2
+								&& messages.get(0).getMessage()
+										.equals(abbyToBob)
+								&& messages.get(1).getMessage()
+										.equals(bobToAbby), true);
 			}
 			if (hasParticipant(c, user2.getId())
 					&& hasParticipant(c, user3.getId()))
@@ -334,13 +365,14 @@ public class TestManager
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
 						"Bob and Cathy conversation",
-						messages.size() == 2 && 
-						messages.get(0).getMessage().equals(bobToCathy) && 
-						messages.get(1).getMessage().equals(cathyToBob), 
-						true);
+						messages.size() == 2
+								&& messages.get(0).getMessage()
+										.equals(bobToCathy)
+								&& messages.get(1).getMessage()
+										.equals(cathyToBob), true);
 			}
 		}
-		
+
 		ArrayList<Conversation> data3Con = data3.getConversations();
 		for (Conversation c : data3Con)
 		{
@@ -350,10 +382,11 @@ public class TestManager
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
 						"Cathy and Abby conversation",
-						messages.size() == 2 && 
-						messages.get(0).getMessage().equals(abbyToCathy) && 
-						messages.get(1).getMessage().equals(cathyToAbby), 
-						true);
+						messages.size() == 2
+								&& messages.get(0).getMessage()
+										.equals(abbyToCathy)
+								&& messages.get(1).getMessage()
+										.equals(cathyToAbby), true);
 			}
 			if (hasParticipant(c, user2.getId())
 					&& hasParticipant(c, user3.getId()))
@@ -361,27 +394,29 @@ public class TestManager
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
 						"Cathy and Bob conversation",
-						messages.size() == 2 && 
-						messages.get(0).getMessage().equals(bobToCathy) && 
-						messages.get(1).getMessage().equals(cathyToBob), 
-						true);
+						messages.size() == 2
+								&& messages.get(0).getMessage()
+										.equals(bobToCathy)
+								&& messages.get(1).getMessage()
+										.equals(cathyToBob), true);
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * This function tests collecting group Facebook messages by creating one
-	 * and having three friends sending messages to each other. We then check
-	 * to make sure that the messages are collected by each person's data
-	 * manager.
+	 * and having three friends sending messages to each other. We then check to
+	 * make sure that the messages are collected by each person's data manager.
+	 * 
 	 * @return
 	 * @throws FacebookException
 	 */
 	public TestResult imGroupConversationTest() throws FacebookException
 	{
-		TestResult result = new TestResult("IM Group Conversation Test", System.out);
+		TestResult result = new TestResult("IM Group Conversation Test",
+				System.out);
 		result.begin();
 		Scanner scan = new Scanner(System.in);
 
@@ -398,9 +433,9 @@ public class TestManager
 		DataManager data3 = new DataManager(user3.getAccessToken());
 
 		System.out.println("Making the users friends");
-		session.makeFriendTestUser(user1, user2);
-		session.makeFriendTestUser(user1, user3);
-		session.makeFriendTestUser(user2, user3);
+		fSession.makeFriendTestUser(user1, user2);
+		fSession.makeFriendTestUser(user1, user3);
+		fSession.makeFriendTestUser(user2, user3);
 
 		openLink(user1.getLoginUrl());
 		String message1 = "Hi guys, this is Abby.";
@@ -411,14 +446,16 @@ public class TestManager
 
 		openLink(user2.getLoginUrl());
 		String message2 = "Hi guys, this is Bob.";
-		System.out.println("Please send this message in the group conversation");
+		System.out
+				.println("Please send this message in the group conversation");
 		System.out.println(message2);
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
 
 		openLink(user3.getLoginUrl());
 		String message3 = "Hi guys, this is Cathy.";
-		System.out.println("Please send this message in the group conversation");
+		System.out
+				.println("Please send this message in the group conversation");
 		System.out.println(message3);
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
@@ -430,37 +467,43 @@ public class TestManager
 		// Check that Abby had a conversation with bob and cathy
 		ArrayList<Conversation> data1Con = data1.getConversations();
 		Conversation groupConvo1 = data1Con.get(0);
-		result.addResult("Abby's ID, convo has Bob and Cathy",
-				hasParticipant(groupConvo1, user2.getId()) && 
-				hasParticipant(groupConvo1, user3.getId()), true);
-		
+		result.addResult(
+				"Abby's ID, convo has Bob and Cathy",
+				hasParticipant(groupConvo1, user2.getId())
+						&& hasParticipant(groupConvo1, user3.getId()), true);
+
 		result.addResult("Abby's ID, convo has all three messages",
-				groupConvo1.getMessages().get(0).getMessage().equals(message1) &&
-				groupConvo1.getMessages().get(1).getMessage().equals(message2) &&
-				groupConvo1.getMessages().get(2).getMessage().equals(message3), true);
-		
+				groupConvo1.getMessages().get(0).getMessage().equals(message1)
+						&& groupConvo1.getMessages().get(1).getMessage()
+								.equals(message2)
+						&& groupConvo1.getMessages().get(2).getMessage()
+								.equals(message3), true);
 
 		ArrayList<Conversation> data2Con = data1.getConversations();
 		Conversation groupConvo2 = data2Con.get(0);
-		result.addResult("Bob's ID, convo has Abby and Cathy",
-				hasParticipant(groupConvo2, user1.getId()) && 
-				hasParticipant(groupConvo2, user3.getId()), true);
+		result.addResult(
+				"Bob's ID, convo has Abby and Cathy",
+				hasParticipant(groupConvo2, user1.getId())
+						&& hasParticipant(groupConvo2, user3.getId()), true);
 		result.addResult("Bob's ID, convo has all three messages",
-				groupConvo2.getMessages().get(0).getMessage().equals(message1) &&
-				groupConvo2.getMessages().get(1).getMessage().equals(message2) &&
-				groupConvo2.getMessages().get(2).getMessage().equals(message3), true);
-
-		
+				groupConvo2.getMessages().get(0).getMessage().equals(message1)
+						&& groupConvo2.getMessages().get(1).getMessage()
+								.equals(message2)
+						&& groupConvo2.getMessages().get(2).getMessage()
+								.equals(message3), true);
 
 		ArrayList<Conversation> data3Con = data1.getConversations();
 		Conversation groupConvo3 = data3Con.get(0);
-		result.addResult("Cathy's ID, convo has Abby and Bob",
-				hasParticipant(groupConvo3, user1.getId()) && 
-				hasParticipant(groupConvo3, user2.getId()), true);
+		result.addResult(
+				"Cathy's ID, convo has Abby and Bob",
+				hasParticipant(groupConvo3, user1.getId())
+						&& hasParticipant(groupConvo3, user2.getId()), true);
 		result.addResult("Cathy's ID, convo has all three messages",
-				groupConvo3.getMessages().get(0).getMessage().equals(message1) &&
-				groupConvo3.getMessages().get(1).getMessage().equals(message2) &&
-				groupConvo3.getMessages().get(2).getMessage().equals(message3), true);
+				groupConvo3.getMessages().get(0).getMessage().equals(message1)
+						&& groupConvo3.getMessages().get(1).getMessage()
+								.equals(message2)
+						&& groupConvo3.getMessages().get(2).getMessage()
+								.equals(message3), true);
 
 		try
 		{
@@ -475,6 +518,13 @@ public class TestManager
 		return result;
 	}
 
+	/**
+	 * This function opens the given url in the user's default browser. If it
+	 * cannot, it prints the link to open.
+	 * 
+	 * @param link
+	 *            The link to open.
+	 */
 	private void openLink(String link)
 	{
 		try
@@ -488,11 +538,18 @@ public class TestManager
 		}
 	}
 
+	/**
+	 * Creates a facebook TestUser with a given username
+	 * 
+	 * @param username
+	 *            the new TestUser's name
+	 * @return
+	 */
 	private TestUser createTestUser(String username)
 	{
 		try
 		{
-			TestUser tu = session.createTestUser("442864129167674", // App ID
+			TestUser tu = fSession.createTestUser("442864129167674", // App ID
 					username, // Name of test User
 					"en_US", // Locale
 					"read_mailbox,read_stream,publish_stream");
@@ -504,7 +561,17 @@ public class TestManager
 		}
 		return testUsers.get(username);
 	}
-	
+
+	/**
+	 * Helper function to determine if a given facebook conversation has a given
+	 * user id.
+	 * 
+	 * @param c
+	 *            Facebook IM conversation
+	 * @param id
+	 *            Facebook User id
+	 * @return If the user corresponding with id participated in Conversation c
+	 */
 	private boolean hasParticipant(Conversation c, String id)
 	{
 		for (User u : c.getParticipants())
