@@ -3,9 +3,13 @@ package edu.uiowa.datacollection.tests;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
+import twitter4j.DirectMessage;
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
 import edu.uiowa.datacollection.facebook.Comment;
 import edu.uiowa.datacollection.facebook.Conversation;
 import edu.uiowa.datacollection.facebook.DataManager;
@@ -14,6 +18,7 @@ import edu.uiowa.datacollection.facebook.StreamObject;
 import edu.uiowa.datacollection.facebook.User;
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
+import facebook4j.FacebookFactory;
 import facebook4j.TestUser;
 import facebook4j.auth.AccessToken;
 import facebook4j.internal.org.json.JSONException;
@@ -32,27 +37,103 @@ public class TestManager
 
 	private static final String TWITTER_CONSUMER_ID = "BaWtyknv1RwsU60jVccA";
 	private static final String TWITTER_CONSUMER_SECRET = "EDopj7ySkVstUTD294ODgUlmhctGi3PBSkW2OljhhPY";
-
-	public TestManager(Facebook fSession, Twitter tSession)
+	
+	private static final String TEST_USER_1_TOKEN = "2372806093-4fojaLeleu5rSTkG4RroR3Q3Oc4XpGCnG7TcEvr";
+	private static final String TEST_USER_1_SECRET = "vsq98jacFislGChkRLDlxqDHWwjsN0MckyxMWowCZS8vz";
+	private static final long TEST_USER_1_ID = 2372806093l;
+	private static final String TEST_USER_1_SCREEN_NAME = "AbbyDoeTest1";
+	
+	private static final String TEST_USER_2_TOKEN = "2372805192-Tv2hkVFU2Z7XDOKiOeXCwJLaFOznmAWX9u7SDb7";
+	private static final String TEST_USER_2_SECRET = "HJoFEcFHe2yDvmYMJvZL6jwfBQiXlqjjKz40aUv59y9FO";
+	private static final long TEST_USER_2_ID = 2372805192l;
+	private static final String TEST_USER_2_SCREEN_NAME = "BobDoeTest2";
+	
+	private static final String TEST_USER_3_TOKEN = "2372821087-9LA7Pbtvn7EbKCXIw3SrPvZyCJJUThRfYJJxV0i";
+	private static final String TEST_USER_3_SECRET = "iocZrOEXwVRNCR1nk33LJY5iHBGlDT5hod0ghhhQd6Vij";
+	private static final long TEST_USER_3_ID = 2372821087l;
+	private static final String TEST_USER_3_SCREEN_NAME = "CathyDoeTest3";
+	
+			
+	public TestManager()
 	{
-		this.fSession = fSession;
-		this.tSession = tSession;
-		
-		tSession.setOAuthConsumer(TWITTER_CONSUMER_ID, TWITTER_CONSUMER_SECRET);
+		this.fSession = new FacebookFactory().getInstance();
+		this.tSession = openTwitterSession();
 		
 		resetFacebookSession();
+		
+		
 	}
 	
-	
-	
-	
-
-	private void resetFacebookSession()
+	public TestResult twitterDirectMessageTest() throws TwitterException
 	{
-		fSession.setOAuthAppId(FACEBOOK_APP_ID, FACEBOOK_APP_SECRET);
-		fSession.setOAuthAccessToken(APP_ACCESS_TOKEN);
+		TestResult result = new TestResult("Twitter Direct Message Test", System.out);
+
+		twitter4j.auth.AccessToken user1 = new twitter4j.auth.AccessToken(TEST_USER_1_TOKEN, TEST_USER_1_SECRET, TEST_USER_1_ID);
+		twitter4j.auth.AccessToken user2 = new twitter4j.auth.AccessToken(TEST_USER_2_TOKEN, TEST_USER_2_SECRET, TEST_USER_2_ID);
+		
+		tSession.setOAuthAccessToken(user1);
+		
+		
+		String message1 = "Hi Bob, this is Abby.";
+		String message2 = "Hi Abby, this is Bob.";
+		String message3 = "This is an enthralling conversation";
+		String message4 = "It certainly is";
+		
+		sendDirectMessage(user1, TEST_USER_2_ID, message1);
+		sendDirectMessage(user2, TEST_USER_1_ID, message2);
+		sendDirectMessage(user1, TEST_USER_2_ID, message3);
+		sendDirectMessage(user2, TEST_USER_1_ID, message4);
+		
+
+		System.out.println("To see the messages sent, login as Abby");
+		System.out.println("Username: AbbyDoeTestUser1");
+		System.out.println("Password: 1qaz1qaz");
+		openLink("http://twitter.com");
+		
+		Scanner scan = new Scanner(System.in);
+		scan.next();
+		
+		tSession.setOAuthAccessToken(user1);
+		List<DirectMessage> message = tSession.getDirectMessages();
+		message.addAll(tSession.getSentDirectMessages());
+		for (DirectMessage dm : message)
+		{
+			System.out.println(dm.getText());
+			tSession.destroyDirectMessage(dm.getId());
+		}
+		scan.next();
+		
+		
+		return result;
+	}
+	
+	/**
+	 * This function sends a direct message from user1 using their accessToken
+	 * to userID
+	 * @param user The user sending the message
+	 * @param userID The recipient of the message
+	 * @param message The message to send
+	 * @throws TwitterException
+	 */
+	private void sendDirectMessage(twitter4j.auth.AccessToken user,
+			long userID, String message) throws TwitterException
+	{
+		tSession.setOAuthAccessToken(user);
+		tSession.sendDirectMessage(userID, message);
 	}
 
+	public Twitter openTwitterSession()
+	{
+		Twitter result = TwitterFactory.getSingleton();
+		result.setOAuthConsumer(TWITTER_CONSUMER_ID, TWITTER_CONSUMER_SECRET);
+		
+		return result;
+	}
+	
+	
+	
+
+	
 	/**
 	 * This method prompts the user to make two wall posts and then put a
 	 * comment on each one, checking that wall post conversations and comment
@@ -62,7 +143,7 @@ public class TestManager
 	 * @throws FacebookException
 	 * @throws JSONException
 	 */
-	public TestResult wallPostTest() throws FacebookException, JSONException
+	public TestResult facebookWallPostTest() throws FacebookException, JSONException
 	{
 		TestResult result = new TestResult("Wall Post Test", System.out);
 		result.begin();
@@ -140,10 +221,13 @@ public class TestManager
 
 		System.out.println(data1.getJSONData().toString(1));
 		System.out.println(data2.getJSONData().toString(1));
-
+		
+		clearTestUsers();
+		
 		return result;
 	}
 
+	
 	/**
 	 * This method has one user post a Facebook status and then has three
 	 * friends post comments on that status, checking status collection and
@@ -153,7 +237,7 @@ public class TestManager
 	 * @throws FacebookException
 	 * @throws JSONException
 	 */
-	public TestResult statusTest() throws FacebookException, JSONException
+	public TestResult facebookStatusTest() throws FacebookException, JSONException
 	{
 		TestResult result = new TestResult("Status Test", System.out);
 		result.begin();
@@ -229,10 +313,12 @@ public class TestManager
 		System.out.println(data2.getJSONData().toString(1));
 
 		resetFacebookSession();
+		clearTestUsers();
 
 		return result;
 	}
 
+	
 	/**
 	 * This method has three friends create 3 conversations A-B, B-C, A-C and
 	 * then checks that all messages are collected.
@@ -240,7 +326,7 @@ public class TestManager
 	 * @return
 	 * @throws FacebookException
 	 */
-	public TestResult imConversationTest() throws FacebookException
+	public TestResult facebokIMConversationTest() throws FacebookException
 	{
 		TestResult result = new TestResult("IM Conversation Test", System.out);
 		result.begin();
@@ -402,10 +488,14 @@ public class TestManager
 										.equals(cathyToBob), true);
 			}
 		}
+		
+
+		clearTestUsers();
 
 		return result;
 	}
 
+	
 	/**
 	 * This function tests collecting group Facebook messages by creating one
 	 * and having three friends sending messages to each other. We then check to
@@ -414,7 +504,7 @@ public class TestManager
 	 * @return
 	 * @throws FacebookException
 	 */
-	public TestResult imGroupConversationTest() throws FacebookException
+	public TestResult facebookIMGroupConversationTest() throws FacebookException
 	{
 		TestResult result = new TestResult("IM Group Conversation Test",
 				System.out);
@@ -515,10 +605,13 @@ public class TestManager
 		{
 			e.printStackTrace();
 		}
+		
+		clearTestUsers();
 
 		return result;
 	}
 
+	
 	/**
 	 * This function opens the given url in the user's default browser. If it
 	 * cannot, it prints the link to open.
@@ -539,6 +632,7 @@ public class TestManager
 		}
 	}
 
+	
 	/**
 	 * Creates a facebook TestUser with a given username
 	 * 
@@ -562,6 +656,22 @@ public class TestManager
 		}
 		return testUsers.get(username);
 	}
+	
+	private void clearTestUsers()
+	{
+		List<TestUser> users;
+		try
+		{
+			users = fSession.getTestUsers("442864129167674");
+			for (TestUser tu : users)
+				fSession.deleteTestUser(tu.getId());
+		}
+		catch (FacebookException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 
 	/**
 	 * Helper function to determine if a given facebook conversation has a given
@@ -580,4 +690,15 @@ public class TestManager
 				return true;
 		return false;
 	}
+
+	/**
+	 * This function resets our facebook session from one with authenticated
+	 * user to one with an authenticated app
+	 */
+	private void resetFacebookSession()
+	{
+		fSession.setOAuthAppId(FACEBOOK_APP_ID, FACEBOOK_APP_SECRET);
+		fSession.setOAuthAccessToken(APP_ACCESS_TOKEN);
+	}
+
 }

@@ -1,44 +1,31 @@
 package edu.uiowa.datacollection.tests;
 
-import java.util.List;
-
-import facebook4j.Facebook;
+import twitter4j.TwitterException;
 import facebook4j.FacebookException;
-import facebook4j.FacebookFactory;
-import facebook4j.TestUser;
 import facebook4j.internal.org.json.JSONException;
 
 public class Main
 {
 	public static void main(String[] args) throws JSONException
 	{
-		Facebook session = new FacebookFactory().getInstance();
-		
-
-		TestManager testManager = new TestManager(session, null);
+		TestManager testManager = new TestManager();
 		try
 		{
-//			System.out.println(testManager.imConversationTest());
-			List<TestUser> users = session.getTestUsers("442864129167674");
-			for (TestUser tu : users)
-				session.deleteTestUser(tu.getId());
+			System.out.println(testManager.twitterDirectMessageTest());
 			
-//			System.out.println(testManager.imGroupConversationTest());
-			users = session.getTestUsers("442864129167674");
-			for (TestUser tu : users)
-				session.deleteTestUser(tu.getId());
+			System.out.println(testManager.facebokIMConversationTest());
 			
-//			System.out.println(testManager.statusTest());
-			users = session.getTestUsers("442864129167674");
-			for (TestUser tu : users)
-				session.deleteTestUser(tu.getId());
+			System.out.println(testManager.facebookIMGroupConversationTest());
 			
-			System.out.println(testManager.wallPostTest());
-			users = session.getTestUsers("442864129167674");
-			for (TestUser tu : users)
-				session.deleteTestUser(tu.getId());
+			System.out.println(testManager.facebookStatusTest());
+			
+			System.out.println(testManager.facebookWallPostTest());
 		}
 		catch (FacebookException e)
+		{
+			e.printStackTrace();
+		}
+		catch (TwitterException e)
 		{
 			e.printStackTrace();
 		}
