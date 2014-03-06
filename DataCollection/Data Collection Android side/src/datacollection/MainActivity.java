@@ -226,7 +226,7 @@ public class MainActivity extends Activity
 			};
 			JSONObject resp = postData.execute(obj).get();
 			System.out.println(resp);
-			Toast.makeText(this, "Thank you you!", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Thank you!", Toast.LENGTH_LONG).show();
 		}
 		catch (JSONException e)
 		{
@@ -260,7 +260,7 @@ public class MainActivity extends Activity
 		// Call this method if there is an authentication problem, it was only
 		// needed the first time getting the app authenticated with facebook,
 		// and remains for debugging purposes.
-		// getKeyIfKeyWrong();
+		 getKeyIfKeyWrong();
 
 		// start Facebook Login
 		Session.openActiveSession(this, true, new Session.StatusCallback()
@@ -294,7 +294,6 @@ public class MainActivity extends Activity
 	 * This method fixes some app authentication errors when run for the first
 	 * time before the app is published.
 	 */
-	@SuppressWarnings("unused")
 	private void getKeyIfKeyWrong()
 	{
 		PackageInfo info = null;

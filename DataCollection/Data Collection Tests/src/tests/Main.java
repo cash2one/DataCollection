@@ -19,17 +19,17 @@ public class Main
 		TestManager testManager = new TestManager(session);
 		try
 		{
-			System.out.println(testManager.imConversationTest());
+//			System.out.println(testManager.imConversationTest());
 			List<TestUser> users = session.getTestUsers("442864129167674");
 			for (TestUser tu : users)
 				session.deleteTestUser(tu.getId());
 			
-			System.out.println(testManager.imGroupConversationTest());
+//			System.out.println(testManager.imGroupConversationTest());
 			users = session.getTestUsers("442864129167674");
 			for (TestUser tu : users)
 				session.deleteTestUser(tu.getId());
 			
-			System.out.println(testManager.statusTest());
+//			System.out.println(testManager.statusTest());
 			users = session.getTestUsers("442864129167674");
 			for (TestUser tu : users)
 				session.deleteTestUser(tu.getId());

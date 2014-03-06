@@ -109,7 +109,7 @@ public class DataManager
 	{
 		if (loadOldData)
 			loadOldJSONData();
-
+		
 		// Initialize messageManager with loaded conversations if it loaded,
 		// otherwise conversations is ignored by messageManager
 		messageManager = new MessageManager(conversations);

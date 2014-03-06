@@ -32,8 +32,8 @@ public class Main
 			DataManager manager = new DataManager(accessToken);
 			manager.loadOldConversationTimes(lastConvoTimes);
 			
-			manager.collectData(false, // Collect message 
-						  		false, //Limit to one month
+			manager.collectData(true, // Collect message 
+						  		true, //Limit to one month
 						  		true, //Collect stream
 						  		false); //Load old data
 			

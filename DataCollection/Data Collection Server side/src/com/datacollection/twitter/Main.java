@@ -16,7 +16,7 @@ public class Main {
 		//String userName="TengyuWang";
 		//dm.loadAccessToken();
 		//dm.loadAccessTokenFromDatabase(userName);
-		dm.loadHardCodedToken(1);
+//		dm.loadHardCodedToken(1);
 		//dm.getUserAuthorization();
 		/*dm.collectMentionsTimeLine(Long.valueOf(1));
 		dm.collectUserTimeLine(Long.valueOf(1));
@@ -33,7 +33,7 @@ public class Main {
 			List<Conversation> list=listconversationList.get(i);
 			for(int j=0;j<list.size();j++){
 				Conversation c=list.get(j);
-				System.out.println(c.getJSONRepresentation().toString());
+				System.out.println(c.getJSONRepresentation().toString(1));
 			}
 			System.out.println();
 			System.out.println("*************************************************************************************  ");

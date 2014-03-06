@@ -104,13 +104,10 @@ public class MessageManager
 				//Extract the JSON information from the response
 				JSONArray jsonConvos = session.executeFQL(fqlQuery);
 				
-				
-				
 				//If there was an empty JSON result, we have all the
 				//conversations
 				if (jsonConvos.length() == 0)
 					conversationsLoaded = true;
-				
 				
 				if (oldDataExists)
 				{
@@ -156,6 +153,7 @@ public class MessageManager
 			}
 			catch (FacebookException e)
 			{
+				System.out.println(e);
 				if (e.getErrorCode() == RATE_LIMIT_EXCEEDED_ERROR)
 				{
 					//We exceeded the rate at which we can access the API

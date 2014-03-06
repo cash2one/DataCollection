@@ -112,7 +112,9 @@ public class TestManager
 						postFromAbby != null && 
 						postFromAbby.getComments().get(0).getText().equals(comment1) &&
 						postFromAbby.getJSONRepresentation().getString("message").equals(abbyToBob), true);
-		
+
+		System.out.println(data1.getJSONData().toString(1));
+		System.out.println(data2.getJSONData().toString(1));
 		
 
 		return result;
@@ -198,6 +200,10 @@ public class TestManager
 				comments.get(2).getText().equals(testComment4) &&
 				comments.get(2).getFromID().equals(user4.getId()),
 				true);
+
+		System.out.println(data1.getJSONData().toString(1));
+		System.out.println(data2.getJSONData().toString(1));
+		
 		resetSession();
 		
 		return result;
@@ -265,6 +271,17 @@ public class TestManager
 		data1.collectData(true, false, false, false);
 		data2.collectData(true, false, false, false);
 		data3.collectData(true, false, false, false);
+		
+
+		try
+		{
+			System.out.println(data1.getJSONData().toString(1));
+			System.out.println(data2.getJSONData().toString(1));
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
 		
 		data2.saveJSONData();
 
@@ -350,6 +367,7 @@ public class TestManager
 						true);
 			}
 		}
+		
 		return result;
 	}
 	
@@ -444,6 +462,15 @@ public class TestManager
 				groupConvo3.getMessages().get(1).getMessage().equals(message2) &&
 				groupConvo3.getMessages().get(2).getMessage().equals(message3), true);
 
+		try
+		{
+			System.out.println(data1.getJSONData().toString(1));
+			System.out.println(data2.getJSONData().toString(1));
+		}
+		catch (JSONException e)
+		{
+			e.printStackTrace();
+		}
 
 		return result;
 	}
