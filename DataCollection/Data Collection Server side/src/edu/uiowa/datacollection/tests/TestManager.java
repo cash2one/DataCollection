@@ -6,14 +6,12 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import twitter4j.Twitter;
-
 import edu.uiowa.datacollection.facebook.Comment;
 import edu.uiowa.datacollection.facebook.Conversation;
 import edu.uiowa.datacollection.facebook.DataManager;
 import edu.uiowa.datacollection.facebook.Message;
 import edu.uiowa.datacollection.facebook.StreamObject;
 import edu.uiowa.datacollection.facebook.User;
-
 import facebook4j.Facebook;
 import facebook4j.FacebookException;
 import facebook4j.TestUser;
@@ -39,12 +37,15 @@ public class TestManager
 	{
 		this.fSession = fSession;
 		this.tSession = tSession;
-
+		
 		tSession.setOAuthConsumer(TWITTER_CONSUMER_ID, TWITTER_CONSUMER_SECRET);
 		
 		resetFacebookSession();
-
 	}
+	
+	
+	
+	
 
 	private void resetFacebookSession()
 	{
@@ -73,8 +74,8 @@ public class TestManager
 		TestUser user2 = createTestUser("Bob Doe");
 
 		System.out.println("Creating corresponding data managers");
-		DataManager data1 = new DataManager(user1.getAccessToken());
-		DataManager data2 = new DataManager(user2.getAccessToken());
+		DataManager data1 = new DataManager(user1.getAccessToken(), "");
+		DataManager data2 = new DataManager(user2.getAccessToken(), "");
 
 		// make them friends
 		System.out.println("Creating friendships");
@@ -110,8 +111,8 @@ public class TestManager
 		scan.nextLine();
 		System.out.println();
 
-		data1.collectData(false, false, true, false);
-		data2.collectData(false, false, true, false);
+		data1.collectData(false, false, true);
+		data2.collectData(false, false, true);
 
 		StreamObject postFromBob = null;
 		for (StreamObject so : data1.getStreamObjects())
@@ -165,10 +166,10 @@ public class TestManager
 		TestUser user4 = createTestUser("Doug Doe");
 
 		System.out.println("Creating corresponding data managers");
-		DataManager data1 = new DataManager(user1.getAccessToken());
-		DataManager data2 = new DataManager(user2.getAccessToken());
-		DataManager data3 = new DataManager(user3.getAccessToken());
-		DataManager data4 = new DataManager(user4.getAccessToken());
+		DataManager data1 = new DataManager(user1.getAccessToken(), "");
+		DataManager data2 = new DataManager(user2.getAccessToken(), "");
+		DataManager data3 = new DataManager(user3.getAccessToken(), "");
+		DataManager data4 = new DataManager(user4.getAccessToken(), "");
 
 		System.out.println("Creating friendships");
 		// make them friends
@@ -199,10 +200,10 @@ public class TestManager
 		String testComment4 = "This is a test comment posted by user 4";
 		fSession.commentPost(statusID, testComment4);
 
-		data1.collectData(false, false, true, false);
-		data2.collectData(false, false, true, false);
-		data3.collectData(false, false, true, false);
-		data4.collectData(false, false, true, false);
+		data1.collectData(false, false, true);
+		data2.collectData(false, false, true);
+		data3.collectData(false, false, true);
+		data4.collectData(false, false, true);
 
 		StreamObject status = data1.getStreamObjects().get(0);
 		ArrayList<Comment> comments = status.getComments();
@@ -253,9 +254,9 @@ public class TestManager
 		TestUser user1 = createTestUser("Abby Doe");
 		TestUser user2 = createTestUser("Bob Doe");
 		TestUser user3 = createTestUser("Cathy Doe");
-		DataManager data1 = new DataManager(user1.getAccessToken());
-		DataManager data2 = new DataManager(user2.getAccessToken());
-		DataManager data3 = new DataManager(user3.getAccessToken());
+		DataManager data1 = new DataManager(user1.getAccessToken(), "");
+		DataManager data2 = new DataManager(user2.getAccessToken(), "");
+		DataManager data3 = new DataManager(user3.getAccessToken(), "");
 
 		System.out.println("Making the users friends");
 		fSession.makeFriendTestUser(user1, user2);
@@ -298,9 +299,9 @@ public class TestManager
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
 
-		data1.collectData(true, false, false, false);
-		data2.collectData(true, false, false, false);
-		data3.collectData(true, false, false, false);
+		data1.collectData(true, false, false);
+		data2.collectData(true, false, false);
+		data3.collectData(true, false, false);
 
 		try
 		{
@@ -312,7 +313,7 @@ public class TestManager
 			e.printStackTrace();
 		}
 
-		data2.saveJSONData();
+		data2.saveJSONData("conversations.json");
 
 		// Check that Abby had a conversation with bob and cathy
 		ArrayList<Conversation> data1Con = data1.getConversations();
@@ -428,9 +429,9 @@ public class TestManager
 		TestUser user1 = createTestUser("Abby Doe");
 		TestUser user2 = createTestUser("Bob Doe");
 		TestUser user3 = createTestUser("Cathy Doe");
-		DataManager data1 = new DataManager(user1.getAccessToken());
-		DataManager data2 = new DataManager(user2.getAccessToken());
-		DataManager data3 = new DataManager(user3.getAccessToken());
+		DataManager data1 = new DataManager(user1.getAccessToken(), "");
+		DataManager data2 = new DataManager(user2.getAccessToken(), "");
+		DataManager data3 = new DataManager(user3.getAccessToken(), "");
 
 		System.out.println("Making the users friends");
 		fSession.makeFriendTestUser(user1, user2);
@@ -460,9 +461,9 @@ public class TestManager
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
 
-		data1.collectData(true, false, false, false);
-		data2.collectData(true, false, false, false);
-		data3.collectData(true, false, false, false);
+		data1.collectData(true, false, false);
+		data2.collectData(true, false, false);
+		data3.collectData(true, false, false);
 
 		// Check that Abby had a conversation with bob and cathy
 		ArrayList<Conversation> data1Con = data1.getConversations();

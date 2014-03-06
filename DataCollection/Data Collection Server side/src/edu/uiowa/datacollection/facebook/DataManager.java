@@ -1,25 +1,14 @@
 package edu.uiowa.datacollection.facebook;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-
 
 import edu.uiowa.datacollection.twitter.User;
 import facebook4j.Facebook;
@@ -39,10 +28,13 @@ import facebook4j.internal.org.json.JSONObject;
  * @author Tom
  * 
  */
-@SuppressWarnings("deprecation")
 public class DataManager
 {
+	/**
+	 * The URL of the server to post data to
+	 */
 	public static String SERVER_URL = "http://128.255.45.52:7777/server/postfacebook/";
+	
 	/**
 	 * ArrayList holding the conversation objects.
 	 */
@@ -75,16 +67,23 @@ public class DataManager
 	private HashMap<String, String> idNameMatches = new HashMap<String, String>();
 
 	/**
+	 * The phone number of the user whose data is being collected
+	 */
+	private String phoneNumber;
+	
+	/**
 	 * This creates a DataManager object that will handle all of the app's data
 	 * collection
 	 * 
 	 * @param accessToken
 	 *            the string from the app that allows for Facebook access
 	 */
-	public DataManager(String accessToken)
+	public DataManager(String accessToken, String phoneNumber)
 	{
 		AccessToken token = new AccessToken(accessToken, null);
-
+		this.phoneNumber = phoneNumber;
+		
+		
 		session = new FacebookFactory().getInstance();
 		session.setOAuthAppId("442864129167674",
 				"f2140fbb0148c5db21db0d07b92e6ade");
@@ -105,11 +104,8 @@ public class DataManager
 	 *            Should old data be loaded
 	 */
 	public void collectData(boolean collectMessages, boolean limitToMonth,
-			boolean collectStream, boolean loadOldData)
+			boolean collectStream)
 	{
-		if (loadOldData)
-			loadOldJSONData();
-		
 		// Initialize messageManager with loaded conversations if it loaded,
 		// otherwise conversations is ignored by messageManager
 		messageManager = new MessageManager(conversations);
@@ -150,6 +146,7 @@ public class DataManager
 			result.put("conversation_data", convData);
 			result.put("stream_data", streamData);
 			result.put("participant_data", participantData);
+			result.put("user", phoneNumber);
 		}
 		catch (JSONException e)
 		{
@@ -162,9 +159,9 @@ public class DataManager
 	 * This method saves off all loaded data concerning the Facebook messages
 	 * and stream. It does not currently save off ID-Name pairs
 	 */
-	public void saveJSONData()
+	public void saveJSONData(String filename)
 	{
-		File file = new File("conversations.json");
+		File file = new File(filename);
 
 		try
 		{
@@ -190,113 +187,6 @@ public class DataManager
 		{
 			e.printStackTrace();
 		}
-	}
-
-	/***
-	 * Helper method for loading JSON data
-	 * 
-	 * @param rd
-	 *            BufferedReader to the JSON file
-	 * @return the String jsonText
-	 * @throws IOException
-	 */
-	private String readAll(Reader rd) throws IOException
-	{
-		StringBuilder sb = new StringBuilder();
-		int cp;
-		while ((cp = rd.read()) != -1)
-		{
-			sb.append((char) cp);
-		}
-		return sb.toString();
-	}
-
-	/**
-	 * This method loads all previously saved JSON data
-	 */
-	public void loadOldJSONData()
-	{
-		File file = new File("conversations.json");
-
-		try
-		{
-			// Open the file
-			BufferedReader rd = new BufferedReader(new FileReader(file));
-
-			// Read all of the data into a string
-			String jsonText = readAll(rd);
-
-			// Convert the string to JSON data
-			JSONObject loadedData = new JSONObject(jsonText);
-
-			// Load conversation data
-			if (loadedData.has("conversation_data"))
-			{
-				JSONArray convos = loadedData.getJSONArray("conversation_data");
-				for (int i = 0; i < convos.length(); i++)
-				{
-					JSONObject obj = convos.getJSONObject(i);
-					conversations.add(new Conversation(obj));
-				}
-			}
-			else
-			{
-				System.out.println("NOTE: No conversation data loaded");
-			}
-
-			// If stream data is to be loaded, load it here.
-			// The concern I have with that is the possibility of updates
-			// such as likes and comments, that we might always want to freshly
-			// load the stream
-			if (loadedData.has("stream_data"))
-			{
-				// TODO: handle loading stream posts
-			}
-			else
-			{
-				System.out.println("NOTE: No stream data loaded");
-			}
-
-			// Load the id name matches
-			if (loadedData.has("participant_data"))
-			{
-				JSONArray users = loadedData.getJSONArray("participant_data");
-				for (int i = 0; i < users.length(); i++)
-				{
-					JSONObject obj = users.getJSONObject(i);
-					idNameMatches.put(obj.getString("id"),
-							obj.getString("name"));
-				}
-			}
-			else
-			{
-				System.out.println("NOTE: No participant data loaded");
-			}
-
-			rd.close();
-		}
-		catch (FileNotFoundException e)
-		{
-			System.out
-					.println("******* File not found. Disregard this if you haven't run the program before.");
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		catch (JSONException e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Method to delete saved data
-	 */
-	public void deleteOldData()
-	{
-		File file = new File("conversations.json");
-		file.delete();
 	}
 
 	/**
@@ -371,48 +261,6 @@ public class DataManager
 	public Facebook getSession()
 	{
 		return session;
-	}
-
-	public void uploadData(String phoneNumber)
-	{
-		JSONObject obj = getJSONData();
-		try
-		{
-			obj.put("user", phoneNumber);
-		}
-		catch (JSONException e1)
-		{
-			e1.printStackTrace();
-		}
-		
-		
-		try
-		{
-			HttpPost post = new HttpPost(SERVER_URL);
-			post.setEntity(new ByteArrayEntity(obj.toString().getBytes()));
-			HttpResponse resp = null;
-			@SuppressWarnings({ "resource" })
-			HttpClient httpclient = new DefaultHttpClient();
-			try
-			{
-				resp = httpclient.execute(post);
-			}
-			catch (ClientProtocolException e)
-			{
-				e.printStackTrace();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-
-			System.out.println(resp);
-		}
-		catch (IllegalStateException e)
-		{
-			e.printStackTrace();
-		}
-
 	}
 
 	public void loadOldConversationTimes(JSONArray lastConvoTimes)
