@@ -62,6 +62,11 @@ public class TestManager
 	public static final twitter4j.auth.AccessToken TEST_USER_3 = 
 			new twitter4j.auth.AccessToken(TEST_USER_3_TOKEN, TEST_USER_3_SECRET, TEST_USER_3_ID);
 	
+//	AbbyDoeTestUser1@outlook.com - 1qaz1qaz - AbbyDoeTest1
+//	BobDoeTestUser2@outlook.com - 1qaz1qaz - BobDoeTest2
+//	CathyDoeTestUser3@outlook.com - 1qaz1qaz - CathyDoeTest3
+
+	
 			
 	public TestManager()
 	{
