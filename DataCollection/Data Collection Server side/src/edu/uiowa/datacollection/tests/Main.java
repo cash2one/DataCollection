@@ -1,5 +1,7 @@
 package edu.uiowa.datacollection.tests;
 
+import java.util.Scanner;
+
 import twitter4j.TwitterException;
 import facebook4j.FacebookException;
 import facebook4j.internal.org.json.JSONException;
@@ -11,15 +13,29 @@ public class Main
 		TestManager testManager = new TestManager();
 		try
 		{
-			System.out.println(testManager.twitterDirectMessageTest());
+			if (runTest("Twitter Retweet Test"))
+				System.out.println(testManager.twitterRetweetTest());
 			
-			System.out.println(testManager.facebokIMConversationTest());
+			if (runTest("Twitter Mentions Test"))
+				System.out.println(testManager.twitterMentionsTest());
 			
-			System.out.println(testManager.facebookIMGroupConversationTest());
+			if (runTest("Twitter Status Test"))
+				System.out.println(testManager.twitterStatusTest());
 			
-			System.out.println(testManager.facebookStatusTest());
+			if (runTest("Twitter Direct Message Test"))
+				System.out.println(testManager.twitterDirectMessageTest());
 			
-			System.out.println(testManager.facebookWallPostTest());
+			if (runTest("Facebook IM Conversation Test"))
+				System.out.println(testManager.facebokIMConversationTest());
+			
+			if (runTest("Facebook IM Group Conversation Test"))
+				System.out.println(testManager.facebookIMGroupConversationTest());
+			
+			if (runTest("Facebook Status Test"))
+				System.out.println(testManager.facebookStatusTest());
+			
+			if (runTest("Facebook Wall Post Test"))
+				System.out.println(testManager.facebookWallPostTest());
 		}
 		catch (FacebookException e)
 		{
@@ -30,6 +46,14 @@ public class Main
 			e.printStackTrace();
 		}
 
+	}
+
+	private static boolean runTest(String testName)
+	{
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Run " + testName + "? (y/n) : ");
+		return (scan.next().toUpperCase().charAt(0) == 'Y');
 	}
 
 }
