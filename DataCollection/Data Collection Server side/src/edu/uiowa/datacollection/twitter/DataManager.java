@@ -2,29 +2,19 @@ package edu.uiowa.datacollection.twitter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import twitter4j.DirectMessage;
 import twitter4j.Paging;
@@ -35,21 +25,19 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
-import twitter4j.internal.org.json.JSONArray;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
-import twitter4j.internal.org.json.JSONTokener;
-
 import edu.uiowa.datacollection.util.SqlHelper;
+import facebook4j.internal.org.json.JSONArray;
+import facebook4j.internal.org.json.JSONException;
+import facebook4j.internal.org.json.JSONObject;
 
-@SuppressWarnings("deprecation")
 public class DataManager
 {
-	private List<User> userList = new ArrayList<User>();
+	//private List<User> userList = new ArrayList<User>();
+	private User user;
 
 	private Twitter twitter;
+	
 
-	private ArrayList<ArrayList<Conversation>> listConversationList;
 
 	public DataManager()
 	{
@@ -60,89 +48,15 @@ public class DataManager
 		 */
 		twitter.setOAuthConsumer("BaWtyknv1RwsU60jVccA",
 				"EDopj7ySkVstUTD294ODgUlmhctGi3PBSkW2OljhhPY");
-		listConversationList = new ArrayList<ArrayList<Conversation>>();
 	}
-
-	public List<User> getUserFromServer()
-	{
-		User a = new User("1953004938", 2);
-		a.setOauthToken("1953004938-t9XrnuScuq36s3U1q2uA6GC4nEY85VEYdcFbEDd");
-		a.setTokenSecret("oaGfOjTttivK5JPtMlQZWc9QoOgPzfWpUNTXsTdDhA5kH");
-		userList.add(a);
-
-		User b = new User("2345736906", 2);
-		b.setOauthToken("2345736906-XI8iapyuLXwxO8gQlcU76wxl8iNncbLYX15vj1H");
-		b.setTokenSecret("eCuhIAZPW9ewBy5A4w6Ln3NjEjA1Q68DSAuhZ1Y8aoXJs");
-		userList.add(b);
-		return userList;
-	}
-
-	public List<User> getUserFromServer(final String urlAddress)
-	{
-		Thread t = new Thread(new Runnable()
-		{
-
-			@Override
-			public void run()
-			{
-				@SuppressWarnings("resource")
-				HttpClient client = new DefaultHttpClient();
-				HttpGet method = new HttpGet(urlAddress);
-				HttpResponse response = null;
-				try
-				{
-					response = client.execute(method);
-				}
-				catch (ClientProtocolException e1)
-				{
-					e1.printStackTrace();
-				}
-				catch (IOException e1)
-				{
-					e1.printStackTrace();
-				}
-				BufferedReader reader = null;
-				try
-				{
-					StringBuilder builder = new StringBuilder();
-					reader = new BufferedReader(new InputStreamReader(response
-							.getEntity().getContent(), "UTF-8"));
-					for (String line = null; (line = reader.readLine()) != null;)
-					{
-						builder.append(line).append("\n");
-					}
-					System.out.println(builder.toString());
-					JSONTokener tokener = new JSONTokener(builder.toString());
-					JSONObject jsonObject = new JSONObject(tokener);
-					JSONArray jsonArray = jsonObject.getJSONArray("data");
-					for (int i = 0; i < jsonArray.length(); i++)
-					{
-						JSONObject userToken = jsonArray.getJSONObject(i);
-						User u = new User(userToken.getString("twitter_id"), 2);
-						u.setOauthToken(userToken.getString("twitter_token"));
-						u.setTokenSecret(userToken.getString("twitter_secret"));
-						userList.add(u);
-					}
-
-				}
-				catch (IllegalStateException | IOException | JSONException e)
-				{
-					e.printStackTrace();
-				}
-
-			}
-
-		});
-		t.start();
-		try
-		{
-			t.join();
-		}
-		catch (InterruptedException e)
-		{
-			e.printStackTrace();
-		}
-		return userList;
+	
+	public DataManager(User user){
+		twitter=TwitterFactory.getSingleton();
+		twitter.setOAuthConsumer("BaWtyknv1RwsU60jVccA",
+				"EDopj7ySkVstUTD294ODgUlmhctGi3PBSkW2OljhhPY");
+		this.loadAccessToken(user);
+		this.setUser(user);
+		
 	}
 
 	public void loadAccessToken(User user)
@@ -405,23 +319,20 @@ public class DataManager
 		}
 	}
 
-	public ArrayList<ArrayList<Conversation>> collectData(List<User> userList)
+	public ArrayList<Conversation> collectData()
 	{
 		Long sinceId = (long) 1;
-		for (User user : userList)
-		{
-			this.loadAccessToken(user);
-			List<Message> usertimeline = collectUserTimeLine(sinceId);
 
-			List<Message> mentiontimeline = collectMentionsTimeLine(sinceId);
+		List<Message> usertimeline = collectUserTimeLine(sinceId);
 
-			List<Message> msgList = collectInstantMessages();
+		List<Message> mentiontimeline = collectMentionsTimeLine(sinceId);
 
-			ArrayList<Conversation> conversList = constructConversations(
+		List<Message> msgList = collectInstantMessages();
+
+		ArrayList<Conversation> conversList = constructConversations(
 					usertimeline, mentiontimeline, msgList);
-			listConversationList.add(conversList);
-		}
-		return listConversationList;
+		
+		return conversList;
 	}
 
 	public ArrayList<Conversation> constructConversations(
@@ -627,93 +538,25 @@ public class DataManager
 		return new AccessToken(token, tokenSecret, id);
 	}
 
-	public ArrayList<ArrayList<Conversation>> getListConversationList()
-	{
-		return listConversationList;
+	public User getUser() {
+		return user;
 	}
 
-	public String excutePost(String targetURL,
-			ArrayList<ArrayList<Conversation>> listconversList)
-			throws JSONException
-	{
-		URL url;
-		HttpURLConnection connection = null;
-		String urlParameters = null;
-		JSONObject allResult = new JSONObject();
-		JSONArray result = new JSONArray();
-		for (int i = 0; i < userList.size(); i++)
-		{
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("user", userList.get(i).getTweetId());
-			JSONArray jsonArray = new JSONArray();
-			ArrayList<Conversation> conversationList = listconversList.get(i);
-			for (Conversation c : conversationList)
-			{
-				jsonArray.put(c.getJSONRepresentation());
-			}
-			jsonObject.put("conversationData", jsonArray);
-
-			result.put(jsonObject);
-		}
-
-		allResult.put("result", result);
-		System.out.println(allResult.toString());
-		// allResult.put("result", result);
-		// jsonArray.
-		try
-		{
-			// Create connection
-			url = new URL(targetURL);
-			urlParameters = allResult.toString();
-			connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Content-Type",
-					"application/x-www-form-urlencoded");
-
-			connection.setRequestProperty("Content-Length",
-					"" + Integer.toString(urlParameters.getBytes().length));
-			connection.setRequestProperty("Content-Language", "en-US");
-
-			connection.setUseCaches(false);
-			connection.setDoInput(true);
-			connection.setDoOutput(true);
-
-			// Send request
-			DataOutputStream wr = new DataOutputStream(
-					connection.getOutputStream());
-			wr.writeBytes(urlParameters);
-			wr.flush();
-			wr.close();
-
-			// Get Response
-			InputStream is = connection.getInputStream();
-			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-			String line;
-			StringBuffer response = new StringBuffer();
-			while ((line = rd.readLine()) != null)
-			{
-				response.append(line);
-				response.append('\r');
-			}
-			rd.close();
-			return response.toString();
-
-		}
-		catch (Exception e)
-		{
-
-			e.printStackTrace();
-			return null;
-
-		}
-		finally
-		{
-
-			if (connection != null)
-			{
-				connection.disconnect();
-			}
-		}
+	public void setUser(User user) {
+		this.user = user;
 	}
+	
+	public JSONObject getJsonData(ArrayList<Conversation> conversationList) throws JSONException{
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("user", user.getTweetId());
+		
+		JSONArray jsonArray = new JSONArray();
+		for (Conversation c : conversationList)
+		{
+			jsonArray.put(c.getJSONRepresentation());
+		}
+		jsonObject.put("conversationData", jsonArray);
 
+		return jsonObject;
+	}
 }

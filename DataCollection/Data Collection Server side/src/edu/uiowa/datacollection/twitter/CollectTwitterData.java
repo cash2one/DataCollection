@@ -1,7 +1,10 @@
 package edu.uiowa.datacollection.twitter;
 
 import java.util.ArrayList;
-import java.util.List;
+
+import edu.uiowa.datacollection.util.JsonHelper;
+import facebook4j.internal.org.json.JSONArray;
+import facebook4j.internal.org.json.JSONObject;
 
 public class CollectTwitterData
 {
@@ -13,37 +16,31 @@ public class CollectTwitterData
 	public static void main(String[] args) throws Exception
 	{
 		// TODO Auto-generated method stub
-		DataManager dm = new DataManager();
-		// String userName="TengyuWang";
-		// dm.loadAccessToken();
-		// dm.loadAccessTokenFromDatabase(userName);
-		// dm.loadHardCodedToken(1);
-		// dm.getUserAuthorization();
-		/*
-		 * dm.collectMentionsTimeLine(Long.valueOf(1));
-		 * dm.collectUserTimeLine(Long.valueOf(1)); dm.collectInstantMessages();
-		 * dm.constructConversations();
-		 */
 		String url = "http://128.255.45.52:7777/server/gettwittertoken/";
 		String postUrl = "http://128.255.45.52:7777/server/posttwitter/";
-		// List<User> userList=dm.getUserFromServer();
-		List<User> userList = dm.getUserFromServer(url);
-		ArrayList<ArrayList<Conversation>> listconversationList = dm
-				.collectData(userList);
-		dm.excutePost(postUrl, listconversationList);
-		int n = listconversationList.size();
-		for (int i = 0; i < n; i++)
+		/*String url = "http://127.0.0.1:8002/DataCollection/gettwittertoken/";
+		String postUrl = "http://127.0.0.1:8002/DataCollection/posttwitter/"*/;
+		
+		JSONObject obj = JsonHelper.readJsonFromUrl(url);
+		JSONArray userList = obj.getJSONArray("data");
+		for (int i = 0; i < userList.length(); i++)
 		{
-			List<Conversation> list = listconversationList.get(i);
-			for (int j = 0; j < list.size(); j++)
+			JSONObject userToken = userList.getJSONObject(i);
+			User u = new User(userToken.getString("twitter_id"), 2);
+			u.setOauthToken(userToken.getString("twitter_token"));
+			u.setTokenSecret(userToken.getString("twitter_secret"));
+			DataManager dm = new DataManager(u);
+			ArrayList<Conversation> conversationList = dm
+					.collectData();
+			JsonHelper.postJsonData(postUrl, dm.getJsonData(conversationList));
+			for (int j = 0; j < conversationList.size(); j++)
 			{
-				Conversation c = list.get(j);
+				Conversation c = conversationList.get(j);
 				System.out.println(c.getJSONRepresentation().toString(1));
 			}
 			System.out.println();
 			System.out
 					.println("*************************************************************************************  ");
-			System.out.println();
 		}
 
 	}
