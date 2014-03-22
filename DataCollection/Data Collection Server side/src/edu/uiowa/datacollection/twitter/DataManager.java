@@ -52,8 +52,18 @@ public class DataManager
 	
 	public DataManager(User user){
 		twitter=TwitterFactory.getSingleton();
-		twitter.setOAuthConsumer("BaWtyknv1RwsU60jVccA",
-				"EDopj7ySkVstUTD294ODgUlmhctGi3PBSkW2OljhhPY");
+		
+		try
+		{
+			twitter.setOAuthConsumer("BaWtyknv1RwsU60jVccA",
+					"EDopj7ySkVstUTD294ODgUlmhctGi3PBSkW2OljhhPY");
+		}
+		catch (IllegalStateException e)
+		{
+			//This is here because for the tests to work we need to set the
+			//OAuthConsumer to post things
+			//This happens if the consumer key/secret is already set
+		}
 		this.loadAccessToken(user);
 		this.setUser(user);
 		

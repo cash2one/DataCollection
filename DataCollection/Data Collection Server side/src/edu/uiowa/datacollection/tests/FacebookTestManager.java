@@ -6,12 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
-import twitter4j.DirectMessage;
-import twitter4j.Status;
-import twitter4j.StatusUpdate;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
 import edu.uiowa.datacollection.facebook.Comment;
 import edu.uiowa.datacollection.facebook.Conversation;
 import edu.uiowa.datacollection.facebook.DataManager;
@@ -26,10 +20,9 @@ import facebook4j.auth.AccessToken;
 import facebook4j.internal.org.json.JSONException;
 
 @SuppressWarnings("resource")
-public class TestManager
+public class FacebookTestManager
 {
 	private Facebook fSession;
-	private Twitter tSession;
 	private HashMap<String, TestUser> testUsers = new HashMap<String, TestUser>();
 
 	public static final AccessToken APP_ACCESS_TOKEN = new AccessToken(
@@ -37,270 +30,14 @@ public class TestManager
 	public static final String FACEBOOK_APP_ID = "442864129167674";
 	public static final String FACEBOOK_APP_SECRET = "f2140fbb0148c5db21db0d07b92e6ade";
 
-	public static final String TWITTER_CONSUMER_ID = "BaWtyknv1RwsU60jVccA";
-	public static final String TWITTER_CONSUMER_SECRET = "EDopj7ySkVstUTD294ODgUlmhctGi3PBSkW2OljhhPY";
-	
-	public static final String TEST_USER_1_TOKEN = "2372806093-4fojaLeleu5rSTkG4RroR3Q3Oc4XpGCnG7TcEvr";
-	public static final String TEST_USER_1_SECRET = "vsq98jacFislGChkRLDlxqDHWwjsN0MckyxMWowCZS8vz";
-	public static final long TEST_USER_1_ID = 2372806093l;
-	public static final String TEST_USER_1_SCREEN_NAME = "AbbyDoeTest1";
-	public static final twitter4j.auth.AccessToken TEST_USER_1 = 
-			new twitter4j.auth.AccessToken(TEST_USER_1_TOKEN, TEST_USER_1_SECRET, TEST_USER_1_ID);
-	
-	
-	public static final String TEST_USER_2_TOKEN = "2372805192-Tv2hkVFU2Z7XDOKiOeXCwJLaFOznmAWX9u7SDb7";
-	public static final String TEST_USER_2_SECRET = "HJoFEcFHe2yDvmYMJvZL6jwfBQiXlqjjKz40aUv59y9FO";
-	public static final long TEST_USER_2_ID = 2372805192l;
-	public static final String TEST_USER_2_SCREEN_NAME = "BobDoeTest2";
-	public static final twitter4j.auth.AccessToken TEST_USER_2 = 
-			new twitter4j.auth.AccessToken(TEST_USER_2_TOKEN, TEST_USER_2_SECRET, TEST_USER_2_ID);
-	
-	public static final String TEST_USER_3_TOKEN = "2372821087-9LA7Pbtvn7EbKCXIw3SrPvZyCJJUThRfYJJxV0i";
-	public static final String TEST_USER_3_SECRET = "iocZrOEXwVRNCR1nk33LJY5iHBGlDT5hod0ghhhQd6Vij";
-	public static final long TEST_USER_3_ID = 2372821087l;
-	public static final String TEST_USER_3_SCREEN_NAME = "CathyDoeTest3";
-	public static final twitter4j.auth.AccessToken TEST_USER_3 = 
-			new twitter4j.auth.AccessToken(TEST_USER_3_TOKEN, TEST_USER_3_SECRET, TEST_USER_3_ID);
-	
-//	AbbyDoeTestUser1@outlook.com - 1qaz1qaz - AbbyDoeTest1
-//	BobDoeTestUser2@outlook.com - 1qaz1qaz - BobDoeTest2
-//	CathyDoeTestUser3@outlook.com - 1qaz1qaz - CathyDoeTest3
-
-	
-			
-	public TestManager()
+	public FacebookTestManager()
 	{
 		this.fSession = new FacebookFactory().getInstance();
-		this.tSession = openTwitterSession();
 		
 		resetFacebookSession();
 		
 		
 	}
-	
-	public TestResult twitterRetweetTest() throws TwitterException
-	{
-		TestResult result = new TestResult("Twitter Retweet Test", System.out);
-		result.begin();
-		
-		clearTwitter();
-		
-		Scanner scan = new Scanner(System.in);
-		
-		
-		//Have Abby post a status
-		String status1Text = "This is a popular status, I hope you retweet it.";
-		tSession.setOAuthAccessToken(TEST_USER_1);
-		Status status = tSession.updateStatus(status1Text);
-		
-		
-		tSession.setOAuthAccessToken(TEST_USER_2);
-		tSession.retweetStatus(status.getId());
-
-		tSession.setOAuthAccessToken(TEST_USER_3);
-		tSession.retweetStatus(status.getId());
-		
-		
-		System.out.println("To see the messages sent, login as Abby");
-		System.out.println("Username: AbbyDoeTestUser1");
-		System.out.println("Password: 1qaz1qaz");
-		openLink("http://twitter.com");
-
-		
-		//TODO: add actual checks
-		System.out.print("Here is where we would download and check messages. Enter 'done' to finish. ");
-		scan.nextLine();
-		
-		clearTwitter();
-		
-		return result;
-	}
-	
-	public TestResult twitterMentionsTest() throws TwitterException
-	{
-		TestResult result = new TestResult("Twitter Status Test", System.out);
-		result.begin();
-		
-		clearTwitter();
-		
-		Scanner scan = new Scanner(System.in);
-		
-		
-		//Have Bob and Cathy mention Abby
-		tSession.setOAuthAccessToken(TEST_USER_2);
-		String status1Text = "@" + TEST_USER_1_SCREEN_NAME + " I am bullying you.";
-		tSession.updateStatus(status1Text);
-		
-		tSession.setOAuthAccessToken(TEST_USER_3);
-		String status2Text = "@" + TEST_USER_1_SCREEN_NAME + " I am bullying you.";
-		tSession.updateStatus(status2Text);
-		
-		
-		
-		
-		System.out.println("To see the messages sent, login as Abby");
-		System.out.println("Username: AbbyDoeTestUser1");
-		System.out.println("Password: 1qaz1qaz");
-		openLink("http://twitter.com");
-
-		
-		//TODO: add actual checks
-		System.out.print("Here is where we would download and check messages. Enter 'done' to finish. ");
-		scan.nextLine();
-		
-		clearTwitter();
-		
-		return result;
-	}
-	
-	public TestResult twitterStatusTest() throws TwitterException
-	{
-		TestResult result = new TestResult("Twitter Status Test", System.out);
-		result.begin();
-		
-		clearTwitter();
-		
-		Scanner scan = new Scanner(System.in);
-		
-		String statusText = "This is Abby posting a status.";
-		tSession.setOAuthAccessToken(TEST_USER_1);
-		Status status = tSession.updateStatus(statusText);
-
-		String reply1Text = "@" + TEST_USER_1_SCREEN_NAME + " Reply to status";
-		tSession.setOAuthAccessToken(TEST_USER_2);
-		Status reply1 = tSession.updateStatus(new StatusUpdate(reply1Text).inReplyToStatusId(status.getId()));
-		
-		String reply2Text = "@" + TEST_USER_1_SCREEN_NAME + " Reply to status";
-		tSession.setOAuthAccessToken(TEST_USER_3);
-		Status reply2 = tSession.updateStatus(new StatusUpdate(reply2Text).inReplyToStatusId(status.getId()));
-
-		System.out.println("Bob should have replied: " + reply1.getText());
-		System.out.println("Cathy should have replied: " + reply2.getText());
-
-		System.out.println("To see the messages sent, login as Abby");
-		System.out.println("Username: AbbyDoeTestUser1");
-		System.out.println("Password: 1qaz1qaz");
-		openLink("http://twitter.com");
-
-		
-		//TODO: add actual checks
-		System.out.print("Here is where we would download and check messages. Enter 'done' to finish. ");
-		scan.nextLine();
-		
-		clearTwitter();
-		
-		return result;
-	}
-	
-	private void clearTwitter() throws TwitterException
-	{
-		tSession.setOAuthAccessToken(TEST_USER_1);
-		List<DirectMessage> messages1 = tSession.getDirectMessages();
-		messages1.addAll(tSession.getSentDirectMessages());
-		for (DirectMessage dm : messages1)
-			tSession.destroyDirectMessage(dm.getId());
-
-		tSession.setOAuthAccessToken(TEST_USER_2);
-		List<DirectMessage> messages2 = tSession.getDirectMessages();
-		messages2.addAll(tSession.getSentDirectMessages());
-		for (DirectMessage dm : messages2)
-			tSession.destroyDirectMessage(dm.getId());
-
-		tSession.setOAuthAccessToken(TEST_USER_2);
-		List<DirectMessage> message3 = tSession.getDirectMessages();
-		message3.addAll(tSession.getSentDirectMessages());
-		for (DirectMessage dm : message3)
-			tSession.destroyDirectMessage(dm.getId());
-		
-		
-		
-		tSession.setOAuthAccessToken(TEST_USER_1);
-		List<Status> status1 = tSession.getUserTimeline();
-		for (Status status : status1)
-		{
-			tSession.destroyStatus(status.getId());
-		}
-		
-		tSession.setOAuthAccessToken(TEST_USER_2);
-		List<Status> status2 = tSession.getUserTimeline();
-		for (Status status : status2)
-		{
-			tSession.destroyStatus(status.getId());
-		}
-		
-		tSession.setOAuthAccessToken(TEST_USER_3);
-		List<Status> status3 = tSession.getUserTimeline();
-		for (Status status : status3)
-		{
-			tSession.destroyStatus(status.getId());
-		}
-	}
-	
-	/**
-	 * This tests that direct messages between two users are collected by
-	 * using Abby and Bob and having them send messages back and forth.
-	 * 
-	 * @return
-	 * @throws TwitterException
-	 */
-	public TestResult twitterDirectMessageTest() throws TwitterException
-	{
-		TestResult result = new TestResult("Twitter Direct Message Test", System.out);
-		result.begin();
-		
-		clearTwitter();
-		Scanner scan = new Scanner(System.in);
-		
-		tSession.setOAuthAccessToken(TEST_USER_1);
-		
-		String message1 = "Hi Bob, this is Abby.";
-		String message2 = "Hi Abby, this is Bob.";
-		String message3 = "This is an enthralling conversation";
-		String message4 = "It certainly is";
-		
-		sendDirectMessage(TEST_USER_1, TEST_USER_2_ID, message1);
-		sendDirectMessage(TEST_USER_2, TEST_USER_1_ID, message2);
-		sendDirectMessage(TEST_USER_1, TEST_USER_2_ID, message3);
-		sendDirectMessage(TEST_USER_2, TEST_USER_1_ID, message4);
-		
-
-		System.out.println("To see the messages sent, login as Abby");
-		System.out.println("Username: AbbyDoeTestUser1");
-		System.out.println("Password: 1qaz1qaz");
-		openLink("http://twitter.com");
-		
-		//TODO: add actual checks
-		System.out.print("Here is where we would download and check messages. Enter 'done' to finish. ");
-		scan.nextLine();
-		
-		clearTwitter();
-		
-		return result;
-	}
-	
-	/**
-	 * This function sends a direct message from user1 using their accessToken
-	 * to userID
-	 * @param user The user sending the message
-	 * @param userID The recipient of the message
-	 * @param message The message to send
-	 * @throws TwitterException
-	 */
-	private void sendDirectMessage(twitter4j.auth.AccessToken user,
-			long userID, String message) throws TwitterException
-	{
-		tSession.setOAuthAccessToken(user);
-		tSession.sendDirectMessage(userID, message);
-	}
-
-	public Twitter openTwitterSession()
-	{
-		Twitter result = TwitterFactory.getSingleton();
-		result.setOAuthConsumer(TWITTER_CONSUMER_ID, TWITTER_CONSUMER_SECRET);
-		
-		return result;
-	}
-	
 	
 	
 

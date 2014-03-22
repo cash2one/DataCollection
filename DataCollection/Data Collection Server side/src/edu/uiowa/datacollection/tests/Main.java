@@ -10,32 +10,33 @@ public class Main
 {
 	public static void main(String[] args) throws JSONException
 	{
-		TestManager testManager = new TestManager();
+		FacebookTestManager fbTests = new FacebookTestManager();
+		TwitterTestManager twTests = new TwitterTestManager();
 		try
 		{
 			if (runTest("Twitter Retweet Test"))
-				System.out.println(testManager.twitterRetweetTest());
+				System.out.println(twTests.twitterRetweetTest());
 			
 			if (runTest("Twitter Mentions Test"))
-				System.out.println(testManager.twitterMentionsTest());
+				System.out.println(twTests.twitterMentionsTest());
 			
 			if (runTest("Twitter Status Test"))
-				System.out.println(testManager.twitterStatusTest());
+				System.out.println(twTests.twitterStatusTest());
 			
 			if (runTest("Twitter Direct Message Test"))
-				System.out.println(testManager.twitterDirectMessageTest());
+				System.out.println(twTests.twitterDirectMessageTest());
 			
 			if (runTest("Facebook IM Conversation Test"))
-				System.out.println(testManager.facebokIMConversationTest());
+				System.out.println(fbTests.facebokIMConversationTest());
 			
 			if (runTest("Facebook IM Group Conversation Test"))
-				System.out.println(testManager.facebookIMGroupConversationTest());
+				System.out.println(fbTests.facebookIMGroupConversationTest());
 			
 			if (runTest("Facebook Status Test"))
-				System.out.println(testManager.facebookStatusTest());
+				System.out.println(fbTests.facebookStatusTest());
 			
 			if (runTest("Facebook Wall Post Test"))
-				System.out.println(testManager.facebookWallPostTest());
+				System.out.println(fbTests.facebookWallPostTest());
 		}
 		catch (FacebookException e)
 		{
