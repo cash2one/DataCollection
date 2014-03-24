@@ -93,6 +93,12 @@ public class TwitterTestManager
 		return result;
 	}
 	
+	/**
+	 * This is a test to determine if the Twitter DataManager can collect
+	 * tweets that mention our targeted user.
+	 * @return The result of the tests
+	 * @throws TwitterException
+	 */
 	public TestResult twitterMentionsTest() throws TwitterException
 	{
 		TestResult result = new TestResult("Twitter Status Test", System.out);
@@ -153,6 +159,12 @@ public class TwitterTestManager
 		return result;
 	}
 	
+	/**
+	 * This is a test to determine if the Twitter DataManager can collect
+	 * statuses of our targeted user as well as comment tweets
+	 * @return The result of the test
+	 * @throws TwitterException
+	 */
 	public TestResult twitterStatusTest() throws TwitterException
 	{
 		TestResult result = new TestResult("Twitter Status Test", System.out);
@@ -218,6 +230,10 @@ public class TwitterTestManager
 		return result;
 	}
 	
+	/**
+	 * This clears all data from our twitter test users
+	 * @throws TwitterException
+	 */
 	private void clearTwitter() throws TwitterException
 	{
 		tSession.setOAuthAccessToken(TEST_USER_1);
@@ -302,7 +318,6 @@ public class TwitterTestManager
 		abby.setTokenSecret(TEST_USER_1_SECRET);
 		DataManager dm = new DataManager(abby);
 		
-		//IMPORTANT: THIS RETURNS THEM IN NEWEST TO OLDEST
 		List<Message> directMessages = dm.collectInstantMessages();
 		for (Message mess : directMessages)
 			System.out.println(mess.getText());
@@ -348,6 +363,10 @@ public class TwitterTestManager
 		tSession.sendDirectMessage(userIdTo, message);
 	}
 
+	/**
+	 * Opens our twitter session
+	 * @return
+	 */
 	public Twitter openTwitterSession()
 	{
 		Twitter result = TwitterFactory.getSingleton();

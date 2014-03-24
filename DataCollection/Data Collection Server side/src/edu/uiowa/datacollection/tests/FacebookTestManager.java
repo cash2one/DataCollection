@@ -565,6 +565,10 @@ public class FacebookTestManager
 		return testUsers.get(username);
 	}
 	
+	
+	/**
+	 * This method deletes all current Facebook test users
+	 */
 	private void clearTestUsers()
 	{
 		List<TestUser> users;

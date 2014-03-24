@@ -7,30 +7,34 @@ import facebook4j.internal.org.json.JSONArray;
 import facebook4j.internal.org.json.JSONException;
 import facebook4j.internal.org.json.JSONObject;
 
-
 /**
  * This class holds all the data of a particular Stream event.
+ * 
  * @author Tom
- *
+ * 
  */
-public class StreamObject implements Comparable<StreamObject>
+public class StreamObject
 {
 	/**
 	 * The JSON data for this stream object
 	 */
 	private JSONObject jsonObject;
-	
+
 	/**
 	 * The Facebook ID of this object
 	 */
 	private String postID;
-	
+
 	private JSONArray commentArray;
 
 	private ArrayList<Comment> comments = new ArrayList<Comment>();
+
 	/**
-	 * This creates a StreamObject which holds a result from the stream FQL table.
-	 * @param object The FQL JSON data
+	 * This creates a StreamObject which holds a result from the stream FQL
+	 * table.
+	 * 
+	 * @param object
+	 *            The FQL JSON data
 	 */
 	public StreamObject(JSONObject object)
 	{
@@ -44,34 +48,34 @@ public class StreamObject implements Comparable<StreamObject>
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setCommentArray(JSONArray commentArray)
 	{
 		for (int i = 0; i < commentArray.length(); i++)
 		{
 			try
 			{
-				comments .add(new Comment(commentArray.getJSONObject(i)));
+				comments.add(new Comment(commentArray.getJSONObject(i)));
 			}
 			catch (JSONException e)
 			{
 				e.printStackTrace();
 			}
 		}
-		
-		this.commentArray=commentArray;
+
+		this.commentArray = commentArray;
 	}
-	
+
 	public String toString()
 	{
 		String result = "";
-		
-		//Eclipse doesn't like casting jsonObject.keys()
+
+		// Eclipse doesn't like casting jsonObject.keys()
 		@SuppressWarnings("unchecked")
 		Iterator<Object> i = jsonObject.keys();
-		
-		//Loop through each key in our JSON object and match it with its value,
-		//one per line in our result string
+
+		// Loop through each key in our JSON object and match it with its value,
+		// one per line in our result string
 		while (i.hasNext())
 		{
 			String s = (String) i.next();
@@ -93,9 +97,12 @@ public class StreamObject implements Comparable<StreamObject>
 	 */
 	public JSONObject getJSONRepresentation()
 	{
-		try {
+		try
+		{
 			jsonObject.put("Comments", commentArray);
-		} catch (JSONException e) {
+		}
+		catch (JSONException e)
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -111,13 +118,6 @@ public class StreamObject implements Comparable<StreamObject>
 		return postID;
 	}
 
-
-	@Override
-	public int compareTo(StreamObject o) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
 	public ArrayList<Comment> getComments()
 	{
 		return comments;

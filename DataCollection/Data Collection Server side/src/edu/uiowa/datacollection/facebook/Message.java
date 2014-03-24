@@ -61,14 +61,14 @@ public class Message implements Comparable<Message>
 			id = messageJSON.getString("message_id");
 			
 			//author_id is an int
-			from = new User("" + messageJSON.getLong("author_id"),1);
+			from = new User("" + messageJSON.getLong("author_id"),User.FACEBOOK_TYPE);
 			
 			//I need to add to here.
 			to=new ArrayList<User>();
 			JSONArray toArray=messageJSON.getJSONArray("to");
 			for(int i=0;i<toArray.length();i++){
 				String fid=toArray.getJSONObject(i).getString("facebookId");
-				to.add(new User(fid,1));
+				to.add(new User(fid,User.FACEBOOK_TYPE));
 			}
 
 			message = messageJSON.getString("body");

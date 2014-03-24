@@ -110,7 +110,7 @@ public class Conversation
 			
 			
 			for (int i = 0; i < recip.length(); i++)
-				participants[i] = new User("" + recip.getLong(i),1);
+				participants[i] = new User("" + recip.getLong(i),User.FACEBOOK_TYPE);
 			
 			
 			if (conversationJSON.has("messages"))

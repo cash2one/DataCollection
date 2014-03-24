@@ -263,6 +263,14 @@ public class DataManager
 		return session;
 	}
 
+	/**
+	 * This method takes a list of all loaded conversations and their respective
+	 * updated_time's and initializes the conversation list with those.
+	 * This is done so that no already collected data is recollected.
+	 * This is called prior to the main collectData method.
+	 * @param lastConvoTimes A JSONArray full of objects with keys thread_id and
+	 * updated_time
+	 */
 	public void loadOldConversationTimes(JSONArray lastConvoTimes)
 	{
 		for (int i = 0; i < lastConvoTimes.length(); i++)
