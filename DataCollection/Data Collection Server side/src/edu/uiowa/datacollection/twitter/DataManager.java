@@ -129,7 +129,7 @@ public class DataManager
 		Paging paging = new Paging();
 		int count = 100;
 		paging.setCount(count);
-		paging.setSinceId(sinceId);
+		paging.setSinceId(user.getUserTimeLineSinceID());
 		ResponseList<Status> rl = null;
 		boolean collectAllData = false;
 		while (!collectAllData)
@@ -143,8 +143,9 @@ public class DataManager
 				}
 				else
 				{
-					if (rl == null)
+					if (rl == null){
 						rl = tl;
+					}
 					else
 						rl.addAll(tl);
 					paging.setMaxId(tl.get(tl.size() - 1).getId() - 1);
@@ -175,6 +176,7 @@ public class DataManager
 		}
 		if (rl != null)
 		{
+			if(rl.size()>=1) user.setUserTimeLineSinceID(rl.get(0).getId());
 			for (int i = 0; i < rl.size(); i++)
 			{
 				Message msg = new Message(rl.get(i));
@@ -194,7 +196,7 @@ public class DataManager
 		Paging paging = new Paging();
 		int count = 100;
 		paging.setCount(count);
-		paging.setSinceId(sinceId);
+		paging.setSinceId(user.getMentionTimeLineSinceID());
 		ResponseList<Status> rl = null;
 		boolean collectAllData = false;
 		List<Message> statusList = new ArrayList<Message>();
@@ -236,6 +238,7 @@ public class DataManager
 		}
 		if (rl != null)
 		{
+			if(rl.size()>=1) user.setMentionTimeLineSinceID(rl.get(0).getId());
 			for (int i = 0; i < rl.size(); i++)
 			{
 				Message msg = new Message(rl.get(i));
@@ -244,6 +247,7 @@ public class DataManager
 		}
 		return statusList;
 	}
+	
 
 	/**
 	 * Collect direct messages, each request can return at most 200 Messages.
@@ -253,26 +257,71 @@ public class DataManager
 	public List<Message> collectInstantMessages()
 	{
 		List<Message> msgList = new ArrayList<Message>();
-		Paging paging = new Paging();
-		paging.setCount(100);
-		ResponseList<DirectMessage> rl = null;
-		try
-		{
-			rl = twitter.getDirectMessages(paging);
-			rl.addAll(twitter.getSentDirectMessages(paging));
-		}
-		catch (TwitterException e)
-		{
-			e.printStackTrace();
-		}
-		if (rl != null)
-		{
-			for (int i = 0; i < rl.size(); i++)
+		Paging paging1 = new Paging();
+		paging1.setCount(100);
+		paging1.setSinceId(user.getDirectMessageSinceID());
+
+		Paging paging2 = new Paging();
+		paging2.setCount(100);
+		paging2.setSinceId(user.getSentDirectMessageSinceID());
+		
+		ResponseList<DirectMessage> rl1 = null;
+		ResponseList<DirectMessage> rl2 = null;
+		
+		boolean collectAllData = false;
+		while(!collectAllData){
+			try
 			{
-				Message msg = new Message(rl.get(i));
+				ResponseList<DirectMessage> tl1 = twitter.getDirectMessages(paging1);
+				ResponseList<DirectMessage> tl2 = twitter.getSentDirectMessages(paging2);
+				if(tl1.size()==0&&tl2.size()==0){
+					collectAllData=true;
+				}
+				else{
+					if(rl1==null&&rl2==null){
+						if(tl1.size()>=1) user.setDirectMessageSinceID(tl1.get(0).getId());
+						if(tl2.size()>=1) user.setSentDirectMessageSinceID(tl2.get(0).getId());
+						rl1=tl1;
+						rl2=tl2;
+					}
+					else{
+						rl1.addAll(tl1);
+						rl2.addAll(tl2);
+					}
+					if(tl1.size()!=0)
+						paging1.setMaxId(tl1.get(tl1.size() - 1).getId() - 1);
+					if(tl2.size()!=0)
+						paging2.setMaxId(tl2.get(tl2.size() - 1).getId() - 1);
+				}
+			}
+			catch (TwitterException e)
+			{
+				// rate Limit exceed
+				if (e.getStatusCode() == 429)
+				{
+					try
+					{
+						Thread.sleep(1000 * 60 * 3);
+					}
+					catch (InterruptedException e1)
+					{
+						e1.printStackTrace();
+					}
+				}
+				else
+					e.printStackTrace();
+			}
+		}
+		if (rl1 != null)
+		{
+			rl1.addAll(rl2);
+			for (int i = 0; i < rl1.size(); i++)
+			{
+				Message msg = new Message(rl1.get(i));
 				msgList.add(msg);
 			}
 		}
+		Collections.sort(msgList);
 		return msgList;
 	}
 
@@ -559,6 +608,10 @@ public class DataManager
 	public JSONObject getJsonData(ArrayList<Conversation> conversationList) throws JSONException{
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("user", user.getTweetId());
+		jsonObject.put("userTimeLineSinceID", user.getUserTimeLineSinceID());
+		jsonObject.put("mentionTimeLineSinceID", user.getMentionTimeLineSinceID());
+		jsonObject.put("directMsgSinceID", user.getDirectMessageSinceID());
+		jsonObject.put("sentDirectMsgSinceID", user.getSentDirectMessageSinceID());
 		
 		JSONArray jsonArray = new JSONArray();
 		for (Conversation c : conversationList)

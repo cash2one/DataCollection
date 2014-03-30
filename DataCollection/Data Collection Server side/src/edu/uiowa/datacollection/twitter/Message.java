@@ -7,8 +7,8 @@ import java.util.List;
 import twitter4j.DirectMessage;
 import twitter4j.Status;
 import twitter4j.UserMentionEntity;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
+import facebook4j.internal.org.json.JSONException;
+import facebook4j.internal.org.json.JSONObject;
 //import twitter4j.User;
 
 public class Message implements Comparable<Message> {

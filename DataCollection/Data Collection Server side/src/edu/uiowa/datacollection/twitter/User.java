@@ -21,6 +21,14 @@ public class User
 	
 	private String tokenSecret;
 	
+	private long userTimeLineSinceID;
+	
+	private long mentionTimeLineSinceID;
+	
+	private long directMessageSinceID;
+	
+	private long sentDirectMessageSinceID;
+	
 	/**
 	 * The user's name, it can only be filled in following a Facebook graph request.
 	 */
@@ -145,5 +153,45 @@ public class User
 
 	public void setTokenSecret(String tokenSecret) {
 		this.tokenSecret = tokenSecret;
+	}
+
+
+	public long getUserTimeLineSinceID() {
+		return userTimeLineSinceID;
+	}
+
+
+	public void setUserTimeLineSinceID(long userTimeLineSinceID) {
+		this.userTimeLineSinceID = userTimeLineSinceID;
+	}
+
+
+	public long getMentionTimeLineSinceID() {
+		return mentionTimeLineSinceID;
+	}
+
+
+	public void setMentionTimeLineSinceID(long mentionTimeLineSinceID) {
+		this.mentionTimeLineSinceID = mentionTimeLineSinceID;
+	}
+
+
+	public long getDirectMessageSinceID() {
+		return directMessageSinceID;
+	}
+
+
+	public void setDirectMessageSinceID(long directMessageSinceID) {
+		this.directMessageSinceID = directMessageSinceID;
+	}
+
+
+	public long getSentDirectMessageSinceID() {
+		return sentDirectMessageSinceID;
+	}
+
+
+	public void setSentDirectMessageSinceID(long sentDirectMessageSinceID) {
+		this.sentDirectMessageSinceID = sentDirectMessageSinceID;
 	}
 }

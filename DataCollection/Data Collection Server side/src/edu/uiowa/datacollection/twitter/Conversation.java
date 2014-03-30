@@ -7,9 +7,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import twitter4j.internal.org.json.JSONArray;
-import twitter4j.internal.org.json.JSONException;
-import twitter4j.internal.org.json.JSONObject;
+import facebook4j.internal.org.json.JSONArray;
+import facebook4j.internal.org.json.JSONException;
+import facebook4j.internal.org.json.JSONObject;
 //import twitter4j.User;
 /**
  * assume that messageList are constructed in time order.
@@ -82,19 +82,6 @@ public class Conversation implements Comparable<Conversation> {
 		return messageIDList;
 	}
 	
-	/*public Date getParticipateTime(){
-		String pID;
-		if(type==0) pID=Global.user.getPhoneNum();
-		else if(type==1) pID=Global.user.getTweetID();
-		else pID=Global.user.getFacebookID();
-		for(int i=0;i<messageList.size();i++){
-			if(messageList.get(i).getSourcePID().equals(pID)||messageList.get(i).getDestiPIDList().contains(pID)){
-				return messageList.get(i).getCreateTime();
-			}
-		}
-		// should never happen
-		return new Date();
-	}*/
 	
 	public List<User> getParticipantList(){
 		Set<User> s=new LinkedHashSet<User>();
@@ -112,21 +99,6 @@ public class Conversation implements Comparable<Conversation> {
 		// TODO Auto-generated method stub
 		return another.getEndTime().compareTo(this.getEndTime());
 	}
-
-/*	@Override
-	public String toString() {
-		StringBuilder sb=new StringBuilder();
-		sb.append("<Conversation>\n");
-		SimpleDateFormat dateFormat = new SimpleDateFormat(
-				"yyyy-MM-dd hh:mm:ss");
-		String strDate = dateFormat.format(this.endTime);
-		sb.append("<End_Time>").append(strDate).append("</End_Time>\n");
-		for(int i=0;i<messageList.size();i++){
-			sb.append(messageList.get(i).toString());
-		}
-		sb.append("</Conversation>\n");
-		return sb.toString();
-	}*/
 	
 	public JSONObject getJSONRepresentation(){
 		JSONObject conversJSON=new JSONObject();
@@ -136,6 +108,7 @@ public class Conversation implements Comparable<Conversation> {
 		}
 		try {
 			conversJSON.put("CID", cID);
+			conversJSON.put("Type", type);
 			conversJSON.put("StartTime", startTime);
 			conversJSON.put("EndTime", endTime);
 			conversJSON.put("StartID", startID);

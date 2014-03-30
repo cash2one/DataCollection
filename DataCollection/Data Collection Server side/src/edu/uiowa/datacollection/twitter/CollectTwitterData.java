@@ -16,10 +16,10 @@ public class CollectTwitterData
 	public static void main(String[] args) throws Exception
 	{
 		// TODO Auto-generated method stub
-		String url = "http://128.255.45.52:7777/server/gettwittertoken/";
-		String postUrl = "http://128.255.45.52:7777/server/posttwitter/";
-		/*String url = "http://127.0.0.1:8002/DataCollection/gettwittertoken/";
-		String postUrl = "http://127.0.0.1:8002/DataCollection/posttwitter/"*/;
+		/*String url = "http://128.255.45.52:7777/server/gettwittertoken/";
+		String postUrl = "http://128.255.45.52:7777/server/posttwitter/";*/
+		String url = "http://127.0.0.1:8002/DataCollection/gettwittertoken/";
+		String postUrl = "http://127.0.0.1:8002/DataCollection/posttwitter/";
 		
 		JSONObject obj = JsonHelper.readJsonFromUrl(url);
 		JSONArray userList = obj.getJSONArray("data");
@@ -29,6 +29,10 @@ public class CollectTwitterData
 			User u = new User(userToken.getString("twitter_id"), 2);
 			u.setOauthToken(userToken.getString("twitter_token"));
 			u.setTokenSecret(userToken.getString("twitter_secret"));
+			u.setUserTimeLineSinceID(userToken.getLong("userTimeLineSinceID"));
+			u.setMentionTimeLineSinceID(userToken.getLong("mentionTimeLineSinceID"));
+			u.setDirectMessageSinceID(userToken.getLong("directMsgSinceID"));
+			u.setSentDirectMessageSinceID(userToken.getLong("sentDirectMsgSinceID"));
 			DataManager dm = new DataManager(u);
 			ArrayList<Conversation> conversationList = dm
 					.collectData();
