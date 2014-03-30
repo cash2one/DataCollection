@@ -116,6 +116,29 @@ public class DataManager
 		}
 		storeAccessToken(twitter.verifyCredentials().getId(), accessToken);
 	}
+	
+	public List<Message> collectRetweetsOfMe(){
+		List<Message> retweetList=new ArrayList<Message>();
+		ResponseList<Status> rl=null;
+		Paging paging = new Paging();
+		int count = 100;
+		paging.setCount(count);
+		try {
+			rl=twitter.getRetweetsOfMe(paging);
+		} catch (TwitterException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (rl != null)
+		{
+			for (int i = 0; i < rl.size(); i++)
+			{
+				Message msg = new Message(rl.get(i));
+				retweetList.add(msg);
+			}
+		}
+		return retweetList;
+	}
 
 	/**
 	 * Collect User TimeLine, each request can return at most 200 timelines.
@@ -393,6 +416,61 @@ public class DataManager
 		
 		return conversList;
 	}
+	
+	public ArrayList<Conversation> collectDirectConversations(){
+		List<Message> msgList = collectInstantMessages();
+		ArrayList<Conversation> conversList = constructDirectConversations (msgList);
+		return conversList;
+	}
+	
+	public ArrayList<Message> collectStatusList(){
+		Long sinceId = (long) 1;
+		ArrayList<Message> result=new ArrayList<Message>();
+		List<Message> usertimeline = collectUserTimeLine(sinceId);
+		List<Message> mentiontimeline = collectMentionsTimeLine(sinceId);
+		result.addAll(usertimeline);
+		result.addAll(mentiontimeline);
+		return result;
+	}
+	public ArrayList<Conversation> constructDirectConversations(List<Message> msgList)
+	{
+		/*
+		 * Contruct Conversations for instant Message.
+		 */
+		ArrayList<Conversation> conversationList = new ArrayList<Conversation>();
+		Collections.sort(msgList);
+		List<Conversation> directConversation = new ArrayList<Conversation>();
+		for (int i = 0; i < msgList.size(); i++)
+		{
+			Message m = msgList.get(i);
+			boolean startNewConversation = true;
+			for (int j = 0; j < directConversation.size(); j++)
+			{
+				Conversation c = directConversation.get(j);
+				if (c.getParticipantList().contains(m.getSender())
+						&& c.getParticipantList().contains(
+								m.getRecipients().get(0)))
+				{
+					c.addMessage(m);
+					startNewConversation = false;
+				}
+			}
+			if (startNewConversation)
+			{
+				Conversation newC = new Conversation(1);
+				newC.addMessage(m);
+				directConversation.add(newC);
+			}
+		}
+		conversationList.addAll(directConversation);
+
+		for (int i = 0; i < conversationList.size(); i++)
+		{
+			conversationList.get(i).setStartEndTime();
+			conversationList.get(i).setStartEndIDCount();
+		}
+		return conversationList;
+	}
 
 	public ArrayList<Conversation> constructConversations(
 			List<Message> usertimeline, List<Message> mentiontimeline,
@@ -619,6 +697,30 @@ public class DataManager
 			jsonArray.put(c.getJSONRepresentation());
 		}
 		jsonObject.put("conversationData", jsonArray);
+
+		return jsonObject;
+	}
+	
+	public JSONObject getSeparateJsonData(ArrayList<Message> statusList,ArrayList<Conversation> directMsgConversation) throws JSONException{
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("user", user.getTweetId());
+		jsonObject.put("userTimeLineSinceID", user.getUserTimeLineSinceID());
+		jsonObject.put("mentionTimeLineSinceID", user.getMentionTimeLineSinceID());
+		jsonObject.put("directMsgSinceID", user.getDirectMessageSinceID());
+		jsonObject.put("sentDirectMsgSinceID", user.getSentDirectMessageSinceID());
+		
+		JSONArray jsonArray = new JSONArray();
+		for (Conversation c : directMsgConversation)
+		{
+			jsonArray.put(c.getJSONRepresentation());
+		}
+		jsonObject.put("conversationData", jsonArray);
+		
+		JSONArray jsonArray1=new JSONArray();
+		for(Message msg:statusList){
+			jsonArray1.put(msg.getJSONRepresentation());
+		}
+		jsonObject.put("statusData", jsonArray1);
 
 		return jsonObject;
 	}

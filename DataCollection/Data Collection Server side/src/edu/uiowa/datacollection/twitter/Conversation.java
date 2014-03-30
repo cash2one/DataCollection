@@ -130,7 +130,11 @@ public class Conversation implements Comparable<Conversation> {
 		this.startID = messageList.get(0).getmID();
 		this.endID=messageList.get(messageList.size()-1).getmID();
 		this.count=messageList.size();
-		this.cID=this.startID+"_"+this.endID;
+		String senderID=messageList.get(0).getSender().getTweetId();
+		String receiverID=messageList.get(0).getRecipients().get(0).getTweetId();
+		if(senderID!=null&&receiverID!=null)
+			this.cID=senderID+"_"+receiverID;
+		else this.cID=this.startID+"_"+this.endID;
 	}
 
 	public String getEndID() {
