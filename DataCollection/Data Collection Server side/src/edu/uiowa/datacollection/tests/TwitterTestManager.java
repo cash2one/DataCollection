@@ -11,6 +11,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
+import edu.uiowa.datacollection.twitter.Conversation;
 import edu.uiowa.datacollection.twitter.DataManager;
 import edu.uiowa.datacollection.twitter.Message;
 import edu.uiowa.datacollection.twitter.User;
@@ -84,8 +85,19 @@ public class TwitterTestManager
 		openLink("http://twitter.com");
 
 		
-		//TODO: add actual checks
-		System.out.print("Here is where we would download and check messages. Enter 'done' to finish. ");
+		User abby = new User("", "" + TEST_USER_1_ID, "");
+		abby.setOauthToken(TEST_USER_1_TOKEN);
+		abby.setTokenSecret(TEST_USER_1_SECRET);
+		abby.setDirectMessageSinceID(System.currentTimeMillis() - 1000 * 60 * 60);
+		abby.setSentDirectMessageSinceID(System.currentTimeMillis() - 1000 * 60 * 60);
+		DataManager dm = new DataManager(abby);
+		
+		List<Message> retweets = dm.collectRetweetsOfMe();
+		
+		for (Message m : retweets)
+			System.out.println(m.getText());
+		
+		System.out.print("Enter 'done' to finish. ");
 		scan.nextLine();
 		
 		clearTwitter();
@@ -101,12 +113,10 @@ public class TwitterTestManager
 	 */
 	public TestResult twitterMentionsTest() throws TwitterException
 	{
-		TestResult result = new TestResult("Twitter Status Test", System.out);
+		TestResult result = new TestResult("Twitter Mentions Test", System.out);
 		result.begin();
 		
 		clearTwitter();
-		
-		Scanner scan = new Scanner(System.in);
 		
 		
 		//Have Bob and Cathy mention Abby
@@ -129,6 +139,7 @@ public class TwitterTestManager
 		User abby = new User("", "" + TEST_USER_1_ID, "");
 		abby.setOauthToken(TEST_USER_1_TOKEN);
 		abby.setTokenSecret(TEST_USER_1_SECRET);
+		abby.setMentionTimeLineSinceID(System.currentTimeMillis() - 1000 * 60 * 60);
 		DataManager dm = new DataManager(abby);
 		
 		//1000 = 1 sec, *60 = 1 min, *60 = 1 hour, all in last hour
@@ -151,8 +162,6 @@ public class TwitterTestManager
 				 mentionMessages.get(1).getSender().getTweetId().equals("" + TEST_USER_3_ID)), true);
 		
 		
-		System.out.print("Enter 'done' to finish. ");
-		scan.nextLine();
 		
 		clearTwitter();
 		
@@ -171,8 +180,6 @@ public class TwitterTestManager
 		result.begin();
 		
 		clearTwitter();
-		
-		Scanner scan = new Scanner(System.in);
 		
 		String statusText = "This is Abby posting a status.";
 		tSession.setOAuthAccessToken(TEST_USER_1);
@@ -195,6 +202,8 @@ public class TwitterTestManager
 		User abby = new User("", "" + TEST_USER_1_ID, "");
 		abby.setOauthToken(TEST_USER_1_TOKEN);
 		abby.setTokenSecret(TEST_USER_1_SECRET);
+		abby.setUserTimeLineSinceID(System.currentTimeMillis() - 1000 * 60 * 60);
+		abby.setMentionTimeLineSinceID(System.currentTimeMillis() - 1000 * 60 * 60);
 		DataManager dm = new DataManager(abby);
 		
 		//1000 = 1 sec, *60 = 1 min, *60 = 1 hour, all in last hour
@@ -222,8 +231,6 @@ public class TwitterTestManager
 				 mentionMessages.get(1).getSender().getTweetId().equals("" + TEST_USER_3_ID)), true);
 		
 		
-		System.out.print("Enter 'done' to finish. ");
-		scan.nextLine();
 		
 		clearTwitter();
 		
@@ -295,17 +302,19 @@ public class TwitterTestManager
 		
 		tSession.setOAuthAccessToken(TEST_USER_1);
 		
-		String message1 = "Hi Bob, this is Abby.";
-		String message2 = "Hi Abby, this is Bob.";
-		String message3 = "This is an enthralling conversation";
-		String message4 = "It certainly is";
-		
 		sendDirectMessage(TEST_USER_1, TEST_USER_2_ID, "message1");
 		sendDirectMessage(TEST_USER_2, TEST_USER_1_ID, "message2");
 		sendDirectMessage(TEST_USER_1, TEST_USER_2_ID, "message3");
 		sendDirectMessage(TEST_USER_2, TEST_USER_1_ID, "message4");
 		sendDirectMessage(TEST_USER_1, TEST_USER_2_ID, "message5");
 		sendDirectMessage(TEST_USER_2, TEST_USER_1_ID, "message6");
+
+		sendDirectMessage(TEST_USER_1, TEST_USER_3_ID, "message12");
+		sendDirectMessage(TEST_USER_3, TEST_USER_1_ID, "message22");
+		sendDirectMessage(TEST_USER_1, TEST_USER_3_ID, "message32");
+		sendDirectMessage(TEST_USER_3, TEST_USER_1_ID, "message42");
+		sendDirectMessage(TEST_USER_1, TEST_USER_3_ID, "message52");
+		sendDirectMessage(TEST_USER_3, TEST_USER_1_ID, "message62");
 		
 
 		System.out.println("To see the messages sent, login as Abby");
@@ -316,29 +325,44 @@ public class TwitterTestManager
 		User abby = new User("", "" + TEST_USER_1_ID, "");
 		abby.setOauthToken(TEST_USER_1_TOKEN);
 		abby.setTokenSecret(TEST_USER_1_SECRET);
+		abby.setDirectMessageSinceID(System.currentTimeMillis() - 1000 * 60 * 60);
+		abby.setSentDirectMessageSinceID(System.currentTimeMillis() - 1000 * 60 * 60);
+		System.out.println(abby.getDirectMessageSinceID());
 		DataManager dm = new DataManager(abby);
 		
-		List<Message> directMessages = dm.collectInstantMessages();
-		for (Message mess : directMessages)
-			System.out.println(mess.getText());
-
-		result.addResult("Last message retrieved",
-				directMessages.get(0).getText().equals(message4) &&
-				directMessages.get(0).getSender().getTweetId().equals("" + TEST_USER_2_ID),
-				true);
-//		System.out.println(directMessages.get(1).getText() + "\n" + message3 + "\n" + directMessages.get(1).getSender().getTweetId() + "\n" + TEST_USER_1_ID); 
-		result.addResult("Third message retrieved",
-				directMessages.get(1).getText().equals(message3) &&
-				directMessages.get(1).getSender().getTweetId().equals("" + TEST_USER_1_ID),
-				true);
-		result.addResult("Second message retrieved",
-				directMessages.get(2).getText().equals(message2) &&
-				directMessages.get(2).getSender().getTweetId().equals("" + TEST_USER_2_ID),
-				true);
-		result.addResult("First message retrieved",
-				directMessages.get(3).getText().equals(message1) &&
-				directMessages.get(3).getSender().getTweetId().equals("" + TEST_USER_1_ID),
-				true);
+		List<Conversation> convos = dm.collectDirectConversations();
+		for (Conversation c : convos)
+		{
+			for (Message m : c.getMessageList())
+				System.out.println(m.getText() + " , " + m.getCreateTime());
+			System.out.println();
+		}
+		result.addResult("Conversation with Abby and Bob retrieved",
+						 containsUser(convos.get(0), TEST_USER_1_ID) &&
+						 containsUser(convos.get(0), TEST_USER_2_ID),
+						 true);
+		result.addResult("Conversation with Abby and Cathy retrieved",
+				 containsUser(convos.get(1), TEST_USER_1_ID) &&
+				 containsUser(convos.get(1), TEST_USER_3_ID),
+				 true);
+//
+//		result.addResult("Last message retrieved",
+//				directMessages.get(0).getText().equals(message4) &&
+//				directMessages.get(0).getSender().getTweetId().equals("" + TEST_USER_2_ID),
+//				true);
+////		System.out.println(directMessages.get(1).getText() + "\n" + message3 + "\n" + directMessages.get(1).getSender().getTweetId() + "\n" + TEST_USER_1_ID); 
+//		result.addResult("Third message retrieved",
+//				directMessages.get(1).getText().equals(message3) &&
+//				directMessages.get(1).getSender().getTweetId().equals("" + TEST_USER_1_ID),
+//				true);
+//		result.addResult("Second message retrieved",
+//				directMessages.get(2).getText().equals(message2) &&
+//				directMessages.get(2).getSender().getTweetId().equals("" + TEST_USER_2_ID),
+//				true);
+//		result.addResult("First message retrieved",
+//				directMessages.get(3).getText().equals(message1) &&
+//				directMessages.get(3).getSender().getTweetId().equals("" + TEST_USER_1_ID),
+//				true);
 		
 		System.out.print("Enter 'done' to finish. ");
 		scan.nextLine();
@@ -375,6 +399,13 @@ public class TwitterTestManager
 		return result;
 	}
 	
+	private boolean containsUser(Conversation convo, long userID)
+	{
+		for (User user : convo.getParticipantList())
+			if (user.getTweetId().equals(String.valueOf(userID)))
+				return true;
+		return false;
+	}
 	
 
 	/**
@@ -388,6 +419,7 @@ public class TwitterTestManager
 	{
 		try
 		{
+			System.out.println("Opening link... " + link);
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(link));
 		}
 		catch (IOException e)
