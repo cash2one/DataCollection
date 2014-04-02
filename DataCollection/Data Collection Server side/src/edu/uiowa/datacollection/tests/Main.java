@@ -8,7 +8,20 @@ import facebook4j.internal.org.json.JSONException;
 
 public class Main
 {
-	public static void main(String[] args) throws JSONException
+	public static void main(String[] args)
+	{
+		runTests();
+	}
+
+	private static boolean runTest(String testName)
+	{
+		@SuppressWarnings("resource")
+		Scanner scan = new Scanner(System.in);
+		System.out.print("Run " + testName + "? (y/n) : ");
+		return (scan.next().toUpperCase().charAt(0) == 'Y');
+	}
+	
+	private static void runTests()
 	{
 		FacebookTestManager fbTests = new FacebookTestManager();
 		TwitterTestManager twTests = new TwitterTestManager();
@@ -42,19 +55,20 @@ public class Main
 		{
 			e.printStackTrace();
 		}
-		catch (TwitterException e)
+		catch (JSONException e)
 		{
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		catch (TwitterException e)
+		{
+			// rate Limit exceed
+			if (e.getStatusCode() == 429)
+			{
+				System.out.println("***** ERROR: Rate limit exceeded. Please wait before running more twitter tests.");
+			}
+			else
+				e.printStackTrace();
+		}
 	}
-
-	private static boolean runTest(String testName)
-	{
-		@SuppressWarnings("resource")
-		Scanner scan = new Scanner(System.in);
-		System.out.print("Run " + testName + "? (y/n) : ");
-		return (scan.next().toUpperCase().charAt(0) == 'Y');
-	}
-
 }

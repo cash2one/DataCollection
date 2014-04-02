@@ -79,6 +79,10 @@ public class FacebookTestManager
 		scan.nextLine();
 		System.out.println();
 
+		data1.collectData(false, false, true);
+		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		scan.nextLine();
+
 		openLink(user2.getLoginUrl());
 		String bobToAbby = "Hi Abby, this is Bob.";
 		String comment1 = "Hi Abby, I'm commenting on your post.";
@@ -92,29 +96,15 @@ public class FacebookTestManager
 		scan.nextLine();
 		System.out.println();
 
-		String comment2 = "Hi Bob, I'm commenting on your post.";
-		System.out
-				.println("Please post the following comment on the wall post from Bob");
-		System.out.println(comment2);
-		System.out.print("Enter done when finished. ");
-		scan.nextLine();
-		System.out.println();
-
-		data1.collectData(false, false, true);
 		data2.collectData(false, false, true);
+		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		scan.nextLine();
 
-		StreamObject postFromBob = null;
-		for (StreamObject so : data1.getStreamObjects())
-			if (so.getComments().size() > 0)
-				postFromBob = so;
 		result.addResult(
-				"Abby collected Bob's post to her wall and the comment",
-				postFromBob != null
-						&& postFromBob.getComments().get(0).getText()
-								.equals(comment2)
-						&& postFromBob.getJSONRepresentation()
-								.getString("message").equals(bobToAbby), true);
+				"Abby collected she wrote on someones wall",
+				data1.getStreamObjects().size() > 0, true);
 
+		
 		StreamObject postFromAbby = null;
 		for (StreamObject so : data2.getStreamObjects())
 			if (so.getComments().size() > 0)
@@ -126,9 +116,6 @@ public class FacebookTestManager
 								.equals(comment1)
 						&& postFromAbby.getJSONRepresentation()
 								.getString("message").equals(abbyToBob), true);
-
-		System.out.println(data1.getJSONData().toString(1));
-		System.out.println(data2.getJSONData().toString(1));
 		
 		clearTestUsers();
 		
@@ -269,6 +256,10 @@ public class FacebookTestManager
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
 
+		data1.collectData(true, false, false);
+		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		scan.nextLine();
+
 		openLink(user2.getLoginUrl());
 		String bobToAbby = "Hi Abby, this is Bob.";
 		String bobToCathy = "Hi Cathy, this is Bob.";
@@ -279,6 +270,10 @@ public class FacebookTestManager
 				.println("Please send the following message to your friend Cathy Doe");
 		System.out.println(bobToCathy);
 		System.out.print("Enter done when finished. ");
+		scan.nextLine();
+
+		data2.collectData(true, false, false);
+		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
 		scan.nextLine();
 
 		openLink(user3.getLoginUrl());
@@ -293,23 +288,15 @@ public class FacebookTestManager
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
 
-		data1.collectData(true, false, false);
-		data2.collectData(true, false, false);
 		data3.collectData(true, false, false);
-
-		try
-		{
-			System.out.println(data1.getJSONData().toString(1));
-			System.out.println(data2.getJSONData().toString(1));
-		}
-		catch (JSONException e)
-		{
-			e.printStackTrace();
-		}
+		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		scan.nextLine();
 
 		data2.saveJSONData("conversations.json");
 
 		// Check that Abby had a conversation with bob and cathy
+		// Because of how the Facebook test users we updated we can only
+		// get the data before we log out of facebook with Abby.
 		ArrayList<Conversation> data1Con = data1.getConversations();
 		for (Conversation c : data1Con)
 		{
@@ -319,11 +306,10 @@ public class FacebookTestManager
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
 						"Abby and Bob conversation",
-						messages.size() == 2
+						messages.size() == 1
 								&& messages.get(0).getMessage()
-										.equals(abbyToBob)
-								&& messages.get(1).getMessage()
-										.equals(bobToAbby), true);
+										.equals(abbyToBob),
+										true);
 			}
 			if (hasParticipant(c, user1.getId())
 					&& hasParticipant(c, user3.getId()))
@@ -331,14 +317,13 @@ public class FacebookTestManager
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
 						"Abby and Cathy conversation",
-						messages.size() == 2
+						messages.size() == 1
 								&& messages.get(0).getMessage()
-										.equals(abbyToCathy)
-								&& messages.get(1).getMessage()
-										.equals(cathyToAbby), true);
+										.equals(abbyToCathy), true);
 			}
 		}
-
+		
+		//We can get two way for abby and bob, but only one way for bob/cathy
 		ArrayList<Conversation> data2Con = data2.getConversations();
 		for (Conversation c : data2Con)
 		{
@@ -360,14 +345,13 @@ public class FacebookTestManager
 				ArrayList<Message> messages = c.getMessages();
 				result.addResult(
 						"Bob and Cathy conversation",
-						messages.size() == 2
+						messages.size() == 1
 								&& messages.get(0).getMessage()
-										.equals(bobToCathy)
-								&& messages.get(1).getMessage()
-										.equals(cathyToBob), true);
+										.equals(bobToCathy), true);
 			}
 		}
-
+		
+		//We can get two way for both
 		ArrayList<Conversation> data3Con = data3.getConversations();
 		for (Conversation c : data3Con)
 		{
@@ -443,12 +427,20 @@ public class FacebookTestManager
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
 
+		data1.collectData(true, false, false);
+		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		scan.nextLine();
+
 		openLink(user2.getLoginUrl());
 		String message2 = "Hi guys, this is Bob.";
 		System.out
 				.println("Please send this message in the group conversation");
 		System.out.println(message2);
 		System.out.print("Enter done when finished. ");
+		scan.nextLine();
+
+		data2.collectData(true, false, false);
+		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
 		scan.nextLine();
 
 		openLink(user3.getLoginUrl());
@@ -459,9 +451,9 @@ public class FacebookTestManager
 		System.out.print("Enter done when finished. ");
 		scan.nextLine();
 
-		data1.collectData(true, false, false);
-		data2.collectData(true, false, false);
 		data3.collectData(true, false, false);
+		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		scan.nextLine();
 
 		// Check that Abby had a conversation with bob and cathy
 		ArrayList<Conversation> data1Con = data1.getConversations();
@@ -471,27 +463,24 @@ public class FacebookTestManager
 				hasParticipant(groupConvo1, user2.getId())
 						&& hasParticipant(groupConvo1, user3.getId()), true);
 
-		result.addResult("Abby's ID, convo has all three messages",
-				groupConvo1.getMessages().get(0).getMessage().equals(message1)
-						&& groupConvo1.getMessages().get(1).getMessage()
-								.equals(message2)
-						&& groupConvo1.getMessages().get(2).getMessage()
-								.equals(message3), true);
+		//Only her message because of how Facebook test users have to log out
+		result.addResult("Abby's ID, convo has her sent message",
+				groupConvo1.getMessages().get(0).getMessage().equals(message1), true);
 
-		ArrayList<Conversation> data2Con = data1.getConversations();
+		ArrayList<Conversation> data2Con = data2.getConversations();
 		Conversation groupConvo2 = data2Con.get(0);
 		result.addResult(
 				"Bob's ID, convo has Abby and Cathy",
 				hasParticipant(groupConvo2, user1.getId())
 						&& hasParticipant(groupConvo2, user3.getId()), true);
-		result.addResult("Bob's ID, convo has all three messages",
+		
+		//Only the first two because of how Facebook test users have to log out
+		result.addResult("Bob's ID, convo has the first two messages",
 				groupConvo2.getMessages().get(0).getMessage().equals(message1)
 						&& groupConvo2.getMessages().get(1).getMessage()
-								.equals(message2)
-						&& groupConvo2.getMessages().get(2).getMessage()
-								.equals(message3), true);
+								.equals(message2), true);
 
-		ArrayList<Conversation> data3Con = data1.getConversations();
+		ArrayList<Conversation> data3Con = data3.getConversations();
 		Conversation groupConvo3 = data3Con.get(0);
 		result.addResult(
 				"Cathy's ID, convo has Abby and Bob",
@@ -503,16 +492,6 @@ public class FacebookTestManager
 								.equals(message2)
 						&& groupConvo3.getMessages().get(2).getMessage()
 								.equals(message3), true);
-
-		try
-		{
-			System.out.println(data1.getJSONData().toString(1));
-			System.out.println(data2.getJSONData().toString(1));
-		}
-		catch (JSONException e)
-		{
-			e.printStackTrace();
-		}
 		
 		clearTestUsers();
 
@@ -531,6 +510,7 @@ public class FacebookTestManager
 	{
 		try
 		{
+			System.out.println("Opening link... " + link);
 			java.awt.Desktop.getDesktop().browse(java.net.URI.create(link));
 		}
 		catch (IOException e)
@@ -609,7 +589,14 @@ public class FacebookTestManager
 	 */
 	private void resetFacebookSession()
 	{
-		fSession.setOAuthAppId(FACEBOOK_APP_ID, FACEBOOK_APP_SECRET);
+		try
+		{
+			fSession.setOAuthAppId(FACEBOOK_APP_ID, FACEBOOK_APP_SECRET);
+		}
+		catch (IllegalStateException e)
+		{
+			//App id / secret pair already set
+		}
 		fSession.setOAuthAccessToken(APP_ACCESS_TOKEN);
 	}
 

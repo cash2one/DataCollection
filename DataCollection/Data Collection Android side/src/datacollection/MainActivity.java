@@ -291,8 +291,9 @@ public class MainActivity extends Activity
 	}
 
 	/**
-	 * This method fixes some app authentication errors when run for the first
-	 * time before the app is published.
+	 * This method generates a hash that needs to be added to the list of
+	 * accepted hashes on the Facebook developer page. It only needs to be done
+	 * once, the first time the app is built on a new computer
 	 */
 	private void getKeyIfKeyWrong()
 	{
