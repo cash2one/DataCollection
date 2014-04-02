@@ -17,11 +17,11 @@ public class CollectTwitterData
 	public static void main(String[] args) throws Exception
 	{
 		// TODO Auto-generated method stub
-		/*String url = "http://128.255.45.52:7777/server/gettwittertoken/";
-		String postUrl = "http://128.255.45.52:7777/server/posttwitter/";*/
-		String url = "http://127.0.0.1:8002/DataCollection/gettwittertoken/";
+		String url = "http://128.255.45.52:7777/server/gettwittertoken/";
+		String postSeparateUrl = "http://128.255.45.52:7777/server/posttwitterseparate/";
+		/*String url = "http://127.0.0.1:8002/DataCollection/gettwittertoken/";
 		String postUrl = "http://127.0.0.1:8002/DataCollection/posttwitter/";
-		String postSeparateUrl="http://127.0.0.1:8002/DataCollection/posttwitterseparate/";
+		String postSeparateUrl="http://127.0.0.1:8002/DataCollection/posttwitterseparate/";*/
 		
 		JSONObject obj = JsonHelper.readJsonFromUrl(url);
 		JSONArray userList = obj.getJSONArray("data");
@@ -41,8 +41,21 @@ public class CollectTwitterData
 			System.out.println();
 			System.out
 					.println("*************************************************************************************  ");*/
+			System.out.println("Direct Conversation:");
 			ArrayList<Conversation> directConversationList=dm.collectDirectConversations();
+			for (int j = 0; j < directConversationList.size(); j++)
+			{
+				Conversation c = directConversationList.get(j);
+				System.out.println(c.getJSONRepresentation().toString(1));
+			}
+			
+			System.out.println("Twitter timeline:");
+			
 			ArrayList<Message> statusList=dm.collectStatusList();
+			for(int j=0; j<statusList.size();j++){
+				Message m=statusList.get(j);
+				System.out.println(m.getJSONRepresentation().toString(1));
+			}
 			JsonHelper.postJsonData(postSeparateUrl, dm.getSeparateJsonData(statusList, directConversationList));
 			System.out.println("Done!");
 		}
