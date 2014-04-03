@@ -3,6 +3,7 @@ package edu.uiowa.datacollection.twitter;
 import java.util.ArrayList;
 
 import edu.uiowa.datacollection.util.JsonHelper;
+import edu.uiowa.datacollection.util.PropertyHelper;
 import facebook4j.internal.org.json.JSONArray;
 import facebook4j.internal.org.json.JSONException;
 import facebook4j.internal.org.json.JSONObject;
@@ -17,8 +18,9 @@ public class CollectTwitterData
 	public static void main(String[] args) throws Exception
 	{
 		// TODO Auto-generated method stub
-		String url = "http://128.255.45.52:7777/server/gettwittertoken/";
-		String postSeparateUrl = "http://128.255.45.52:7777/server/posttwitterseparate/";
+		PropertyHelper ph=new PropertyHelper("dataCollection.properties");
+		String url = ph.getURLAddress()+"gettwittertoken/";
+		String postSeparateUrl = ph.getURLAddress()+"posttwitterseparate/";
 		/*String url = "http://127.0.0.1:8002/DataCollection/gettwittertoken/";
 		String postUrl = "http://127.0.0.1:8002/DataCollection/posttwitter/";
 		String postSeparateUrl="http://127.0.0.1:8002/DataCollection/posttwitterseparate/";*/
