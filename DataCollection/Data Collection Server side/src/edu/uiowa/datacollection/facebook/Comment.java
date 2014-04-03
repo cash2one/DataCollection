@@ -8,6 +8,10 @@ public class Comment
 {
 	private String fromID, text, commentID;
 	
+	/**
+	 * A comment object that holds the information of a comment on a post
+	 * @param commentJSON The FQL data on the comment
+	 */
 	public Comment(JSONObject commentJSON)
 	{
 		try

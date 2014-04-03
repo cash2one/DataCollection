@@ -32,11 +32,13 @@ public class JsonHelper
 		}
 		return sb.toString();
 	}
-	
+
 	/**
 	 * This method creates a JSON object from data returned by an HTTP GET
 	 * request to the given url.
-	 * @param url The url to request data from
+	 * 
+	 * @param url
+	 *            The url to request data from
 	 * @return JSONObject of the data returned by the url
 	 * @throws IOException
 	 * @throws JSONException
@@ -58,23 +60,26 @@ public class JsonHelper
 			is.close();
 		}
 	}
-	
+
 	/**
-	 * This function posts the given JSONObject to the given url using
-	 * HTTP POST.
-	 * @param url The url to post the data to
-	 * @param data The data to post
+	 * This function posts the given JSONObject to the given url using HTTP
+	 * POST.
+	 * 
+	 * @param url
+	 *            The url to post the data to
+	 * @param data
+	 *            The data to post
 	 * @return The HttpResponse from the server
 	 */
 	public static HttpResponse postJsonData(String url, JSONObject data)
-	{	
+	{
 		HttpResponse resp = null;
-	
+
 		try
 		{
 			HttpPost post = new HttpPost(url);
 			post.setEntity(new ByteArrayEntity(data.toString().getBytes()));
-			
+
 			@SuppressWarnings({ "resource" })
 			HttpClient httpclient = new DefaultHttpClient();
 			try

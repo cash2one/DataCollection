@@ -22,8 +22,11 @@ import facebook4j.internal.org.json.JSONObject;
 /**
  * This class handles the main data loading operations of the app. It loads,
  * saves, and deletes file data, as well as downloading Facebook Message and
- * Stream activity using a {@link edu.uiowa.datacollection.facebook.example.messagesiphon.MessageManager} and
- * a {@link edu.uiowa.datacollection.facebook.example.messagesiphon.StreamManager}.
+ * Stream activity using a
+ * {@link edu.uiowa.datacollection.facebook.example.messagesiphon.MessageManager}
+ * and a
+ * {@link edu.uiowa.datacollection.facebook.example.messagesiphon.StreamManager}
+ * .
  * 
  * @author Tom
  * 
@@ -34,7 +37,7 @@ public class DataManager
 	 * The URL of the server to post data to
 	 */
 	public static String SERVER_URL = "http://128.255.45.52:7777/server/postfacebook/";
-	
+
 	/**
 	 * ArrayList holding the conversation objects.
 	 */
@@ -70,7 +73,10 @@ public class DataManager
 	 * The phone number of the user whose data is being collected
 	 */
 	private String phoneNumber;
-	
+
+	private static final String APP_ID = "442864129167674";
+	private static final String APP_SECRET = "f2140fbb0148c5db21db0d07b92e6ade";
+
 	/**
 	 * This creates a DataManager object that will handle all of the app's data
 	 * collection
@@ -82,11 +88,9 @@ public class DataManager
 	{
 		AccessToken token = new AccessToken(accessToken, null);
 		this.phoneNumber = phoneNumber;
-		
-		
+
 		session = new FacebookFactory().getInstance();
-		session.setOAuthAppId("442864129167674",
-				"f2140fbb0148c5db21db0d07b92e6ade");
+		session.setOAuthAppId(APP_ID, APP_SECRET);
 		session.setOAuthAccessToken(token);
 	}
 
@@ -125,6 +129,9 @@ public class DataManager
 		}
 	}
 
+	/**
+	 * Returns all JSON data collected by the DataManager
+	 */
 	public JSONObject getJSONData()
 	{
 		JSONObject result = new JSONObject();
@@ -213,7 +220,8 @@ public class DataManager
 	 */
 	public void collectParticipantInformation()
 	{
-		HashSet<edu.uiowa.datacollection.facebook.User> userSet = messageManager.getUserSet();
+		HashSet<edu.uiowa.datacollection.facebook.User> userSet = messageManager
+				.getUserSet();
 
 		// Don't download data we already have
 		for (String id : idNameMatches.keySet())
@@ -265,11 +273,13 @@ public class DataManager
 
 	/**
 	 * This method takes a list of all loaded conversations and their respective
-	 * updated_time's and initializes the conversation list with those.
-	 * This is done so that no already collected data is recollected.
-	 * This is called prior to the main collectData method.
-	 * @param lastConvoTimes A JSONArray full of objects with keys thread_id and
-	 * updated_time
+	 * updated_time's and initializes the conversation list with those. This is
+	 * done so that no already collected data is recollected. This is called
+	 * prior to the main collectData method.
+	 * 
+	 * @param lastConvoTimes
+	 *            A JSONArray full of objects with keys thread_id and
+	 *            updated_time
 	 */
 	public void loadOldConversationTimes(JSONArray lastConvoTimes)
 	{
@@ -279,7 +289,8 @@ public class DataManager
 			try
 			{
 				obj = lastConvoTimes.getJSONObject(i);
-				conversations.add(new Conversation(obj.getString("thread_id"), obj.getString("updated_time")));
+				conversations.add(new Conversation(obj.getString("thread_id"),
+						obj.getString("updated_time")));
 			}
 			catch (JSONException e)
 			{

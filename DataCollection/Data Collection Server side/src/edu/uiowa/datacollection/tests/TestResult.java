@@ -13,9 +13,12 @@ public class TestResult
 
 	/**
 	 * Constructor for TestResult
-	 * @param testName The name of the test
-	 * @param log The output manner, System.out prints test data to the console,
-	 * a different printstream allows writing to file.
+	 * 
+	 * @param testName
+	 *            The name of the test
+	 * @param log
+	 *            The output manner, System.out prints test data to the console,
+	 *            a different printstream allows writing to file.
 	 */
 	public TestResult(String testName, PrintStream log)
 	{

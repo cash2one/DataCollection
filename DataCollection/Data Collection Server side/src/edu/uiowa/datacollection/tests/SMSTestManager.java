@@ -7,26 +7,26 @@ import facebook4j.internal.org.json.JSONArray;
 import facebook4j.internal.org.json.JSONException;
 import facebook4j.internal.org.json.JSONObject;
 
-@SuppressWarnings("resource")
 public class SMSTestManager
 {
 	public SMSTestManager()
 	{
-		
+
 	}
-	
+
 	public TestResult smsConversationTest()
 	{
 		TestResult result = new TestResult("SMS Conversation Test", System.out);
-		
+
 		openLink("http://www.pinger.com/tfw/");
-		
+
 		System.out.println("Login to Pinger");
 		System.out.println("Username: AbbyDoeTest1");
 		System.out.println("Password: 1qaz1qaz");
 		System.out.println();
-		
-		System.out.println("Send the following message to the number of the test phone.");
+
+		System.out
+				.println("Send the following message to the number of the test phone.");
 		String message1 = "Test Message 1";
 		System.out.println("From Computer: " + message1);
 		String message2 = "Test Message 2";
@@ -36,31 +36,32 @@ public class SMSTestManager
 		System.out.println("From Computer: " + message3);
 		String message4 = "Test Message 4";
 		System.out.println("From phone: " + message4);
-		
-		//TODO: Modify to SMS url
+
+		// TODO: Modify to SMS url
 		System.out.println();
 		System.out.println("Run the SMS collection program");
 		String SERVER_URL = "http://128.255.45.52:7777/server/getfacetoken/";
-		JSONObject obj;
+		JSONObject obj = null;
 		try
 		{
 			obj = JsonHelper.readJsonFromUrl(SERVER_URL);
-			
+
+			//Use this line to collect the users
 			JSONArray users = obj.getJSONArray("data");
+			for (int i = 0; i < users.length(); i++)
+			{
+				//TODO: Something with the users
+			}
 		}
 		catch (IOException | JSONException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
 		return result;
 	}
-	
-	
 
-	
 	/**
 	 * This function opens the given url in the user's default browser. If it
 	 * cannot, it prints the link to open.

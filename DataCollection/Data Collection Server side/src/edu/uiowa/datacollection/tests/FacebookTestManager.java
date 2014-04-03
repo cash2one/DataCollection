@@ -33,15 +33,11 @@ public class FacebookTestManager
 	public FacebookTestManager()
 	{
 		this.fSession = new FacebookFactory().getInstance();
-		
-		resetFacebookSession();
-		
-		
-	}
-	
-	
 
-	
+		resetFacebookSession();
+
+	}
+
 	/**
 	 * This method prompts the user to make two wall posts and then put a
 	 * comment on each one, checking that wall post conversations and comment
@@ -51,7 +47,8 @@ public class FacebookTestManager
 	 * @throws FacebookException
 	 * @throws JSONException
 	 */
-	public TestResult facebookWallPostTest() throws FacebookException, JSONException
+	public TestResult facebookWallPostTest() throws FacebookException,
+			JSONException
 	{
 		TestResult result = new TestResult("Wall Post Test", System.out);
 		result.begin();
@@ -80,7 +77,8 @@ public class FacebookTestManager
 		System.out.println();
 
 		data1.collectData(false, false, true);
-		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		System.out
+				.print("Log out of the test user and back into your real profile. Enter done when finished. ");
 		scan.nextLine();
 
 		openLink(user2.getLoginUrl());
@@ -97,14 +95,13 @@ public class FacebookTestManager
 		System.out.println();
 
 		data2.collectData(false, false, true);
-		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		System.out
+				.print("Log out of the test user and back into your real profile. Enter done when finished. ");
 		scan.nextLine();
 
-		result.addResult(
-				"Abby collected she wrote on someones wall",
-				data1.getStreamObjects().size() > 0, true);
+		result.addResult("Abby collected she wrote on someones wall", data1
+				.getStreamObjects().size() > 0, true);
 
-		
 		StreamObject postFromAbby = null;
 		for (StreamObject so : data2.getStreamObjects())
 			if (so.getComments().size() > 0)
@@ -116,13 +113,12 @@ public class FacebookTestManager
 								.equals(comment1)
 						&& postFromAbby.getJSONRepresentation()
 								.getString("message").equals(abbyToBob), true);
-		
+
 		clearTestUsers();
-		
+
 		return result;
 	}
 
-	
 	/**
 	 * This method has one user post a Facebook status and then has three
 	 * friends post comments on that status, checking status collection and
@@ -132,7 +128,8 @@ public class FacebookTestManager
 	 * @throws FacebookException
 	 * @throws JSONException
 	 */
-	public TestResult facebookStatusTest() throws FacebookException, JSONException
+	public TestResult facebookStatusTest() throws FacebookException,
+			JSONException
 	{
 		TestResult result = new TestResult("Status Test", System.out);
 		result.begin();
@@ -213,7 +210,6 @@ public class FacebookTestManager
 		return result;
 	}
 
-	
 	/**
 	 * This method has three friends create 3 conversations A-B, B-C, A-C and
 	 * then checks that all messages are collected.
@@ -257,7 +253,8 @@ public class FacebookTestManager
 		scan.nextLine();
 
 		data1.collectData(true, false, false);
-		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		System.out
+				.print("Log out of the test user and back into your real profile. Enter done when finished. ");
 		scan.nextLine();
 
 		openLink(user2.getLoginUrl());
@@ -273,7 +270,8 @@ public class FacebookTestManager
 		scan.nextLine();
 
 		data2.collectData(true, false, false);
-		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		System.out
+				.print("Log out of the test user and back into your real profile. Enter done when finished. ");
 		scan.nextLine();
 
 		openLink(user3.getLoginUrl());
@@ -289,7 +287,8 @@ public class FacebookTestManager
 		scan.nextLine();
 
 		data3.collectData(true, false, false);
-		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		System.out
+				.print("Log out of the test user and back into your real profile. Enter done when finished. ");
 		scan.nextLine();
 
 		data2.saveJSONData("conversations.json");
@@ -308,8 +307,7 @@ public class FacebookTestManager
 						"Abby and Bob conversation",
 						messages.size() == 1
 								&& messages.get(0).getMessage()
-										.equals(abbyToBob),
-										true);
+										.equals(abbyToBob), true);
 			}
 			if (hasParticipant(c, user1.getId())
 					&& hasParticipant(c, user3.getId()))
@@ -322,8 +320,8 @@ public class FacebookTestManager
 										.equals(abbyToCathy), true);
 			}
 		}
-		
-		//We can get two way for abby and bob, but only one way for bob/cathy
+
+		// We can get two way for abby and bob, but only one way for bob/cathy
 		ArrayList<Conversation> data2Con = data2.getConversations();
 		for (Conversation c : data2Con)
 		{
@@ -350,8 +348,8 @@ public class FacebookTestManager
 										.equals(bobToCathy), true);
 			}
 		}
-		
-		//We can get two way for both
+
+		// We can get two way for both
 		ArrayList<Conversation> data3Con = data3.getConversations();
 		for (Conversation c : data3Con)
 		{
@@ -380,14 +378,12 @@ public class FacebookTestManager
 										.equals(cathyToBob), true);
 			}
 		}
-		
 
 		clearTestUsers();
 
 		return result;
 	}
 
-	
 	/**
 	 * This function tests collecting group Facebook messages by creating one
 	 * and having three friends sending messages to each other. We then check to
@@ -396,7 +392,8 @@ public class FacebookTestManager
 	 * @return
 	 * @throws FacebookException
 	 */
-	public TestResult facebookIMGroupConversationTest() throws FacebookException
+	public TestResult facebookIMGroupConversationTest()
+			throws FacebookException
 	{
 		TestResult result = new TestResult("IM Group Conversation Test",
 				System.out);
@@ -428,7 +425,8 @@ public class FacebookTestManager
 		scan.nextLine();
 
 		data1.collectData(true, false, false);
-		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		System.out
+				.print("Log out of the test user and back into your real profile. Enter done when finished. ");
 		scan.nextLine();
 
 		openLink(user2.getLoginUrl());
@@ -440,7 +438,8 @@ public class FacebookTestManager
 		scan.nextLine();
 
 		data2.collectData(true, false, false);
-		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		System.out
+				.print("Log out of the test user and back into your real profile. Enter done when finished. ");
 		scan.nextLine();
 
 		openLink(user3.getLoginUrl());
@@ -452,7 +451,8 @@ public class FacebookTestManager
 		scan.nextLine();
 
 		data3.collectData(true, false, false);
-		System.out.print("Log out of the test user and back into your real profile. Enter done when finished. ");
+		System.out
+				.print("Log out of the test user and back into your real profile. Enter done when finished. ");
 		scan.nextLine();
 
 		// Check that Abby had a conversation with bob and cathy
@@ -463,9 +463,9 @@ public class FacebookTestManager
 				hasParticipant(groupConvo1, user2.getId())
 						&& hasParticipant(groupConvo1, user3.getId()), true);
 
-		//Only her message because of how Facebook test users have to log out
-		result.addResult("Abby's ID, convo has her sent message",
-				groupConvo1.getMessages().get(0).getMessage().equals(message1), true);
+		// Only her message because of how Facebook test users have to log out
+		result.addResult("Abby's ID, convo has her sent message", groupConvo1
+				.getMessages().get(0).getMessage().equals(message1), true);
 
 		ArrayList<Conversation> data2Con = data2.getConversations();
 		Conversation groupConvo2 = data2Con.get(0);
@@ -473,8 +473,8 @@ public class FacebookTestManager
 				"Bob's ID, convo has Abby and Cathy",
 				hasParticipant(groupConvo2, user1.getId())
 						&& hasParticipant(groupConvo2, user3.getId()), true);
-		
-		//Only the first two because of how Facebook test users have to log out
+
+		// Only the first two because of how Facebook test users have to log out
 		result.addResult("Bob's ID, convo has the first two messages",
 				groupConvo2.getMessages().get(0).getMessage().equals(message1)
 						&& groupConvo2.getMessages().get(1).getMessage()
@@ -492,13 +492,12 @@ public class FacebookTestManager
 								.equals(message2)
 						&& groupConvo3.getMessages().get(2).getMessage()
 								.equals(message3), true);
-		
+
 		clearTestUsers();
 
 		return result;
 	}
 
-	
 	/**
 	 * This function opens the given url in the user's default browser. If it
 	 * cannot, it prints the link to open.
@@ -520,7 +519,6 @@ public class FacebookTestManager
 		}
 	}
 
-	
 	/**
 	 * Creates a facebook TestUser with a given username
 	 * 
@@ -544,8 +542,7 @@ public class FacebookTestManager
 		}
 		return testUsers.get(username);
 	}
-	
-	
+
 	/**
 	 * This method deletes all current Facebook test users
 	 */
@@ -563,7 +560,6 @@ public class FacebookTestManager
 			e.printStackTrace();
 		}
 	}
-	
 
 	/**
 	 * Helper function to determine if a given facebook conversation has a given
@@ -595,7 +591,7 @@ public class FacebookTestManager
 		}
 		catch (IllegalStateException e)
 		{
-			//App id / secret pair already set
+			// App id / secret pair already set
 		}
 		fSession.setOAuthAccessToken(APP_ACCESS_TOKEN);
 	}
