@@ -1,4 +1,4 @@
-package datacollection;
+package com.example.messagesiphon.makeuser;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterException;

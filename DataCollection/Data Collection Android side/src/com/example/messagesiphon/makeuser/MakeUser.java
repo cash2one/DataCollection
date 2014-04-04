@@ -1,13 +1,10 @@
-package datacollection;
+package com.example.messagesiphon.makeuser;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
@@ -27,6 +24,7 @@ import org.json.JSONObject;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -58,8 +56,9 @@ import com.facebook.SessionState;
  * 
  * @author Tom
  */
-public class MainActivity extends Activity
+public class MakeUser extends Activity
 {
+	
 	private static final String SERVER_URL = "http://128.255.45.52:7777/server/makeuser/";
 	private Button loginToFacebook;
 	private Button loginToTwitter;
@@ -80,7 +79,7 @@ public class MainActivity extends Activity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
+		Log.i("test","makeUser");
 		// Create the user interface
 		setupUI();
 
@@ -140,31 +139,16 @@ public class MainActivity extends Activity
 
 	protected void savePhoneNumber()
 	{
-		File root = android.os.Environment.getExternalStorageDirectory();
-		File dirr = new File(root.getAbsolutePath() + "/appData");
-		dirr.mkdirs();
-		File file1 = new File(dirr, "app.txt");
-		try
-		{
-			Log.i("look", "step3");
-			FileOutputStream f1 = new FileOutputStream(file1);
-			PrintWriter pw1 = new PrintWriter(f1);
-			pw1.println(phoneField.getText().toString());
-			pw1.flush();
-			pw1.close();
-			f1.close();
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-			Log.i("writer",
-					"******* File not found. Did you"
-							+ " add a WRITE_EXTERNAL_STORAGE permission to the manifest?");
-		}
-		catch (IOException e)
-		{
-			Log.i("writer", "IOEX");
-			e.printStackTrace();
+
+		String filename = "phoneNumber";
+		FileOutputStream outputStream;
+
+		try {
+		  outputStream = openFileOutput(filename, Context.MODE_PRIVATE);
+		  outputStream.write(phoneField.getText().toString().getBytes());
+		  outputStream.close();
+		} catch (Exception e) {
+		  e.printStackTrace();
 		}
 	}
 
@@ -260,7 +244,7 @@ public class MainActivity extends Activity
 		// Call this method if there is an authentication problem, it was only
 		// needed the first time getting the app authenticated with facebook,
 		// and remains for debugging purposes.
-		 getKeyIfKeyWrong();
+		// getKeyIfKeyWrong();
 
 		// start Facebook Login
 		Session.openActiveSession(this, true, new Session.StatusCallback()
@@ -281,7 +265,7 @@ public class MainActivity extends Activity
 
 					// send our permissions request
 					Session.getActiveSession().requestNewReadPermissions(
-							new NewPermissionsRequest(MainActivity.this,
+							new NewPermissionsRequest(MakeUser.this,
 									permissions));
 					loginToFacebook.setEnabled(false);
 					loginToTwitter.setEnabled(true);
@@ -291,9 +275,8 @@ public class MainActivity extends Activity
 	}
 
 	/**
-	 * This method generates a hash that needs to be added to the list of
-	 * accepted hashes on the Facebook developer page. It only needs to be done
-	 * once, the first time the app is built on a new computer
+	 * This method fixes some app authentication errors when run for the first
+	 * time before the app is published.
 	 */
 	private void getKeyIfKeyWrong()
 	{

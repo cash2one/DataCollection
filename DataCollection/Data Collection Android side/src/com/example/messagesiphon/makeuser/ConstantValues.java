@@ -1,4 +1,4 @@
-package datacollection;
+package com.example.messagesiphon.makeuser;
 
 public class ConstantValues
 {
