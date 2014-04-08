@@ -15,93 +15,74 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:gravity="center"
-        android:text="University of Iowa\nCyberbullying Research\nInitial Login"
+        android:text="University of Iowa\nCyberbullying Research\nRegistration"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:orientation="vertical" >
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <Button
-                android:id="@+id/loginToFacebookButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center_vertical"
-                android:text="Login to Facebook" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-            <Button
-                android:id="@+id/loginToTwitterButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:enabled="false"
-                android:text="Login to Twitter" />
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/phoneLayout"
+        <Button
+            android:id="@+id/loginToFacebookButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:text="Login to Facebook" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+        <Button
+            android:id="@+id/loginToTwitterButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:text="Login to Twitter" />
 
-                <TextView
-                    android:id="@+id/phoneLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:enabled="false"
-                    android:paddingTop="15dp"
-                    android:paddingBottom="10dp"
-                    android:text="Phone Number"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-            </RelativeLayout>
+        <TextView
+            android:id="@+id/phoneLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:paddingBottom="10dp"
+            android:paddingTop="15dp"
+            android:text="Phone Number"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+        <EditText
+            android:id="@+id/phoneInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:enabled="false"
+            android:inputType="phone"
+            android:maxLength="10" >
 
-                <EditText
-                    android:id="@+id/phoneInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:ems="10"
-                    android:enabled="false"
-                    android:inputType="phone"
-                    android:maxLength="10" />
-            </RelativeLayout>
-        </LinearLayout>
+            <requestFocus />
+        </EditText>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:gravity="right" >
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/button1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_weight="1"
+                android:text="Help" />
 
             <Button
                 android:id="@+id/doneButton"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="right"
                 android:text="Submit" />
+
         </LinearLayout>
+
     </LinearLayout>
 
 </RelativeLayout>
