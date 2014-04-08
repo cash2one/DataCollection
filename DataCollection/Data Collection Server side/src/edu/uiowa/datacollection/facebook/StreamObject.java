@@ -29,6 +29,10 @@ public class StreamObject
 
 	private ArrayList<Comment> comments = new ArrayList<Comment>();
 
+	private JSONArray likeArray;
+
+	private ArrayList<Like> likes = new ArrayList<Like>();
+
 	/**
 	 * This creates a StreamObject which holds a result from the stream FQL
 	 * table.
@@ -49,7 +53,7 @@ public class StreamObject
 		}
 	}
 
-	public void setCommentArray(JSONArray commentArray)
+	public void setCommentData(JSONArray commentArray)
 	{
 		for (int i = 0; i < commentArray.length(); i++)
 		{
@@ -64,6 +68,23 @@ public class StreamObject
 		}
 
 		this.commentArray = commentArray;
+	}
+	
+	public void setLikeData(JSONArray likeArray)
+	{
+		for (int i = 0; i < likeArray.length(); i++)
+		{
+			try
+			{
+				likes.add(new Like(likeArray.getJSONObject(i)));
+			}
+			catch (JSONException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		this.likeArray = likeArray;
 	}
 
 	public String toString()
@@ -100,6 +121,7 @@ public class StreamObject
 		try
 		{
 			jsonObject.put("Comments", commentArray);
+			jsonObject.put("Likes", likeArray);
 		}
 		catch (JSONException e)
 		{

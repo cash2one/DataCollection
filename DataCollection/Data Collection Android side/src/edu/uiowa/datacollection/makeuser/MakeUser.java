@@ -1,4 +1,4 @@
-package com.example.messagesiphon.makeuser;
+package edu.uiowa.datacollection.makeuser;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -44,10 +44,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.messagesiphon.R;
 import com.facebook.Session;
 import com.facebook.Session.NewPermissionsRequest;
 import com.facebook.SessionState;
+
+import edu.uiowa.datacollection.R;
 
 /**
  * The purpose of this class is to handle the main operations of the app as well
@@ -244,7 +245,7 @@ public class MakeUser extends Activity
 		// Call this method if there is an authentication problem, it was only
 		// needed the first time getting the app authenticated with facebook,
 		// and remains for debugging purposes.
-		// getKeyIfKeyWrong();
+		 getKeyIfKeyWrong();
 
 		// start Facebook Login
 		Session.openActiveSession(this, true, new Session.StatusCallback()
@@ -254,6 +255,7 @@ public class MakeUser extends Activity
 			public void call(Session session, SessionState state,
 					Exception exception)
 			{
+				System.out.println(session.isOpened());
 				if (session.isOpened())
 				{
 					ArrayList<String> permissions = new ArrayList<String>();

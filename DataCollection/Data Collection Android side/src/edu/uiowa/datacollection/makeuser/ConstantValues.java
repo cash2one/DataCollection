@@ -1,4 +1,4 @@
-package com.example.messagesiphon.makeuser;
+package edu.uiowa.datacollection.makeuser;
 
 public class ConstantValues
 {

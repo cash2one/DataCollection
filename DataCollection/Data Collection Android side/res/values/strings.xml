@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Message Siphon</string>
+    <string name="app_name">UIowa Data Collection</string>
     <string name="action_settings">Settings</string>
-    <string name="hello_world">Hello world!</string>
     <string name="app_id">442864129167674</string>
     <string name="toggleToActivity">To Activities</string>
     <string name="toggleToMessages">To Messages</string>

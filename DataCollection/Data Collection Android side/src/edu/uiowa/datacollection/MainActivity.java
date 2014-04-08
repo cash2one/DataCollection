@@ -1,8 +1,8 @@
-package com.example.messagesiphon.datacollection;
+package edu.uiowa.datacollection;
 
 import java.io.File;
 
-import com.example.messagesiphon.makeuser.MakeUser;
+import edu.uiowa.datacollection.makeuser.MakeUser;
 
 import android.app.Activity;
 import android.content.Intent;

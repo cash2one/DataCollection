@@ -1,4 +1,4 @@
-package com.example.messagesiphon.datacollection;
+package edu.uiowa.datacollection;
 
 import java.util.Date;
 import java.util.List;

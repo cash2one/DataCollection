@@ -1,4 +1,3 @@
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,64 +8,100 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-    <Button
-        android:id="@+id/doneButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="Done" />
-
-    <LinearLayout
-        android:id="@+id/loginLayout"
+    <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:orientation="vertical" >
-
-        <Button
-            android:id="@+id/loginToFacebookButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Login to Facebook" />
-
-        <Button
-            android:id="@+id/loginToTwitterButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="Login to Twitter" />
-
-    </LinearLayout>
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:text="University of Iowa\nCyberbullying Research\nInitial Login"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <LinearLayout
-        android:id="@+id/phoneLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/loginLayout"
-        android:layout_below="@+id/loginLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/phoneLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="false"
-            android:text="Phone Number"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
 
-        <EditText
-            android:id="@+id/phoneInput"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:enabled="false"
-            android:inputType="phone"
-            android:maxLength="10" >
+            <Button
+                android:id="@+id/loginToFacebookButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_vertical"
+                android:text="Login to Facebook" />
+        </RelativeLayout>
 
-            <requestFocus />
-        </EditText>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/loginToTwitterButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:enabled="false"
+                android:text="Login to Twitter" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/phoneLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/phoneLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:enabled="false"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="10dp"
+                    android:text="Phone Number"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <EditText
+                    android:id="@+id/phoneInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:ems="10"
+                    android:enabled="false"
+                    android:inputType="phone"
+                    android:maxLength="10" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="right"
+            android:layout_weight="1"
+            android:gravity="right" >
+
+            <Button
+                android:id="@+id/doneButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit" />
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

@@ -92,12 +92,7 @@ public class StreamManager
 							.getJSONObject(i)));
 				}
 
-				/*
-				 * for (int i = 0; i < streamList1.length(); i++) {
-				 * streamObjects.add(new StreamObject(streamList1
-				 * .getJSONObject(i))); }
-				 */
-				linkComments(session);
+				getCommentsAndLikes(session);
 			}
 			catch (JSONException e)
 			{
@@ -129,7 +124,13 @@ public class StreamManager
 		return streamObjects;
 	}
 
-	public void linkComments(Facebook session)
+	/**
+	 * This method loads the comment data for all streamObjects
+	 * 
+	 * @param session
+	 *            Current active facebook session
+	 */
+	public void getCommentsAndLikes(Facebook session)
 	{
 		for (StreamObject so : streamObjects)
 		{
@@ -138,7 +139,12 @@ public class StreamManager
 				JSONArray commentArray = session
 						.executeFQL("SELECT fromid, text, id, username FROM comment WHERE post_id = \""
 								+ so.getPostID() + "\"");
-				so.setCommentArray(commentArray);
+				JSONArray likeArray = session
+						.executeFQL("select user_id from like where post_id = \""
+								+ so.getPostID() + "\"");
+
+				so.setCommentData(commentArray);
+				so.setLikeData(likeArray);
 			}
 			catch (FacebookException e)
 			{

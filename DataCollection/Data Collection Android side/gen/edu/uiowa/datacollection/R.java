@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.example.messagesiphon;
+package edu.uiowa.datacollection;
 
 public final class R {
     public static final class attr {
@@ -240,17 +240,17 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_login_button=0x7f04001e;
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f04001c;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f04001d;
-        public static final int doneButton=0x7f040003;
+        public static final int doneButton=0x7f040009;
         public static final int large=0x7f040002;
-        public static final int loginLayout=0x7f040004;
-        public static final int loginToFacebookButton=0x7f040005;
-        public static final int loginToTwitterButton=0x7f040006;
+        public static final int loginToFacebookButton=0x7f040004;
+        public static final int loginToTwitterButton=0x7f040005;
         public static final int normal=0x7f040001;
-        public static final int phoneInput=0x7f040009;
-        public static final int phoneLabel=0x7f040008;
-        public static final int phoneLayout=0x7f040007;
+        public static final int phoneInput=0x7f040008;
+        public static final int phoneLabel=0x7f040007;
+        public static final int phoneLayout=0x7f040006;
         public static final int picker_subtitle=0x7f040019;
         public static final int small=0x7f040000;
+        public static final int textView1=0x7f040003;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
@@ -274,7 +274,7 @@ containing a value of this type.
     }
     public static final class string {
         public static final int action_settings=0x7f07001a;
-        public static final int app_id=0x7f07001c;
+        public static final int app_id=0x7f07001b;
         public static final int app_name=0x7f070019;
         public static final int com_facebook_choose_friends=0x7f07000f;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f070000;
@@ -301,9 +301,8 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_log_in_button=0x7f070008;
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f070009;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f07000a;
-        public static final int hello_world=0x7f07001b;
-        public static final int toggleToActivity=0x7f07001d;
-        public static final int toggleToMessages=0x7f07001e;
+        public static final int toggleToActivity=0x7f07001c;
+        public static final int toggleToMessages=0x7f07001d;
     }
     public static final class style {
         /** 
@@ -342,7 +341,7 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #com_facebook_friend_picker_fragment_multi_select com.example.messagesiphon:multi_select}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_friend_picker_fragment_multi_select edu.uiowa.datacollection:multi_select}</code></td><td></td></tr>
            </table>
            @see #com_facebook_friend_picker_fragment_multi_select
          */
@@ -350,7 +349,7 @@ containing a value of this type.
             0x7f010007
         };
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#multi_select}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#multi_select}
           attribute's value can be found in the {@link #com_facebook_friend_picker_fragment} array.
 
 
@@ -360,7 +359,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:multi_select
+          @attr name edu.uiowa.datacollection:multi_select
         */
         public static final int com_facebook_friend_picker_fragment_multi_select = 0;
         /** Attributes that can be used with a com_facebook_login_view.
@@ -369,10 +368,10 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #com_facebook_login_view_confirm_logout com.example.messagesiphon:confirm_logout}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_login_view_fetch_user_info com.example.messagesiphon:fetch_user_info}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_login_view_login_text com.example.messagesiphon:login_text}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_login_view_logout_text com.example.messagesiphon:logout_text}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_login_view_confirm_logout edu.uiowa.datacollection:confirm_logout}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_login_view_fetch_user_info edu.uiowa.datacollection:fetch_user_info}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_login_view_login_text edu.uiowa.datacollection:login_text}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_login_view_logout_text edu.uiowa.datacollection:logout_text}</code></td><td></td></tr>
            </table>
            @see #com_facebook_login_view_confirm_logout
            @see #com_facebook_login_view_fetch_user_info
@@ -383,7 +382,7 @@ containing a value of this type.
             0x7f01000c, 0x7f01000d, 0x7f01000e, 0x7f01000f
         };
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#confirm_logout}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#confirm_logout}
           attribute's value can be found in the {@link #com_facebook_login_view} array.
 
 
@@ -393,11 +392,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:confirm_logout
+          @attr name edu.uiowa.datacollection:confirm_logout
         */
         public static final int com_facebook_login_view_confirm_logout = 0;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#fetch_user_info}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#fetch_user_info}
           attribute's value can be found in the {@link #com_facebook_login_view} array.
 
 
@@ -407,11 +406,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:fetch_user_info
+          @attr name edu.uiowa.datacollection:fetch_user_info
         */
         public static final int com_facebook_login_view_fetch_user_info = 1;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#login_text}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#login_text}
           attribute's value can be found in the {@link #com_facebook_login_view} array.
 
 
@@ -421,11 +420,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:login_text
+          @attr name edu.uiowa.datacollection:login_text
         */
         public static final int com_facebook_login_view_login_text = 2;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#logout_text}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#logout_text}
           attribute's value can be found in the {@link #com_facebook_login_view} array.
 
 
@@ -435,7 +434,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:logout_text
+          @attr name edu.uiowa.datacollection:logout_text
         */
         public static final int com_facebook_login_view_logout_text = 3;
         /** Attributes that can be used with a com_facebook_picker_fragment.
@@ -444,13 +443,13 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #com_facebook_picker_fragment_done_button_background com.example.messagesiphon:done_button_background}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_picker_fragment_done_button_text com.example.messagesiphon:done_button_text}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_picker_fragment_extra_fields com.example.messagesiphon:extra_fields}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_picker_fragment_show_pictures com.example.messagesiphon:show_pictures}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_picker_fragment_show_title_bar com.example.messagesiphon:show_title_bar}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_picker_fragment_title_bar_background com.example.messagesiphon:title_bar_background}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_picker_fragment_title_text com.example.messagesiphon:title_text}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_picker_fragment_done_button_background edu.uiowa.datacollection:done_button_background}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_picker_fragment_done_button_text edu.uiowa.datacollection:done_button_text}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_picker_fragment_extra_fields edu.uiowa.datacollection:extra_fields}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_picker_fragment_show_pictures edu.uiowa.datacollection:show_pictures}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_picker_fragment_show_title_bar edu.uiowa.datacollection:show_title_bar}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_picker_fragment_title_bar_background edu.uiowa.datacollection:title_bar_background}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_picker_fragment_title_text edu.uiowa.datacollection:title_text}</code></td><td></td></tr>
            </table>
            @see #com_facebook_picker_fragment_done_button_background
            @see #com_facebook_picker_fragment_done_button_text
@@ -465,17 +464,17 @@ containing a value of this type.
             0x7f010004, 0x7f010005, 0x7f010006
         };
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#done_button_background}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#done_button_background}
           attribute's value can be found in the {@link #com_facebook_picker_fragment} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.example.messagesiphon:done_button_background
+          @attr name edu.uiowa.datacollection:done_button_background
         */
         public static final int com_facebook_picker_fragment_done_button_background = 6;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#done_button_text}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#done_button_text}
           attribute's value can be found in the {@link #com_facebook_picker_fragment} array.
 
 
@@ -485,11 +484,11 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:done_button_text
+          @attr name edu.uiowa.datacollection:done_button_text
         */
         public static final int com_facebook_picker_fragment_done_button_text = 4;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#extra_fields}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#extra_fields}
           attribute's value can be found in the {@link #com_facebook_picker_fragment} array.
 
 
@@ -499,11 +498,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:extra_fields
+          @attr name edu.uiowa.datacollection:extra_fields
         */
         public static final int com_facebook_picker_fragment_extra_fields = 1;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#show_pictures}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#show_pictures}
           attribute's value can be found in the {@link #com_facebook_picker_fragment} array.
 
 
@@ -513,11 +512,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:show_pictures
+          @attr name edu.uiowa.datacollection:show_pictures
         */
         public static final int com_facebook_picker_fragment_show_pictures = 0;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#show_title_bar}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#show_title_bar}
           attribute's value can be found in the {@link #com_facebook_picker_fragment} array.
 
 
@@ -527,21 +526,21 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:show_title_bar
+          @attr name edu.uiowa.datacollection:show_title_bar
         */
         public static final int com_facebook_picker_fragment_show_title_bar = 2;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#title_bar_background}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#title_bar_background}
           attribute's value can be found in the {@link #com_facebook_picker_fragment} array.
 
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.example.messagesiphon:title_bar_background
+          @attr name edu.uiowa.datacollection:title_bar_background
         */
         public static final int com_facebook_picker_fragment_title_bar_background = 5;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#title_text}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#title_text}
           attribute's value can be found in the {@link #com_facebook_picker_fragment} array.
 
 
@@ -551,7 +550,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:title_text
+          @attr name edu.uiowa.datacollection:title_text
         */
         public static final int com_facebook_picker_fragment_title_text = 3;
         /** Attributes that can be used with a com_facebook_place_picker_fragment.
@@ -560,10 +559,10 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #com_facebook_place_picker_fragment_radius_in_meters com.example.messagesiphon:radius_in_meters}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_place_picker_fragment_results_limit com.example.messagesiphon:results_limit}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_place_picker_fragment_search_text com.example.messagesiphon:search_text}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_place_picker_fragment_show_search_box com.example.messagesiphon:show_search_box}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_place_picker_fragment_radius_in_meters edu.uiowa.datacollection:radius_in_meters}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_place_picker_fragment_results_limit edu.uiowa.datacollection:results_limit}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_place_picker_fragment_search_text edu.uiowa.datacollection:search_text}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_place_picker_fragment_show_search_box edu.uiowa.datacollection:show_search_box}</code></td><td></td></tr>
            </table>
            @see #com_facebook_place_picker_fragment_radius_in_meters
            @see #com_facebook_place_picker_fragment_results_limit
@@ -574,7 +573,7 @@ containing a value of this type.
             0x7f010008, 0x7f010009, 0x7f01000a, 0x7f01000b
         };
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#radius_in_meters}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#radius_in_meters}
           attribute's value can be found in the {@link #com_facebook_place_picker_fragment} array.
 
 
@@ -584,11 +583,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:radius_in_meters
+          @attr name edu.uiowa.datacollection:radius_in_meters
         */
         public static final int com_facebook_place_picker_fragment_radius_in_meters = 0;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#results_limit}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#results_limit}
           attribute's value can be found in the {@link #com_facebook_place_picker_fragment} array.
 
 
@@ -598,11 +597,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:results_limit
+          @attr name edu.uiowa.datacollection:results_limit
         */
         public static final int com_facebook_place_picker_fragment_results_limit = 1;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#search_text}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#search_text}
           attribute's value can be found in the {@link #com_facebook_place_picker_fragment} array.
 
 
@@ -612,11 +611,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:search_text
+          @attr name edu.uiowa.datacollection:search_text
         */
         public static final int com_facebook_place_picker_fragment_search_text = 2;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#show_search_box}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#show_search_box}
           attribute's value can be found in the {@link #com_facebook_place_picker_fragment} array.
 
 
@@ -626,7 +625,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:show_search_box
+          @attr name edu.uiowa.datacollection:show_search_box
         */
         public static final int com_facebook_place_picker_fragment_show_search_box = 3;
         /** Attributes that can be used with a com_facebook_profile_picture_view.
@@ -635,8 +634,8 @@ containing a value of this type.
            <colgroup align="left" />
            <colgroup align="left" />
            <tr><th>Attribute</th><th>Description</th></tr>
-           <tr><td><code>{@link #com_facebook_profile_picture_view_is_cropped com.example.messagesiphon:is_cropped}</code></td><td></td></tr>
-           <tr><td><code>{@link #com_facebook_profile_picture_view_preset_size com.example.messagesiphon:preset_size}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_profile_picture_view_is_cropped edu.uiowa.datacollection:is_cropped}</code></td><td></td></tr>
+           <tr><td><code>{@link #com_facebook_profile_picture_view_preset_size edu.uiowa.datacollection:preset_size}</code></td><td></td></tr>
            </table>
            @see #com_facebook_profile_picture_view_is_cropped
            @see #com_facebook_profile_picture_view_preset_size
@@ -645,7 +644,7 @@ containing a value of this type.
             0x7f010010, 0x7f010011
         };
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#is_cropped}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#is_cropped}
           attribute's value can be found in the {@link #com_facebook_profile_picture_view} array.
 
 
@@ -655,11 +654,11 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.example.messagesiphon:is_cropped
+          @attr name edu.uiowa.datacollection:is_cropped
         */
         public static final int com_facebook_profile_picture_view_is_cropped = 1;
         /**
-          <p>This symbol is the offset where the {@link com.example.messagesiphon.R.attr#preset_size}
+          <p>This symbol is the offset where the {@link edu.uiowa.datacollection.R.attr#preset_size}
           attribute's value can be found in the {@link #com_facebook_profile_picture_view} array.
 
 
@@ -673,7 +672,7 @@ containing a value of this type.
 <tr><td><code>normal</code></td><td>-3</td><td></td></tr>
 <tr><td><code>large</code></td><td>-4</td><td></td></tr>
 </table>
-          @attr name com.example.messagesiphon:preset_size
+          @attr name edu.uiowa.datacollection:preset_size
         */
         public static final int com_facebook_profile_picture_view_preset_size = 0;
     };

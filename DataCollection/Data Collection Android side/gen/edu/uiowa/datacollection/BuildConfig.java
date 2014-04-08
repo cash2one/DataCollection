@@ -1,5 +1,5 @@
 /** Automatically generated file. DO NOT MODIFY */
-package com.example.messagesiphon;
+package edu.uiowa.datacollection;
 
 public final class BuildConfig {
     public final static boolean DEBUG = true;
