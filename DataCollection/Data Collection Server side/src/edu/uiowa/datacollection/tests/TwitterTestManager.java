@@ -150,11 +150,11 @@ public class TwitterTestManager
 		result.addResult(
 				"Bob's mention collected",
 				(mentionMessages.get(0).getText().equals(status1.getText()) && mentionMessages
-						.get(0).getSender().getTweetId()
+						.get(0).getSender().getTwitterID()
 						.equals("" + TEST_USER_2_ID))
 						|| (mentionMessages.get(1).getText()
 								.equals(status1.getText()) && mentionMessages
-								.get(1).getSender().getTweetId()
+								.get(1).getSender().getTwitterID()
 								.equals("" + TEST_USER_2_ID)), true);
 		// Check that we collected cathy's mention, it will either be first or
 		// second
@@ -162,11 +162,11 @@ public class TwitterTestManager
 		result.addResult(
 				"Cathy's mention collected",
 				(mentionMessages.get(0).getText().equals(status2.getText()) && mentionMessages
-						.get(0).getSender().getTweetId()
+						.get(0).getSender().getTwitterID()
 						.equals("" + TEST_USER_3_ID))
 						|| (mentionMessages.get(1).getText()
 								.equals(status2.getText()) && mentionMessages
-								.get(1).getSender().getTweetId()
+								.get(1).getSender().getTwitterID()
 								.equals("" + TEST_USER_3_ID)), true);
 
 		clearTwitter();
@@ -224,7 +224,7 @@ public class TwitterTestManager
 		result.addResult(
 				"Abby status collected",
 				userMessages.get(0).getText().equals(statusText)
-						&& userMessages.get(0).getSender().getTweetId()
+						&& userMessages.get(0).getSender().getTwitterID()
 								.equals("" + TEST_USER_1_ID), true);
 
 		// Check that we collected bob's reply, it will either be first or
@@ -233,11 +233,11 @@ public class TwitterTestManager
 		result.addResult(
 				"Bob's reply collected",
 				(mentionMessages.get(0).getText().equals(reply1.getText()) && mentionMessages
-						.get(0).getSender().getTweetId()
+						.get(0).getSender().getTwitterID()
 						.equals("" + TEST_USER_2_ID))
 						|| (mentionMessages.get(1).getText()
 								.equals(reply1.getText()) && mentionMessages
-								.get(1).getSender().getTweetId()
+								.get(1).getSender().getTwitterID()
 								.equals("" + TEST_USER_2_ID)), true);
 		// Check that we collected cathy's reply, it will either be first or
 		// second
@@ -245,11 +245,11 @@ public class TwitterTestManager
 		result.addResult(
 				"Cathy's reply collected",
 				(mentionMessages.get(0).getText().equals(reply2.getText()) && mentionMessages
-						.get(0).getSender().getTweetId()
+						.get(0).getSender().getTwitterID()
 						.equals("" + TEST_USER_3_ID))
 						|| (mentionMessages.get(1).getText()
 								.equals(reply2.getText()) && mentionMessages
-								.get(1).getSender().getTweetId()
+								.get(1).getSender().getTwitterID()
 								.equals("" + TEST_USER_3_ID)), true);
 
 		clearTwitter();
@@ -430,7 +430,7 @@ public class TwitterTestManager
 	private boolean containsUser(Conversation convo, long userID)
 	{
 		for (User user : convo.getParticipantList())
-			if (user.getTweetId().equals(String.valueOf(userID)))
+			if (user.getTwitterID().equals(String.valueOf(userID)))
 				return true;
 		return false;
 	}

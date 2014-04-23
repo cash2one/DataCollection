@@ -1,6 +1,6 @@
 package edu.uiowa.datacollection.facebook;
 
-import java.io.IOException;
+import java.util.Scanner;
 
 import edu.uiowa.datacollection.util.JsonHelper;
 import edu.uiowa.datacollection.util.PropertyHelper;
@@ -11,39 +11,69 @@ import facebook4j.internal.org.json.JSONObject;
 
 public class CollectFacebookData
 {
-	// public static String SERVER_URL =
-	// "http://128.255.45.52:7777/server/getfacetoken/";
+	private static final String BLANK_ACCESS_TOKEN = " ";
 
-	public static void main(String[] args) throws JSONException,
-			FacebookException, IOException
+	public static void main(String[] args) throws FacebookException,
+			JSONException
 	{
 		PropertyHelper ph = new PropertyHelper("dataCollection.properties");
-		String SERVER_URL = ph.getURLAddress();
-		JSONObject obj = JsonHelper.readJsonFromUrl(SERVER_URL
-				+ "getfacetoken/");
+		JSONObject obj = null;
+
+		String baseFilename = "facebook_data";
+		boolean saveJsonDataLocally = false;
+
+		System.out.print("Save JSON data locally? (y/n): ");
+		Scanner scan = new Scanner(System.in);
+		if (scan.nextLine().toUpperCase().charAt(0) == 'Y')
+			saveJsonDataLocally = true;
+		scan.close();
+
+		try
+		{
+			obj = JsonHelper.readJsonFromUrl(ph.getFacebookTokensUrl());
+
+			if (obj == null)
+			{
+				System.out
+						.println("ERROR: Could not load data from the server.");
+				return;
+			}
+		}
+		catch (JSONException e)
+		{
+			System.out.println("ERROR: could not read JSON"
+					+ " data from the server.");
+			return;
+		}
 
 		JSONArray users = obj.getJSONArray("data");
 
 		for (int i = 0; i < users.length(); i++)
 		{
 			JSONObject user = users.getJSONObject(i);
-			System.out.println(user.toString(1));
 
 			String accessToken = user.getString("token");
 			String phoneNumber = user.getString("phone");
 			JSONArray lastConvoTimes = user.getJSONArray("info");
 
-			System.out.println("Access Token: " + accessToken);
-			System.out.println("Phone Number: " + phoneNumber);
+			System.out.println("Currently accessing data for " + phoneNumber);
+			System.out.println("\tAccess Token: " + accessToken);
 
-			DataManager manager = new DataManager(accessToken, phoneNumber);
-			manager.loadOldConversationTimes(lastConvoTimes);
+			if (!accessToken.equals(BLANK_ACCESS_TOKEN))
+			{
+				DataManager manager = new DataManager(accessToken, phoneNumber);
+				manager.loadOldConversationTimes(lastConvoTimes);
 
-			manager.collectData(true, // Collect message
-					true, // Limit to one month
-					true); // Collect stream
+				manager.collectData(true, // Collect message
+						true, // Limit to one month
+						true); // Collect stream
 
-			JsonHelper.postJsonData(SERVER_URL, manager.getJSONData());
+				if (saveJsonDataLocally)
+					manager.saveJSONData(baseFilename + "_" + phoneNumber);
+
+				JsonHelper.postJsonData(ph.getFacebookUploadUrl(),
+						manager.getJSONData());
+			}
 		}
 	}
 }

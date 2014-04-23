@@ -1,6 +1,6 @@
 package edu.uiowa.datacollection.twitter;
 
-import java.util.ArrayList;
+import java.util.Scanner;
 
 import edu.uiowa.datacollection.util.JsonHelper;
 import edu.uiowa.datacollection.util.PropertyHelper;
@@ -11,60 +11,76 @@ import facebook4j.internal.org.json.JSONObject;
 public class CollectTwitterData
 {
 
+	public static final String BLANK_TWITTER_TOKEN = " ";
+
 	/**
 	 * @param args
 	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception
 	{
-		// TODO Auto-generated method stub
-		PropertyHelper ph=new PropertyHelper("dataCollection.properties");
-		String url = ph.getURLAddress()+"gettwittertoken/";
-		String postSeparateUrl = ph.getURLAddress()+"posttwitterseparate/";
-		/*String url = "http://127.0.0.1:8002/DataCollection/gettwittertoken/";
-		String postUrl = "http://127.0.0.1:8002/DataCollection/posttwitter/";
-		String postSeparateUrl="http://127.0.0.1:8002/DataCollection/posttwitterseparate/";*/
-		
-		JSONObject obj = JsonHelper.readJsonFromUrl(url);
+		PropertyHelper ph = new PropertyHelper("dataCollection.properties");
+
+		String baseFilename = "facebook_data";
+		boolean saveJsonDataLocally = false;
+
+		System.out.print("Save JSON data locally? (y/n): ");
+		Scanner scan = new Scanner(System.in);
+		if (scan.nextLine().toUpperCase().charAt(0) == 'Y')
+			saveJsonDataLocally = true;
+		scan.close();
+
+		JSONObject obj = null;
+		try
+		{
+			obj = JsonHelper.readJsonFromUrl(ph.getTwitterTokensUrl());
+
+			if (obj == null)
+			{
+				System.out
+						.println("ERROR: Could not load data from the server.");
+				return;
+			}
+		}
+		catch (JSONException e)
+		{
+			System.out.println("ERROR: could not read JSON"
+					+ " data from the server.");
+			return;
+		}
+
 		JSONArray userList = obj.getJSONArray("data");
 		for (int i = 0; i < userList.length(); i++)
 		{
 			JSONObject userToken = userList.getJSONObject(i);
-			User u = getUser(userToken);
-			DataManager dm = new DataManager(u);
-			/*ArrayList<Conversation> conversationList = dm
-					.collectData();
-			JsonHelper.postJsonData(postUrl, dm.getJsonData(conversationList));
-			for (int j = 0; j < conversationList.size(); j++)
+			User user = createUser(userToken);
+
+			if (!user.getOauthToken().equals(BLANK_TWITTER_TOKEN ))
 			{
-				Conversation c = conversationList.get(j);
-				System.out.println(c.getJSONRepresentation().toString(1));
+				DataManager manager = new DataManager(user);
+
+				System.out.println("Currently accessing data for "
+						+ user.getTwitterID());
+				System.out.println("\tAccess Token: " + user.getOauthToken());
+
+				manager.collectData(true, // Collect direct conversations
+						true); // Collect Twitter timeline
+
+				if (saveJsonDataLocally)
+				{
+					manager.saveJsonData(baseFilename + "_"
+							+ user.getTwitterID());
+				}
+
+				JsonHelper.postJsonData(ph.getTwitterUploadUrl(),
+						manager.getJsonData());
 			}
-			System.out.println();
-			System.out
-					.println("*************************************************************************************  ");*/
-			System.out.println("Direct Conversation:");
-			ArrayList<Conversation> directConversationList=dm.collectDirectConversations();
-			for (int j = 0; j < directConversationList.size(); j++)
-			{
-				Conversation c = directConversationList.get(j);
-				System.out.println(c.getJSONRepresentation().toString(1));
-			}
-			
-			System.out.println("Twitter timeline:");
-			
-			ArrayList<Message> statusList=dm.collectStatusList();
-			for(int j=0; j<statusList.size();j++){
-				Message m=statusList.get(j);
-				System.out.println(m.getJSONRepresentation().toString(1));
-			}
-			JsonHelper.postJsonData(postSeparateUrl, dm.getSeparateJsonData(statusList, directConversationList));
-			System.out.println("Done!");
 		}
 
 	}
-	
-	public static User getUser(JSONObject userToken) throws JSONException{
+
+	public static User createUser(JSONObject userToken) throws JSONException
+	{
 		User u = new User(userToken.getString("twitter_id"), 2);
 		u.setOauthToken(userToken.getString("twitter_token"));
 		u.setTokenSecret(userToken.getString("twitter_secret"));

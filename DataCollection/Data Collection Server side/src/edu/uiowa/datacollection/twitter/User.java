@@ -10,7 +10,7 @@ public class User
 	/**
 	 * The User's Tweet ID
 	 */
-	private String tweetID;
+	private String twitterID;
 	
 	/**
 	 * The User's phone #
@@ -41,7 +41,7 @@ public class User
 	public User(String fid,String tid, String pnum)
 	{
 		this.facebookID = fid;
-		this.tweetID=tid;
+		this.twitterID=tid;
 		this.phoneNum=pnum;
 	}
 	
@@ -54,7 +54,7 @@ public class User
 		else if(type==1){
 			this.facebookID=id;
 		}
-		else this.tweetID=id;
+		else this.twitterID=id;
 	}
 
 	/**
@@ -70,8 +70,8 @@ public class User
 	 * get the user's Tweeter ID
 	 */
 	
-	public String getTweetId(){
-		return tweetID;
+	public String getTwitterID(){
+		return twitterID;
 	}
 	
 	/**
@@ -88,7 +88,7 @@ public class User
 	{
 		if (other instanceof User)
 		{
-			return (((User)other).getTweetId().equals(tweetID));
+			return (((User)other).getTwitterID().equals(twitterID));
 		}
 		return false;
 	}
@@ -100,7 +100,7 @@ public class User
 	public String toString()
 	{
 		if (name.length() == 0)
-			return tweetID;
+			return twitterID;
 		else
 			return name;
 	}
@@ -111,7 +111,7 @@ public class User
 	 */
 	public int hashCode()
 	{
-		return tweetID.hashCode();
+		return twitterID.hashCode();
 	}
 	
 	/**

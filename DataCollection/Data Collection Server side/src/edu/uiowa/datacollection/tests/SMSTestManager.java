@@ -46,14 +46,14 @@ public class SMSTestManager
 		{
 			obj = JsonHelper.readJsonFromUrl(SERVER_URL);
 
-			//Use this line to collect the users
+			// Use this line to collect the users
 			JSONArray users = obj.getJSONArray("data");
 			for (int i = 0; i < users.length(); i++)
 			{
-				//TODO: Something with the users
+				// TODO: Something with the users
 			}
 		}
-		catch (IOException | JSONException e)
+		catch (JSONException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();

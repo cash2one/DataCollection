@@ -141,11 +141,11 @@ public class Message implements Comparable<Message> {
 		JSONObject result=new JSONObject();
 		try {
 			result.put("MID", mID);
-			result.put("From",from.getTweetId());
+			result.put("From",from.getTwitterID());
 			//result.append("From", from.getName());
 			StringBuilder sb=new StringBuilder();
 			for(int i=0;i<to.size();i++){
-				sb.append(to.get(i).getTweetId()).append(",");
+				sb.append(to.get(i).getTwitterID()).append(",");
 			}
 			result.put("To", sb.toString());
 			result.put("Text", text);

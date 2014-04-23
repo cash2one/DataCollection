@@ -43,22 +43,26 @@ public class JsonHelper
 	 * @throws IOException
 	 * @throws JSONException
 	 */
-	public static JSONObject readJsonFromUrl(String url) throws IOException,
-			JSONException
+	public static JSONObject readJsonFromUrl(String url) throws JSONException
 	{
-		InputStream is = new URL(url).openStream();
 		try
 		{
+			InputStream is = new URL(url).openStream();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is,
 					Charset.forName("UTF-8")));
 			String jsonText = readAll(rd);
 			JSONObject json = new JSONObject(jsonText);
+
+			is.close();
+
 			return json;
 		}
-		finally
+		catch (IOException e)
 		{
-			is.close();
+			System.out.println("ERROR: Connection to the server refused.");
 		}
+
+		return null;
 	}
 
 	/**
