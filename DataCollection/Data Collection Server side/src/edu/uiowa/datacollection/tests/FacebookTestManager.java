@@ -167,14 +167,17 @@ public class FacebookTestManager
 		fSession.setOAuthAccessToken(new AccessToken(user2.getAccessToken()));
 		String testComment2 = "This is a test comment posted by user 2";
 		fSession.commentPost(statusID, testComment2);
+		fSession.likePost(statusID);
 
 		fSession.setOAuthAccessToken(new AccessToken(user3.getAccessToken()));
 		String testComment3 = "This is a test comment posted by user 3";
 		fSession.commentPost(statusID, testComment3);
+		fSession.likePost(statusID);
 
 		fSession.setOAuthAccessToken(new AccessToken(user4.getAccessToken()));
 		String testComment4 = "This is a test comment posted by user 4";
 		fSession.commentPost(statusID, testComment4);
+		fSession.likePost(statusID);
 
 		data1.collectData(false, false, true);
 		data2.collectData(false, false, true);
