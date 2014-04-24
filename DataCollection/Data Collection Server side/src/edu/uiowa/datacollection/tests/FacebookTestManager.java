@@ -35,7 +35,6 @@ public class FacebookTestManager
 		this.fSession = new FacebookFactory().getInstance();
 
 		resetFacebookSession();
-
 	}
 
 	/**
@@ -203,9 +202,12 @@ public class FacebookTestManager
 		result.addResult("Third comment correct", comments.get(2).getText()
 				.equals(testComment4)
 				&& comments.get(2).getFromID().equals(user4.getId()), true);
-
-		System.out.println(data1.getJSONData().toString(1));
-		System.out.println(data2.getJSONData().toString(1));
+		
+		
+		result.addResult("Collected likes on posts", 
+				status.hasUserLiked(user2.getId()) &&
+				status.hasUserLiked(user3.getId()) &&
+				status.hasUserLiked(user4.getId()), true);
 
 		resetFacebookSession();
 		clearTestUsers();
@@ -555,8 +557,16 @@ public class FacebookTestManager
 		try
 		{
 			users = fSession.getTestUsers("442864129167674");
+			System.out.println("Deleting test users");
 			for (TestUser tu : users)
-				fSession.deleteTestUser(tu.getId());
+			{
+				if (tu.getAccessToken() != null)
+				{
+					fSession.setOAuthAccessToken(new AccessToken(tu.getAccessToken()));
+					fSession.deleteTestUser(tu.getId());
+				}
+			}
+			resetFacebookSession();
 		}
 		catch (FacebookException e)
 		{

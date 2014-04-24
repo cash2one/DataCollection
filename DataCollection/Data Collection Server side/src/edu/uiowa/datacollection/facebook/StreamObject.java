@@ -144,4 +144,18 @@ public class StreamObject
 	{
 		return comments;
 	}
+	
+	public ArrayList<Like> getLikes()
+	{
+		return likes;
+	}
+	
+	public boolean hasUserLiked(String userID)
+	{
+		for (Like like : likes)
+			if (like.getUserID().equals(userID))
+				return true;
+		
+		return false;
+	}
 }

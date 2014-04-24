@@ -221,8 +221,7 @@ public class TwitterTestManager
 		List<Message> userMessages = dm.collectUserTimeLine(hourAgo);
 		List<Message> mentionMessages = dm.collectMentionsTimeLine(hourAgo);
 
-		result.addResult(
-				"Abby status collected",
+		result.addResult("Abby status collected",
 				userMessages.get(0).getText().equals(statusText)
 						&& userMessages.get(0).getSender().getTwitterID()
 								.equals("" + TEST_USER_1_ID), true);
@@ -262,45 +261,71 @@ public class TwitterTestManager
 	 * 
 	 * @throws TwitterException
 	 */
-	private void clearTwitter() throws TwitterException
+	private void clearTwitter()
 	{
-		tSession.setOAuthAccessToken(TEST_USER_1);
-		List<DirectMessage> messages1 = tSession.getDirectMessages();
-		messages1.addAll(tSession.getSentDirectMessages());
-		for (DirectMessage dm : messages1)
-			tSession.destroyDirectMessage(dm.getId());
-
-		tSession.setOAuthAccessToken(TEST_USER_2);
-		List<DirectMessage> messages2 = tSession.getDirectMessages();
-		messages2.addAll(tSession.getSentDirectMessages());
-		for (DirectMessage dm : messages2)
-			tSession.destroyDirectMessage(dm.getId());
-
-		tSession.setOAuthAccessToken(TEST_USER_2);
-		List<DirectMessage> message3 = tSession.getDirectMessages();
-		message3.addAll(tSession.getSentDirectMessages());
-		for (DirectMessage dm : message3)
-			tSession.destroyDirectMessage(dm.getId());
-
-		tSession.setOAuthAccessToken(TEST_USER_1);
-		List<Status> status1 = tSession.getUserTimeline();
-		for (Status status : status1)
+		try
 		{
-			tSession.destroyStatus(status.getId());
+			tSession.setOAuthAccessToken(TEST_USER_1);
+			List<DirectMessage> messages1 = tSession.getDirectMessages();
+			messages1.addAll(tSession.getSentDirectMessages());
+			for (DirectMessage dm : messages1)
+				tSession.destroyDirectMessage(dm.getId());
+
+			tSession.setOAuthAccessToken(TEST_USER_2);
+			List<DirectMessage> messages2 = tSession.getDirectMessages();
+			messages2.addAll(tSession.getSentDirectMessages());
+			for (DirectMessage dm : messages2)
+				tSession.destroyDirectMessage(dm.getId());
+
+			tSession.setOAuthAccessToken(TEST_USER_2);
+			List<DirectMessage> message3 = tSession.getDirectMessages();
+			message3.addAll(tSession.getSentDirectMessages());
+			for (DirectMessage dm : message3)
+				tSession.destroyDirectMessage(dm.getId());
+
+			tSession.setOAuthAccessToken(TEST_USER_1);
+			List<Status> status1 = tSession.getUserTimeline();
+			for (Status status : status1)
+			{
+				tSession.destroyStatus(status.getId());
+			}
+
+			tSession.setOAuthAccessToken(TEST_USER_2);
+			List<Status> status2 = tSession.getUserTimeline();
+			for (Status status : status2)
+			{
+				tSession.destroyStatus(status.getId());
+			}
+
+			tSession.setOAuthAccessToken(TEST_USER_3);
+			List<Status> status3 = tSession.getUserTimeline();
+			for (Status status : status3)
+			{
+				tSession.destroyStatus(status.getId());
+			}
 		}
-
-		tSession.setOAuthAccessToken(TEST_USER_2);
-		List<Status> status2 = tSession.getUserTimeline();
-		for (Status status : status2)
+		catch (TwitterException e)
 		{
-			tSession.destroyStatus(status.getId());
-		}
+			// rate Limit exceed
+			if (e.getStatusCode() == 429)
+			{
+				System.out
+						.println("***** ERROR: Twitter API rate limit exceeded. "
+								+ "Waiting 3 minute and then continuing.");
 
-		tSession.setOAuthAccessToken(TEST_USER_3);
-		List<Status> status3 = tSession.getUserTimeline();
-		for (Status status : status3)
-		{
-			tSession.destroyStatus(status.getId());
+				try
+				{
+					// 3 minutes * 60 seconds * 1000 milliseconds
+					Thread.sleep(1000 * 60 * 3);
+					clearTwitter();
+				}
+				catch (InterruptedException e1)
+				{
+					e1.printStackTrace();
+				}
+			}
+			else
+				e.printStackTrace();
 		}
 	}
 
@@ -321,19 +346,38 @@ public class TwitterTestManager
 
 		tSession.setOAuthAccessToken(TEST_USER_1);
 
-		sendDirectMessage(TEST_USER_1, TEST_USER_2_ID, "message1");
-		sendDirectMessage(TEST_USER_2, TEST_USER_1_ID, "message2");
-		sendDirectMessage(TEST_USER_1, TEST_USER_2_ID, "message3");
-		sendDirectMessage(TEST_USER_2, TEST_USER_1_ID, "message4");
-		sendDirectMessage(TEST_USER_1, TEST_USER_2_ID, "message5");
-		sendDirectMessage(TEST_USER_2, TEST_USER_1_ID, "message6");
+		try
+		{
+			sendDirectMessage(TEST_USER_1, TEST_USER_2_ID, "message01");
+			Thread.sleep(1000);
+			sendDirectMessage(TEST_USER_2, TEST_USER_1_ID, "message02");
+			Thread.sleep(1000);
+			sendDirectMessage(TEST_USER_1, TEST_USER_2_ID, "message03");
+			Thread.sleep(1000);
+			sendDirectMessage(TEST_USER_2, TEST_USER_1_ID, "message04");
+			Thread.sleep(1000);
+			sendDirectMessage(TEST_USER_1, TEST_USER_2_ID, "message05");
+			Thread.sleep(1000);
+			sendDirectMessage(TEST_USER_2, TEST_USER_1_ID, "message06");
+			Thread.sleep(1000);
 
-		sendDirectMessage(TEST_USER_1, TEST_USER_3_ID, "message12");
-		sendDirectMessage(TEST_USER_3, TEST_USER_1_ID, "message22");
-		sendDirectMessage(TEST_USER_1, TEST_USER_3_ID, "message32");
-		sendDirectMessage(TEST_USER_3, TEST_USER_1_ID, "message42");
-		sendDirectMessage(TEST_USER_1, TEST_USER_3_ID, "message52");
-		sendDirectMessage(TEST_USER_3, TEST_USER_1_ID, "message62");
+			sendDirectMessage(TEST_USER_1, TEST_USER_3_ID, "message11");
+			Thread.sleep(1000);
+			sendDirectMessage(TEST_USER_3, TEST_USER_1_ID, "message12");
+			Thread.sleep(1000);
+			sendDirectMessage(TEST_USER_1, TEST_USER_3_ID, "message13");
+			Thread.sleep(1000);
+			sendDirectMessage(TEST_USER_3, TEST_USER_1_ID, "message14");
+			Thread.sleep(1000);
+			sendDirectMessage(TEST_USER_1, TEST_USER_3_ID, "message15");
+			Thread.sleep(1000);
+			sendDirectMessage(TEST_USER_3, TEST_USER_1_ID, "message16");
+			Thread.sleep(1000);
+		}
+		catch (InterruptedException e)
+		{
+
+		}
 
 		System.out.println("To see the messages sent, login as Abby");
 		System.out.println("Username: AbbyDoeTestUser1");
@@ -351,12 +395,7 @@ public class TwitterTestManager
 		DataManager dm = new DataManager(abby);
 
 		List<Conversation> convos = dm.collectDirectConversations();
-		for (Conversation c : convos)
-		{
-			for (Message m : c.getMessageList())
-				System.out.println(m.getText() + " , " + m.getCreateTime());
-			System.out.println();
-		}
+		
 		result.addResult(
 				"Conversation with Abby and Bob retrieved",
 				containsUser(convos.get(0), TEST_USER_1_ID)
@@ -365,30 +404,22 @@ public class TwitterTestManager
 				"Conversation with Abby and Cathy retrieved",
 				containsUser(convos.get(1), TEST_USER_1_ID)
 						&& containsUser(convos.get(1), TEST_USER_3_ID), true);
-		//
-		// result.addResult("Last message retrieved",
-		// directMessages.get(0).getText().equals(message4) &&
-		// directMessages.get(0).getSender().getTweetId().equals("" +
-		// TEST_USER_2_ID),
-		// true);
-		// // System.out.println(directMessages.get(1).getText() + "\n" +
-		// message3 + "\n" + directMessages.get(1).getSender().getTweetId() +
-		// "\n" + TEST_USER_1_ID);
-		// result.addResult("Third message retrieved",
-		// directMessages.get(1).getText().equals(message3) &&
-		// directMessages.get(1).getSender().getTweetId().equals("" +
-		// TEST_USER_1_ID),
-		// true);
-		// result.addResult("Second message retrieved",
-		// directMessages.get(2).getText().equals(message2) &&
-		// directMessages.get(2).getSender().getTweetId().equals("" +
-		// TEST_USER_2_ID),
-		// true);
-		// result.addResult("First message retrieved",
-		// directMessages.get(3).getText().equals(message1) &&
-		// directMessages.get(3).getSender().getTweetId().equals("" +
-		// TEST_USER_1_ID),
-		// true);
+
+		boolean messagesRetrieved = true;
+		for (int i = 0; i < convos.size(); i++)
+		{
+			for (int k = 0; k < convos.get(i).getMessageList().size(); k++)
+			{
+				if (!convos.get(i).getMessageList().get(k).getText()
+						.equals("message" + i + (k+1)))
+				{
+					System.out.println(convos.get(i).getMessageList().get(k).getText() + ", " + "message" + i + (k+1));
+					messagesRetrieved = false;
+				}
+			}
+		}
+
+		result.addResult("All messages retrieved", messagesRetrieved, true);
 
 		clearTwitter();
 

@@ -53,7 +53,11 @@ public class Main
 		}
 		catch (FacebookException e)
 		{
-			e.printStackTrace();
+			//"A user access token is required to request this resource."
+			if (e.getErrorCode() == 102)
+			{
+				
+			}
 		}
 		catch (JSONException e)
 		{
