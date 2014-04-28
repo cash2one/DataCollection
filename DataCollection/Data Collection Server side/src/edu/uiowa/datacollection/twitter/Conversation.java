@@ -1,6 +1,7 @@
 package edu.uiowa.datacollection.twitter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
@@ -131,10 +132,14 @@ public class Conversation implements Comparable<Conversation> {
 		this.endID=messageList.get(messageList.size()-1).getmID();
 		this.count=messageList.size();
 		String senderID=messageList.get(0).getSender().getTwitterID();
-		String receiverID=messageList.get(0).getRecipients().get(0).getTwitterID();
-		if(senderID!=null&&receiverID!=null)
-			this.cID=senderID+"_"+receiverID;
-		else this.cID=this.startID+"_"+this.endID;
+		String receiverID=messageList.get(0).getRecipients().get(0).getTwitterID(); 
+		if(senderID!=null&&receiverID!=null){
+			if(senderID.compareTo(receiverID)<0) this.cID=senderID+"_"+receiverID;
+			else this.cID=receiverID+"_"+senderID;
+		}
+		else {
+			this.cID=this.startID+"_"+this.endID;
+		}
 	}
 
 	public String getEndID() {
