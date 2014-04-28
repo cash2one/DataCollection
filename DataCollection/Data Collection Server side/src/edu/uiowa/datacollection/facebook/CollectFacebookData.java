@@ -73,8 +73,8 @@ public class CollectFacebookData
 					if (saveJsonDataLocally)
 						manager.saveJSONData(baseFilename + "_" + phoneNumber);
 
-					// JsonHelper.postJsonData(ph.getFacebookUploadUrl(),
-					// manager.getJSONData());
+					 JsonHelper.postJsonData(ph.getFacebookUploadUrl(),
+					 manager.getJSONData());
 				}
 				catch (FacebookTokenExpiredError e)
 				{
