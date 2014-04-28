@@ -153,9 +153,11 @@ public class Conversation
 	 * @param restrictToOneMonthBack
 	 *            If set to true the query will stop if the message timestamps
 	 *            are more than a month old.
+	 * @throws FacebookTokenExpiredError
+	 * @throws FacebookUnhandledException
 	 */
 	public void loadMessages(GregorianCalendar lastUpdatedTime,
-			Facebook session, boolean restrictToOneMonthBack)
+			Facebook session, boolean restrictToOneMonthBack) throws FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		// To keep our old to new ordering with FQL returning results new to old
 		// we record the old size before updates, and then slide new messages
@@ -201,6 +203,14 @@ public class Conversation
 					{
 					}
 					errorOccurred = true;
+				}
+				else if (e.getErrorCode() == FacebookTokenExpiredError.TOKEN_EXPIRED_ERROR)
+				{
+					throw new FacebookTokenExpiredError();
+				}
+				else
+				{
+					throw new FacebookUnhandledException(e);
 				}
 			}
 			catch (JSONException e)

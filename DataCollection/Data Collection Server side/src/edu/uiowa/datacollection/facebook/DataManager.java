@@ -106,26 +106,41 @@ public class DataManager
 	 *            Should stream data be collected
 	 * @param loadOldData
 	 *            Should old data be loaded
+	 * @throws FacebookTokenExpiredError
+	 * @throws FacebookUnhandledException
 	 */
 	public void collectData(boolean collectMessages, boolean limitToMonth,
-			boolean collectStream)
+			boolean collectStream) throws FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		// Initialize messageManager with loaded conversations if it loaded,
 		// otherwise conversations is ignored by messageManager
 		messageManager = new MessageManager(conversations);
 
-		if (collectMessages)
+		try
 		{
-			// Load messages
-			messageManager.loadConversations(limitToMonth, session);
-			conversations = messageManager.getConversations();
-		}
+			if (collectMessages)
+			{
+				// Load messages
+				messageManager.loadConversations(limitToMonth, session);
+				conversations = messageManager.getConversations();
+			}
 
-		if (collectStream)
+			if (collectStream)
+			{
+				// Load stream
+				streamManager = new StreamManager();
+				streamObjects = streamManager.loadStream(session);
+			}
+		}
+		catch (FacebookTokenExpiredError e)
 		{
-			// Load stream
-			streamManager = new StreamManager();
-			streamObjects = streamManager.loadStream(session);
+			e.setPhoneNumber(phoneNumber);
+			throw e;
+		}
+		catch (FacebookUnhandledException e)
+		{
+			e.setPhoneNumber(phoneNumber);
+			throw e;
 		}
 	}
 
@@ -217,8 +232,12 @@ public class DataManager
 	/**
 	 * Method to load the Facebook ID - Name matches then and then to put them
 	 * in all User instances
+	 * 
+	 * @throws FacebookTokenExpiredError
+	 * @throws FacebookUnhandledException 
 	 */
 	public void collectParticipantInformation()
+			throws FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		HashSet<edu.uiowa.datacollection.facebook.User> userSet = messageManager
 				.getUserSet();
@@ -252,7 +271,14 @@ public class DataManager
 		}
 		catch (FacebookException e)
 		{
-			e.printStackTrace();
+			if (e.getErrorCode() == FacebookTokenExpiredError.TOKEN_EXPIRED_ERROR)
+			{
+				throw new FacebookTokenExpiredError(phoneNumber); 
+			}
+			else
+			{
+				throw new FacebookUnhandledException(e, phoneNumber);
+			}
 		}
 		catch (JSONException e)
 		{

@@ -11,7 +11,7 @@ import facebook4j.internal.org.json.JSONObject;
 
 public class CollectFacebookData
 {
-	private static final String BLANK_ACCESS_TOKEN = " ";
+	private static final String BLANK_ACCESS_TOKEN = "";
 
 	public static void main(String[] args) throws FacebookException,
 			JSONException
@@ -64,15 +64,30 @@ public class CollectFacebookData
 				DataManager manager = new DataManager(accessToken, phoneNumber);
 				manager.loadOldConversationTimes(lastConvoTimes);
 
-				manager.collectData(true, // Collect message
-						true, // Limit to one month
-						true); // Collect stream
+				try
+				{
+					manager.collectData(true, // Collect message
+							true, // Limit to one month
+							true);// Collect stream
 
-				if (saveJsonDataLocally)
-					manager.saveJSONData(baseFilename + "_" + phoneNumber);
+					if (saveJsonDataLocally)
+						manager.saveJSONData(baseFilename + "_" + phoneNumber);
 
-				JsonHelper.postJsonData(ph.getFacebookUploadUrl(),
-						manager.getJSONData());
+					// JsonHelper.postJsonData(ph.getFacebookUploadUrl(),
+					// manager.getJSONData());
+				}
+				catch (FacebookTokenExpiredError e)
+				{
+					System.out.println("Upload something to the server saying"
+							+ " that we need a new token for "
+							+ e.getPhoneNumber());
+				}
+				catch (FacebookUnhandledException e)
+				{
+					System.out.println("Error for user " + e.getPhoneNumber()
+							+ ". Facebook error: \n"
+							+ e.getFacebookException().getErrorMessage());
+				}
 			}
 		}
 	}

@@ -42,8 +42,10 @@ public class StreamManager
 	 * @param session
 	 *            The authenticated Facebook session used for FQL requests
 	 * @return the loaded StreamObjects
+	 * @throws FacebookTokenExpiredError
+	 * @throws FacebookUnhandledException
 	 */
-	public ArrayList<StreamObject> loadStream(Facebook session)
+	public ArrayList<StreamObject> loadStream(Facebook session) throws FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		int offset = 0;
 
@@ -115,6 +117,10 @@ public class StreamManager
 					}
 					errorOccurred = true;
 				}
+				else if (e.getErrorCode() == FacebookTokenExpiredError.TOKEN_EXPIRED_ERROR)
+				{
+					throw new FacebookTokenExpiredError();
+				}
 			}
 
 			if (!errorOccurred)
@@ -129,8 +135,11 @@ public class StreamManager
 	 * 
 	 * @param session
 	 *            Current active facebook session
+	 * @throws FacebookTokenExpiredError
+	 * @throws FacebookUnhandledException 
 	 */
 	public void getCommentsAndLikes(Facebook session)
+			throws FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		for (StreamObject so : streamObjects)
 		{
@@ -148,8 +157,14 @@ public class StreamManager
 			}
 			catch (FacebookException e)
 			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				if (e.getErrorCode() == FacebookTokenExpiredError.TOKEN_EXPIRED_ERROR)
+				{
+					throw new FacebookTokenExpiredError();
+				}
+				else
+				{
+					throw new FacebookUnhandledException(e);
+				}
 			}
 
 		}

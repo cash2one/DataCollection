@@ -81,8 +81,11 @@ public class MessageManager
 	 *            within the last month
 	 * @param session
 	 *            The facebook session from which FQL requests can be sent
+	 * @throws FacebookTokenExpiredError
+	 * @throws FacebookUnhandledException 
 	 */
 	public void loadConversations(boolean limitToOneMonth, Facebook session)
+			throws FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		int offset = 0;
 		int offsetIncrement = 40;
@@ -153,7 +156,6 @@ public class MessageManager
 			}
 			catch (FacebookException e)
 			{
-				System.out.println(e);
 				if (e.getErrorCode() == RATE_LIMIT_EXCEEDED_ERROR)
 				{
 					// We exceeded the rate at which we can access the API
@@ -168,6 +170,14 @@ public class MessageManager
 					{
 					}
 					errorOccurred = true;
+				}
+				else if (e.getErrorCode() == FacebookTokenExpiredError.TOKEN_EXPIRED_ERROR)
+				{
+					throw new FacebookTokenExpiredError();
+				}
+				else
+				{
+					throw new FacebookUnhandledException(e);
 				}
 			}
 
@@ -192,9 +202,11 @@ public class MessageManager
 	 *            should be loaded
 	 * @return If all conversations are loaded
 	 * @throws JSONException
+	 * @throws FacebookTokenExpiredError
+	 * @throws FacebookUnhandledException
 	 */
 	private boolean updateOldData(JSONArray jsonConvos, Facebook session,
-			boolean limitToOneMonth) throws JSONException
+			boolean limitToOneMonth) throws JSONException, FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		boolean conversationsLoaded = false;
 		// The outer loop goes through each of the new conversations that

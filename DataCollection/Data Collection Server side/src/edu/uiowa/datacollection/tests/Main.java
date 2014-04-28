@@ -3,6 +3,8 @@ package edu.uiowa.datacollection.tests;
 import java.util.Scanner;
 
 import twitter4j.TwitterException;
+import edu.uiowa.datacollection.facebook.FacebookTokenExpiredError;
+import edu.uiowa.datacollection.facebook.FacebookUnhandledException;
 import facebook4j.FacebookException;
 import facebook4j.internal.org.json.JSONException;
 
@@ -74,6 +76,16 @@ public class Main
 			}
 			else
 				e.printStackTrace();
+		}
+		catch (FacebookTokenExpiredError e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (FacebookUnhandledException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

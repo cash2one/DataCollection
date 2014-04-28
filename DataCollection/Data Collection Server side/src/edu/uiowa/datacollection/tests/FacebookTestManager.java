@@ -9,6 +9,8 @@ import java.util.Scanner;
 import edu.uiowa.datacollection.facebook.Comment;
 import edu.uiowa.datacollection.facebook.Conversation;
 import edu.uiowa.datacollection.facebook.DataManager;
+import edu.uiowa.datacollection.facebook.FacebookTokenExpiredError;
+import edu.uiowa.datacollection.facebook.FacebookUnhandledException;
 import edu.uiowa.datacollection.facebook.Message;
 import edu.uiowa.datacollection.facebook.StreamObject;
 import edu.uiowa.datacollection.facebook.User;
@@ -45,9 +47,11 @@ public class FacebookTestManager
 	 * @return
 	 * @throws FacebookException
 	 * @throws JSONException
+	 * @throws FacebookTokenExpiredError
+	 * @throws FacebookUnhandledException 
 	 */
 	public TestResult facebookWallPostTest() throws FacebookException,
-			JSONException
+			JSONException, FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		TestResult result = new TestResult("Wall Post Test", System.out);
 		result.begin();
@@ -126,9 +130,11 @@ public class FacebookTestManager
 	 * @return
 	 * @throws FacebookException
 	 * @throws JSONException
+	 * @throws FacebookTokenExpiredError 
+	 * @throws FacebookUnhandledException 
 	 */
 	public TestResult facebookStatusTest() throws FacebookException,
-			JSONException
+			JSONException, FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		TestResult result = new TestResult("Status Test", System.out);
 		result.begin();
@@ -221,8 +227,10 @@ public class FacebookTestManager
 	 * 
 	 * @return
 	 * @throws FacebookException
+	 * @throws FacebookTokenExpiredError 
+	 * @throws FacebookUnhandledException 
 	 */
-	public TestResult facebokIMConversationTest() throws FacebookException
+	public TestResult facebokIMConversationTest() throws FacebookException, FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		TestResult result = new TestResult("IM Conversation Test", System.out);
 		result.begin();
@@ -396,9 +404,11 @@ public class FacebookTestManager
 	 * 
 	 * @return
 	 * @throws FacebookException
+	 * @throws FacebookTokenExpiredError 
+	 * @throws FacebookUnhandledException 
 	 */
 	public TestResult facebookIMGroupConversationTest()
-			throws FacebookException
+			throws FacebookException, FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		TestResult result = new TestResult("IM Group Conversation Test",
 				System.out);
