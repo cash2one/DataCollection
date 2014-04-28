@@ -1,7 +1,6 @@
 package edu.uiowa.datacollection.twitter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
