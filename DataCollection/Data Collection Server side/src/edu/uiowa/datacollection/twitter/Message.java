@@ -155,16 +155,17 @@ public class Message implements Comparable<Message>
 		{
 			result.put("MID", mID);
 			result.put("From", from.getTwitterID());
-			// result.append("From", from.getName());
 			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < to.size(); i++)
-			{
-				sb.append(to.get(i).getTwitterID()).append(",");
+			{	
+				sb.append(to.get(i).getTwitterID());
+				if (i != to.size() - 1)
+					sb.append(",");
 			}
 			result.put("To", sb.toString());
 			result.put("Text", text);
 			result.put("CreateTime", createTime);
-			result.put("InReplyToMessageID", inReplytoMessageID);
+			result.put("InReplyToStatusID", inReplytoMessageID);
 		}
 		catch (JSONException e)
 		{
