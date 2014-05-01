@@ -153,6 +153,7 @@ public class Conversation implements Comparable<Conversation>
 	public void setStartEndIDCount()
 	{
 		this.startID = messageList.get(0).getmID();
+<<<<<<< HEAD
 		this.endID = messageList.get(messageList.size() - 1).getmID();
 		this.count = messageList.size();
 		String senderID = messageList.get(0).getSender().getTwitterID();
@@ -166,6 +167,22 @@ public class Conversation implements Comparable<Conversation>
 
 	public String getEndID()
 	{
+=======
+		this.endID=messageList.get(messageList.size()-1).getmID();
+		this.count=messageList.size();
+		String senderID=messageList.get(0).getSender().getTwitterID();
+		String receiverID=messageList.get(0).getRecipients().get(0).getTwitterID(); 
+		if(senderID!=null&&receiverID!=null){
+			if(senderID.compareTo(receiverID)<0) this.cID=senderID+"_"+receiverID;
+			else this.cID=receiverID+"_"+senderID;
+		}
+		else {
+			this.cID=this.startID+"_"+this.endID;
+		}
+	}
+
+	public String getEndID() {
+>>>>>>> f31c712d8ca9bf3a28ea037afbfed9123dd63c50
 		return endID;
 	}
 
