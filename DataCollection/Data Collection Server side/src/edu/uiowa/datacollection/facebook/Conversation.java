@@ -123,7 +123,8 @@ public class Conversation
 		}
 		catch (JSONException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: JSON improperly formatted.");
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -134,6 +135,15 @@ public class Conversation
 		// The updated field time is in seconds, we need it in milliseconds
 		this.updatedTime = new GregorianCalendar();
 		this.updatedTime.setTimeInMillis(Long.parseLong(updatedTime) * 1000);
+	}
+
+	public Conversation(String threadID, long updatedTime)
+	{
+		id = threadID;
+
+		// The updated field time is in seconds, we need it in milliseconds
+		this.updatedTime = new GregorianCalendar();
+		this.updatedTime.setTimeInMillis(updatedTime * 1000);
 	}
 
 	/**
@@ -157,7 +167,8 @@ public class Conversation
 	 * @throws FacebookUnhandledException
 	 */
 	public void loadMessages(GregorianCalendar lastUpdatedTime,
-			Facebook session, boolean restrictToOneMonthBack) throws FacebookTokenExpiredError, FacebookUnhandledException
+			Facebook session, boolean restrictToOneMonthBack)
+			throws FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		// To keep our old to new ordering with FQL returning results new to old
 		// we record the old size before updates, and then slide new messages
@@ -201,12 +212,13 @@ public class Conversation
 					}
 					catch (InterruptedException e1)
 					{
+						e1.printStackTrace();
 					}
 					errorOccurred = true;
 				}
 				else if (e.getErrorCode() == FacebookTokenExpiredError.TOKEN_EXPIRED_ERROR)
 				{
-					throw new FacebookTokenExpiredError();
+					throw new FacebookTokenExpiredError(e);
 				}
 				else
 				{
@@ -215,7 +227,8 @@ public class Conversation
 			}
 			catch (JSONException e)
 			{
-				e.printStackTrace();
+				System.out.println("ERROR: JSON improperly formatted.");
+				System.out.println(e.getMessage());
 			}
 
 			// If an error did occur, we did not collect the data we wanted
@@ -406,7 +419,8 @@ public class Conversation
 		}
 		catch (JSONException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: JSON improperly formatted.");
+			System.out.println(e.getMessage());
 		}
 		;
 		return result;

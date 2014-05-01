@@ -83,7 +83,8 @@ public class Message implements Comparable<Message>
 		}
 		catch (JSONException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: JSON improperly formatted.");
+			System.out.println(e.getMessage());
 		}
 	}
 

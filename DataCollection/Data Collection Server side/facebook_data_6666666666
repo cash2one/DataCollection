@@ -1,0 +1,1329 @@
+{
+ "conversation_data": [
+  {
+   "message_count": 71,
+   "messages": [
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "what did you change?",
+     "created_time": 1392856214,
+     "message_id": "211633295664052_1392856214958",
+     "thread_id": "211633295664052",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "Dear Professor Segre,\n\nIt is time to sign up for classes again.  Last semester we discussed how quickly classes filled up, specifically for Discrete Structures (CS 2210).  Just as last semester, I am having a dilemma signing up for classes.  My, early, registration time was Sunday.  I noticed that two classes (Object-Oriented Software Development-CS 2820, and Algorithms-CS 3330), which my advisor and I  strongly considered were both filled up by Friday of early registration!  Both of these classes are imperative to the sequential order of the major.  Fortunately, now that I am past Discrete Structures and Data Structures, there is some room for me to take other classes, such as Topics in Computer Science II-CS 4980.  However, it is very alarming to me when I am signing up for classes that are recommended by both my advisor and the department website that they are filled up half way through early registration.  Thank you for your time, and I hope you find this information useful.\n\n\nSincerely,\n     Ryan Wedoff\nryan-wedoff@uiowa.edu\n100 Daum Rm. 5301\nIowa City, IA 52242\n(847) 452-2847",
+     "created_time": 1398731102,
+     "message_id": "211633295664052_1398731102406",
+     "thread_id": "211633295664052",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "This is the message I sent, I hope it doesn't sound too crabby",
+     "created_time": 1398731119,
+     "message_id": "211633295664052_1398731119393",
+     "thread_id": "211633295664052",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "nah, not terrible",
+     "created_time": 1398736779,
+     "message_id": "211633295664052_1398736779876",
+     "thread_id": "211633295664052",
+     "to": [{
+      "facebookId": "100000104224193",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "you've got a right to be crabby",
+     "created_time": 1398736783,
+     "message_id": "211633295664052_1398736783933",
+     "thread_id": "211633295664052",
+     "to": [{
+      "facebookId": "100000104224193",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": {
+      "caption": "",
+      "description": "",
+      "fb_object_id": "",
+      "fb_object_type": "",
+      "icon": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yD/r/aS8ecmYRys0.gif",
+      "media": [],
+      "name": "",
+      "properties": [],
+      "tagged_ids": []
+     },
+     "author_id": 100000104224193,
+     "body": "",
+     "created_time": 1398736792,
+     "message_id": "211633295664052_1398736792034",
+     "thread_id": "211633295664052",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    }
+   ],
+   "recipients": [
+    100001085717161,
+    100000104224193
+   ],
+   "snippet": "",
+   "snippet_author": 100000104224193,
+   "thread_id": "211633295664052",
+   "updated_time": 1398736792
+  },
+  {
+   "message_count": 54,
+   "messages": [
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "i'll be busy for the next 45 minutes or so, i'm playing a game, but after that i'll be good",
+     "created_time": 1390764013,
+     "message_id": "586563051389432_1390764013246",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "for 10 I got\n3.78 x 10^-5",
+     "created_time": 1397438950,
+     "message_id": "586563051389432_1397438950568",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "prelab #2 I got Newton * meters / Tesla \nand\nmeters squared * kilogram / (seconds squared * tesla)",
+     "created_time": 1397438996,
+     "message_id": "586563051389432_1397438996744",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 1040884549,
+     "body": "Yes to everything!!",
+     "created_time": 1397439591,
+     "message_id": "586563051389432_1397439591230",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "sweet!",
+     "created_time": 1397439849,
+     "message_id": "586563051389432_1397439849753",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 1040884549,
+     "body": "Yo! Have you found anything online for #27 on the homework? Or did he work that one out in discussion?",
+     "created_time": 1398025738,
+     "message_id": "586563051389432_1398025738074",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "is that the delta U/ U one?",
+     "created_time": 1398036926,
+     "message_id": "586563051389432_1398036926881",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "you use e^a is about equal to 1 + a in some conditions",
+     "created_time": 1398036948,
+     "message_id": "586563051389432_1398036948581",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "he worked that one out",
+     "created_time": 1398036951,
+     "message_id": "586563051389432_1398036951309",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "ok, back in town. For the prelab I got\n\namplitude: 2V\nPeak to peak: 4V\nperiod: 20uS\nfrequency: 50,000 Hz\n\n\n8) all have the same current, capacitors have same charge, and so you can just group the terms and it ends with the equation for the second,\n\nfor 27) deltaU/U = 1 - e^(-2 * pi * R / (L * w)), because U = Q^2 / 2C, Q = Q0 * e^(-R/2Lt), t = 2pi/w because its one cycle, and then\n\nyou end up with\n\nthat equation, then e^a = 1 + a for small a,\n\nso delta U / U is about equal to 1 - 1 + 2piR/LW or about equal to the answer",
+     "created_time": 1398048322,
+     "message_id": "586563051389432_1398048322299",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "56 I got Lmax = .07639H,\nb) yes, as long as Irms = Erms/(Rlight + Rvar),\nc) 11.52 ohms\nd) because lots of energy is wasted in heat from the resistor",
+     "created_time": 1398048370,
+     "message_id": "586563051389432_1398048370604",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "56 was mostly online",
+     "created_time": 1398048385,
+     "message_id": "586563051389432_1398048385402",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 1040884549,
+     "body": "WOW! Thanks for the explanation! I really appreciate that. I didn't get the same answer as you on C, but I will look at it over breakfast and get back to you ASAP. Everything else looks perfect.",
+     "created_time": 1398053859,
+     "message_id": "586563051389432_1398053859536",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 1040884549,
+     "body": "I had the equation Rvar = V/I - Rlight",
+     "created_time": 1398085329,
+     "message_id": "586563051389432_1398085329960",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 1040884549,
+     "body": "My numbers were 200V/3.727A - 14.4 = Rvar",
+     "created_time": 1398085361,
+     "message_id": "586563051389432_1398085361720",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 1040884549,
+     "body": "Oops, should be 120 not 200!",
+     "created_time": 1398085482,
+     "message_id": "586563051389432_1398085482839",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "so 17.79?",
+     "created_time": 1398085528,
+     "message_id": "586563051389432_1398085528998",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "that seems more plausible than mine, I had a weird negative sign that I ignored",
+     "created_time": 1398085547,
+     "message_id": "586563051389432_1398085547759",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 1040884549,
+     "body": "Yes\u2026?",
+     "created_time": 1398085550,
+     "message_id": "586563051389432_1398085550275",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "I'll go with yours",
+     "created_time": 1398085572,
+     "message_id": "586563051389432_1398085572832",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "thanks!",
+     "created_time": 1398085575,
+     "message_id": "586563051389432_1398085575964",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 1040884549,
+     "body": "Sure thing!",
+     "created_time": 1398085592,
+     "message_id": "586563051389432_1398085592408",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "Yeah, number 4 i asked for on thursday.\n\nSo you have the two wires and then a cylinder running the same direction of the wires between them. We cut off the bottom half so it looks like\n     _____\nx  /_____\\ o and we want the flux in the cylinder\n\nfrom the guass's law for magnets we know the total is 0, and we want what comes out the top. Because none comes out the caps, we know whatever passes through the floor is equal to the hard to find top\n\nThe magnetic field from wire one is\n2*pi * (x + 2r) * B = u0 * i\n\nor B1 = u0 * I / (2 * pi) * 1/(x + 2r)\n\nby the same logic B2 is\n\nB1 = u0 * I / (2 * pi) * 1/(2r - x)\n\nnote the minus\n\nWe then say the magnetic flux is the field through the bottom of the cylinder\n\nFlux = -Len * integral from -R to R of u0 * I / (2pi) * (1/(x + 2r) +(1/2r-x)) dx\nFlux = -L * u0 * I / (2pi) * [ln(3r/r) + ln(3r/r)]\n= -L * 2u0 * I/(2pi) * ln(3)\n\nflux top = L * u0 * I / pi * ln(3)",
+     "created_time": 1398642628,
+     "message_id": "586563051389432_1398642628493",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "I is current, it looks weird though",
+     "created_time": 1398642639,
+     "message_id": "586563051389432_1398642639959",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "For 16 we also did in class\n\nIdisp = e0 * dFluxe / dt\n\ne0 * d/dt Fluxe = Idisp\n\ne0 * Acap * dE/dt = Idisp\n\ndE/dt = Idisp / (e0 * pi * r^2)\n\nwhere r is the radius of the plate\n\nso i got 7.19x10^-12 V/m/s",
+     "created_time": 1398643567,
+     "message_id": "586563051389432_1398643567403",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "and 68 I got 70.2 degrees, b i got .288A",
+     "created_time": 1398643593,
+     "message_id": "586563051389432_1398643593553",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "for the prelab\n\n1) 1553.19Hz\n2) -69.31 degrees",
+     "created_time": 1398645316,
+     "message_id": "586563051389432_1398645316735",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "i'm just gonna ask her tomorrow on 3 and 4",
+     "created_time": 1398645324,
+     "message_id": "586563051389432_1398645324218",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 1040884549,
+     "body": "I got the same answers for the evens as you! I'll let you know about the pre-lab when I finish it :)",
+     "created_time": 1398651746,
+     "message_id": "586563051389432_1398651746317",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "sweet!",
+     "created_time": 1398654013,
+     "message_id": "586563051389432_1398654013996",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "1040884549",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 1040884549,
+     "body": "Got the same pre lab answers, I think I'll ask polyzou after class today about three and four",
+     "created_time": 1398694540,
+     "message_id": "586563051389432_1398694540232",
+     "thread_id": "586563051389432",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    }
+   ],
+   "recipients": [
+    1040884549,
+    100001085717161
+   ],
+   "snippet": "Got the same pre lab answers, I think I'll ask polyzou after class today about three and four",
+   "snippet_author": 1040884549,
+   "thread_id": "586563051389432",
+   "updated_time": 1398694540
+  },
+  {
+   "message_count": 263,
+   "messages": [
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "Hmm, I will poke around with the disposal some more",
+     "created_time": 1395513969,
+     "message_id": "361981257273579_1395513969198",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "I saw one too, although it had more than 2 children.",
+     "created_time": 1396637727,
+     "message_id": "361981257273579_1396637727193",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "Where are you guys!",
+     "created_time": 1396640029,
+     "message_id": "361981257273579_1396640029397",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": {
+      "caption": "",
+      "description": "",
+      "fb_object_id": "",
+      "fb_object_type": "",
+      "icon": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yD/r/aS8ecmYRys0.gif",
+      "media": [],
+      "name": "",
+      "properties": [],
+      "tagged_ids": []
+     },
+     "author_id": 100000104224193,
+     "body": "This is my calendar widget for tomorrow. I added the icons myself ",
+     "created_time": 1397712198,
+     "message_id": "361981257273579_1397712198134",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "I dunno about the sleepy icon through. A facepalm might be more appropriate",
+     "created_time": 1397737401,
+     "message_id": "361981257273579_1397737401197",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      },
+      {
+       "facebookId": "100000104224193",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 1574491462,
+     "body": "Shouldn't the tree go up there as a reminder to look outside for spinny trees?",
+     "created_time": 1397745393,
+     "message_id": "361981257273579_1397745393378",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "100000104224193",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": {
+      "caption": "",
+      "description": "",
+      "fb_object_id": "",
+      "fb_object_type": "",
+      "icon": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yD/r/aS8ecmYRys0.gif",
+      "media": [],
+      "name": "",
+      "properties": [],
+      "tagged_ids": []
+     },
+     "author_id": 100000104224193,
+     "body": "",
+     "created_time": 1397745716,
+     "message_id": "361981257273579_1397745716279",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": {
+      "caption": "",
+      "description": "",
+      "fb_object_id": "",
+      "fb_object_type": "",
+      "icon": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yD/r/aS8ecmYRys0.gif",
+      "media": [],
+      "name": "",
+      "properties": [],
+      "tagged_ids": []
+     },
+     "author_id": 100000104224193,
+     "body": "http://trycanary.co/",
+     "created_time": 1398055747,
+     "message_id": "361981257273579_1398055747965",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "There are apps for everything!",
+     "created_time": 1398055762,
+     "message_id": "361981257273579_1398055762537",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "Happy Easter/ 4/20!",
+     "created_time": 1398055769,
+     "message_id": "361981257273579_1398055769561",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 1574491462,
+     "body": "Happy Hitler's Birthday to you too! (:",
+     "created_time": 1398060231,
+     "message_id": "361981257273579_1398060231753",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "100000104224193",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": {
+      "caption": "",
+      "description": "",
+      "fb_object_id": "",
+      "fb_object_type": "",
+      "icon": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yD/r/aS8ecmYRys0.gif",
+      "media": [],
+      "name": "",
+      "properties": [],
+      "tagged_ids": []
+     },
+     "author_id": 100000104224193,
+     "body": "",
+     "created_time": 1398060236,
+     "message_id": "361981257273579_1398060236728",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "IEEE Spring Sustainability Hackathon\nAre you interested in gaining technical experience with electrical hardware or software? Are you interested in working with a team to build the best project possible? Are you interested in sustainability? If so, we'd like to welcome you to our Spring Sustainability Hackathon! The theme for the event is sustainability. At the event, you'll team up with 1-3 other students and build a project of your own choice. You can build anything relating to sustainability, from an automated water filtration system to a mobile application for managing your recycling. The event is free to attend, and open to anyone interested in working with electronic hardware or software. You'll have 24 hours to work on the project with your team. Interested, but don't have a group? You can easily form a group at the event itself as well. Are you interested, but lack experience? Senior engineering and computer science students will gladly help you learn more. At the end of the Hackathon, all of the projects will be judged by a panel of professors and students to determine the most original and useful project. Here are the specifics:\nTheme: The theme is sustainability. Your project must relate to sustainability in some way.\nTime: Friday May 2nd at 6:30 PM in the John Deer Plaza. You can work on your project form 7:00PM on Friday until 6:00 PM Saturday. Then, you will present your projects and judging will begin.\nPlace: You will meet in John Deer Plaza at 6:30, but you will have access to the Engineering labs for the duration of the Hackathon.\nExperience?: No previous experience with hardware or software is required. Any type of engineer or computer science major, whether they be Chemical, Mechanical or Industrial, is welcome to come, learn some new things and have a great time.\nGroups: Teams will be composed of 1-4 Students per team. You may form your group at the event.\nHardware / Materials: Electrical hardware, including Arduino boards and many components will be available for use during the Hackathon. Computers are available for use in the building for software-only projects.\nJudging: Groups will present their projects to a panel of judges to determine the best projects.\nWe hope you have a great time at the Hackathon, and gain valuable technical experience as well.\nYou can contact either Dominic-zucco@uiowa.edu orKenneth_Jakubzak@uiowa.edu for more information. Otherwise, simply come and have a great time!",
+     "created_time": 1398221817,
+     "message_id": "361981257273579_1398221817627",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      },
+      {
+       "facebookId": "100000104224193",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "I saw the that",
+     "created_time": 1398222077,
+     "message_id": "361981257273579_1398222077841",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "I am environmental issues right now!",
+     "created_time": 1398222090,
+     "message_id": "361981257273579_1398222090114",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "But I have no ideas nor hardware",
+     "created_time": 1398222098,
+     "message_id": "361981257273579_1398222098807",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100001085717161,
+     "body": "this could be a fun time to learn some node.js, do some pure android stuff\n\nmy first thought was a social recycling app, you record what you recycled, like a box, a bottle, etc, and then our server would keep a leaderboard, and allow you to share on facebook (i have some facebook sdk experience) when you hit milestones, like XX pounds saved or something",
+     "created_time": 1398222187,
+     "message_id": "361981257273579_1398222187858",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      },
+      {
+       "facebookId": "100000104224193",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "Hmm interesting",
+     "created_time": 1398223301,
+     "message_id": "361981257273579_1398223301943",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "Did we learn about Collision resoln\n and Hashing Friday?",
+     "created_time": 1398227749,
+     "message_id": "361981257273579_1398227749293",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "Oh shit, it happened...",
+     "created_time": 1398227838,
+     "message_id": "361981257273579_1398227838899",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "http://www.cnet.com.au/flappy48-is-a-work-of-diabolical-genius-339347116.htm",
+     "created_time": 1398227839,
+     "message_id": "361981257273579_1398227839477",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 1574491462,
+     "body": "Ooh I like. Also it's in SC. : D",
+     "created_time": 1398227892,
+     "message_id": "361981257273579_1398227892683",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "100000104224193",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 1574491462,
+     "body": "Also good lord Flappy 48",
+     "created_time": 1398227936,
+     "message_id": "361981257273579_1398227936793",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "100000104224193",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 1574491462,
+     "body": "And no, we didn't do that stuff Ryan",
+     "created_time": 1398227953,
+     "message_id": "361981257273579_1398227953360",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "100000104224193",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 1574491462,
+     "body": "So I might have found a new person who wants to do the IEEE Hackathon too.",
+     "created_time": 1398310370,
+     "message_id": "361981257273579_1398310370019",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "100000104224193",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "Here is an even hate version",
+     "created_time": 1398353403,
+     "message_id": "361981257273579_1398353403875",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "http://flappy2048.com",
+     "created_time": 1398353406,
+     "message_id": "361981257273579_1398353406812",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "Even harder version",
+     "created_time": 1398353415,
+     "message_id": "361981257273579_1398353415036",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": {
+      "caption": "",
+      "description": "",
+      "fb_object_id": "",
+      "fb_object_type": "",
+      "icon": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yD/r/aS8ecmYRys0.gif",
+      "media": [],
+      "name": "",
+      "properties": [],
+      "tagged_ids": []
+     },
+     "author_id": 100000104224193,
+     "body": "http://www.csie.ntu.edu.tw/~b01902112/9007199254740992/",
+     "created_time": 1398643017,
+     "message_id": "361981257273579_1398643017489",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "Here is your daily Mod of 2048!",
+     "created_time": 1398643026,
+     "message_id": "361981257273579_1398643026197",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000104224193,
+     "body": "Tom, you may find this of interest :\n\n\nhttp://www.cnet.com/how-to/use-andy-to-emulate-android-on-your-desktop/?ttag=fbwl",
+     "created_time": 1398669411,
+     "message_id": "361981257273579_1398669411768",
+     "thread_id": "361981257273579",
+     "to": [
+      {
+       "facebookId": "100001085717161",
+       "name": ""
+      },
+      {
+       "facebookId": "1574491462",
+       "name": ""
+      }
+     ]
+    }
+   ],
+   "recipients": [
+    100001085717161,
+    1574491462,
+    100000104224193
+   ],
+   "snippet": "Tom, you may find this of interest :\n\n\nhttp://www.cnet.com/how-to/use-andy-to-emulate-android-on-your-desktop/?ttag=fbwl",
+   "snippet_author": 100000104224193,
+   "thread_id": "361981257273579",
+   "updated_time": 1398669411
+  },
+  {
+   "message_count": 48,
+   "messages": [
+    {
+     "attachment": [],
+     "author_id": 100000615867199,
+     "body": "lol i saw a pic of it",
+     "created_time": 1384748537,
+     "message_id": "431183123585823_1384748537323",
+     "thread_id": "431183123585823",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    },
+    {
+     "attachment": [],
+     "author_id": 100000615867199,
+     "body": "lol tom there is this foreign lady in the kirkwood library chewing her gum with her mouth open",
+     "created_time": 1396983630,
+     "message_id": "431183123585823_1396983630274",
+     "thread_id": "431183123585823",
+     "to": [{
+      "facebookId": "100001085717161",
+      "name": ""
+     }]
+    }
+   ],
+   "recipients": [
+    100001085717161,
+    100000615867199
+   ],
+   "snippet": "lol tom there is this foreign lady in the kirkwood library chewing her gum with her mouth open",
+   "snippet_author": 100000615867199,
+   "thread_id": "431183123585823",
+   "updated_time": 1396983630
+  },
+  {
+   "message_count": 5,
+   "messages": [{
+    "attachment": {
+     "caption": "dl.dropboxusercontent.com",
+     "description": "PK BG|DJ?p£ assets/dataUpdate.pyþÊ ÕV[oÓ0~¯Ôÿ`¥\u201a&lj× i¨B0bìÆÚ:M^ã¦ÞR;ØŽ¦ ñß9¶s±s©¶·\u2018\u2021¦9ç|ŸÏÕ6Ýf\\(\u201d\u20394¥7óá\u20acÚï[ÉÙp0Äd¢¾ó\\\u2018S*Õ ÈÃèp8@ð -P°Q*;œNqF'ä\u2020³\u201eO¸H¦BCR\u20ac¼[s±Åj¡)´\u2021\u2013lŸà%À®ïÈÃb³¾¥§«³ÛääüÛüf³ŸÙçüõûõ×¿ÞóY`a1V-üÀ\u203ag\u201e\u2026ðŽ&\u201aà8ŒJAT.˜±q\u201a\u2026",
+     "fb_object_id": "",
+     "fb_object_type": "",
+     "href": "https://dl.dropboxusercontent.com/u/31447484/EZCambus.apk",
+     "icon": "https://fbstatic-a.akamaihd.net/rsrc.php/v2/yD/r/aS8ecmYRys0.gif",
+     "media": [],
+     "name": "https://dl.dropboxusercontent.com/u/31447484/EZCambus.apk",
+     "properties": [],
+     "tagged_ids": []
+    },
+    "author_id": 100001085717161,
+    "body": "https://dl.dropboxusercontent.com/u/31447484/EZCambus.apk",
+    "created_time": 1396015156,
+    "message_id": "266166173539377_1396015156399",
+    "thread_id": "266166173539377",
+    "to": [{
+     "facebookId": "100007308522088",
+     "name": ""
+    }]
+   }],
+   "recipients": [
+    100001085717161,
+    100007308522088
+   ],
+   "snippet": "https://dl.dropboxusercontent.com/u/31447484/EZCambus.apk",
+   "snippet_author": 100001085717161,
+   "thread_id": "266166173539377",
+   "updated_time": 1396015156
+  }
+ ],
+ "participant_data": [],
+ "stream_data": [
+  {
+   "Comments": [],
+   "Likes": [],
+   "actor_id": 100001085717161,
+   "comment_info": {
+    "can_comment": false,
+    "comment_count": 0
+   },
+   "created_time": 1398911385,
+   "description": "\"Happy birthday!\" on Sophie Katz's timeline.",
+   "like_info": {
+    "can_like": false,
+    "like_count": 0,
+    "user_likes": false
+   },
+   "likes": {
+    "can_like": false,
+    "friends": [],
+    "sample": []
+   },
+   "message": "",
+   "message_tags": [],
+   "post_id": "100001085717161_688138557898995",
+   "source_id": 100001085717161,
+   "tagged_ids": [],
+   "type": 56,
+   "updated_time": 1398911385
+  },
+  {
+   "Comments": [],
+   "Likes": [],
+   "actor_id": 100001085717161,
+   "comment_info": {
+    "can_comment": true,
+    "comment_count": 0,
+    "comment_order": "chronological"
+   },
+   "created_time": 1398637654,
+   "description": "Tom Werner is going to an event.",
+   "like_info": {
+    "can_like": true,
+    "like_count": 0,
+    "user_likes": false
+   },
+   "likes": {
+    "can_like": true,
+    "count": 0,
+    "friends": [],
+    "href": "https://www.facebook.com/browse/likes/?id=721797641209611",
+    "sample": [],
+    "user_likes": false
+   },
+   "message": "",
+   "message_tags": [],
+   "post_id": "100001085717161_686639404715577",
+   "source_id": 100001085717161,
+   "tagged_ids": [],
+   "type": null,
+   "updated_time": 1398637654
+  },
+  {
+   "Comments": [],
+   "Likes": [],
+   "actor_id": 100001085717161,
+   "comment_info": {
+    "can_comment": false,
+    "comment_count": 0
+   },
+   "created_time": 1398546052,
+   "description": "Tom Werner went to an event.",
+   "like_info": {
+    "can_like": false,
+    "like_count": 0,
+    "user_likes": false
+   },
+   "likes": {
+    "can_like": false,
+    "friends": [],
+    "sample": []
+   },
+   "message": "",
+   "message_tags": [],
+   "post_id": "100001085717161_685950594784458",
+   "source_id": 100001085717161,
+   "tagged_ids": [],
+   "type": null,
+   "updated_time": 1398546052
+  },
+  {
+   "Comments": [],
+   "Likes": [],
+   "actor_id": 100001085717161,
+   "comment_info": {
+    "can_comment": false,
+    "comment_count": 0
+   },
+   "created_time": 1398438340,
+   "description": "\"Happy birthday!\" on Micah Rambo's timeline.",
+   "like_info": {
+    "can_like": false,
+    "like_count": 0,
+    "user_likes": false
+   },
+   "likes": {
+    "can_like": false,
+    "friends": [],
+    "sample": []
+   },
+   "message": "",
+   "message_tags": [],
+   "post_id": "100001085717161_685308094848708",
+   "source_id": 100001085717161,
+   "tagged_ids": [],
+   "type": 56,
+   "updated_time": 1398438340
+  },
+  {
+   "Comments": [],
+   "Likes": [],
+   "actor_id": 100001085717161,
+   "comment_info": {
+    "can_comment": true,
+    "comment_count": 0,
+    "comment_order": "chronological"
+   },
+   "created_time": 1398429078,
+   "description": "Tom Werner and Spencer Schmidt are now friends.",
+   "like_info": {
+    "can_like": true,
+    "like_count": 0,
+    "user_likes": false
+   },
+   "likes": {
+    "can_like": true,
+    "count": 0,
+    "friends": [],
+    "href": "https://www.facebook.com/browse/likes/?id=685237124855805",
+    "sample": [],
+    "user_likes": false
+   },
+   "message": "",
+   "message_tags": [],
+   "post_id": "100001085717161_685237128189138",
+   "source_id": 100001085717161,
+   "tagged_ids": [],
+   "type": 8,
+   "updated_time": 1398429078
+  }
+ ],
+ "user": "6666666666"
+}

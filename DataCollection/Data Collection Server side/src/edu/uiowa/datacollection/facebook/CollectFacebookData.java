@@ -43,11 +43,13 @@ public class CollectFacebookData
 		{
 			System.out.println("ERROR: could not read JSON"
 					+ " data from the server.");
+			System.out.println(e.getMessage());
 			return;
 		}
 
 		JSONArray users = obj.getJSONArray("data");
-
+		System.out.println("Loaded " + users.length()
+				+ " users from the database");
 		for (int i = 0; i < users.length(); i++)
 		{
 			JSONObject user = users.getJSONObject(i);
@@ -73,21 +75,27 @@ public class CollectFacebookData
 					if (saveJsonDataLocally)
 						manager.saveJSONData(baseFilename + "_" + phoneNumber);
 
-					 JsonHelper.postJsonData(ph.getFacebookUploadUrl(),
-					 manager.getJSONData());
+					// JsonHelper.postJsonData(ph.getFacebookUploadUrl(),
+					// manager.getJSONData());
 				}
 				catch (FacebookTokenExpiredError e)
 				{
 					System.out.println("Upload something to the server saying"
 							+ " that we need a new token for "
 							+ e.getPhoneNumber());
+					System.out.println(e.getMessage());
 				}
 				catch (FacebookUnhandledException e)
 				{
 					System.out.println("Error for user " + e.getPhoneNumber()
 							+ ". Facebook error: \n"
 							+ e.getFacebookException().getErrorMessage());
+					System.out.println(e.getMessage());
 				}
+			}
+			else
+			{
+				System.out.println("\tSkipping user.");
 			}
 		}
 	}

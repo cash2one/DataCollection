@@ -49,7 +49,8 @@ public class StreamObject
 		}
 		catch (JSONException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: JSON improperly formatted.");
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -63,7 +64,8 @@ public class StreamObject
 			}
 			catch (JSONException e)
 			{
-				e.printStackTrace();
+				System.out.println("ERROR: JSON improperly formatted.");
+				System.out.println(e.getMessage());
 			}
 		}
 
@@ -80,7 +82,8 @@ public class StreamObject
 			}
 			catch (JSONException e)
 			{
-				e.printStackTrace();
+				System.out.println("ERROR: JSON improperly formatted.");
+				System.out.println(e.getMessage());
 			}
 		}
 
@@ -106,7 +109,8 @@ public class StreamObject
 			}
 			catch (JSONException e)
 			{
-				e.printStackTrace();
+				System.out.println("ERROR: JSON improperly formatted.");
+				System.out.println(e.getMessage());
 			}
 		}
 		return result;
@@ -125,8 +129,8 @@ public class StreamObject
 		}
 		catch (JSONException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("ERROR: JSON improperly formatted.");
+			System.out.println(e.getMessage());
 		}
 		return jsonObject;
 	}

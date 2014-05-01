@@ -45,7 +45,8 @@ public class StreamManager
 	 * @throws FacebookTokenExpiredError
 	 * @throws FacebookUnhandledException
 	 */
-	public ArrayList<StreamObject> loadStream(Facebook session) throws FacebookTokenExpiredError, FacebookUnhandledException
+	public ArrayList<StreamObject> loadStream(Facebook session)
+			throws FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		int offset = 0;
 
@@ -98,7 +99,8 @@ public class StreamManager
 			}
 			catch (JSONException e)
 			{
-				e.printStackTrace();
+				System.out.println("ERROR: JSON improperly formatted.");
+				System.out.println(e.getMessage());
 			}
 			catch (FacebookException e)
 			{
@@ -114,12 +116,13 @@ public class StreamManager
 					}
 					catch (InterruptedException e1)
 					{
+						e1.printStackTrace();
 					}
 					errorOccurred = true;
 				}
 				else if (e.getErrorCode() == FacebookTokenExpiredError.TOKEN_EXPIRED_ERROR)
 				{
-					throw new FacebookTokenExpiredError();
+					throw new FacebookTokenExpiredError(e);
 				}
 			}
 
@@ -136,7 +139,7 @@ public class StreamManager
 	 * @param session
 	 *            Current active facebook session
 	 * @throws FacebookTokenExpiredError
-	 * @throws FacebookUnhandledException 
+	 * @throws FacebookUnhandledException
 	 */
 	public void getCommentsAndLikes(Facebook session)
 			throws FacebookTokenExpiredError, FacebookUnhandledException
@@ -159,7 +162,7 @@ public class StreamManager
 			{
 				if (e.getErrorCode() == FacebookTokenExpiredError.TOKEN_EXPIRED_ERROR)
 				{
-					throw new FacebookTokenExpiredError();
+					throw new FacebookTokenExpiredError(e);
 				}
 				else
 				{

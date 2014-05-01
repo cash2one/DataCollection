@@ -74,8 +74,9 @@ public class DataManager
 		}
 		catch (TwitterException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out
+					.println("ERROR: Something went wrong interacting with Twitter.");
+			System.out.println(e.getMessage());
 		}
 		if (rl != null)
 		{
@@ -489,15 +490,18 @@ public class DataManager
 		}
 		catch (FileNotFoundException e)
 		{
-			System.out.println(e);
+			System.out.println("ERROR: File not found.");
+			System.out.println(e.getMessage());
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: Could not save JSON.");
+			System.out.println(e.getMessage());
 		}
 		catch (JSONException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: JSON improperly formatted.");
+			System.out.println(e.getMessage());
 		}
 	}
 }

@@ -82,7 +82,7 @@ public class MessageManager
 	 * @param session
 	 *            The facebook session from which FQL requests can be sent
 	 * @throws FacebookTokenExpiredError
-	 * @throws FacebookUnhandledException 
+	 * @throws FacebookUnhandledException
 	 */
 	public void loadConversations(boolean limitToOneMonth, Facebook session)
 			throws FacebookTokenExpiredError, FacebookUnhandledException
@@ -152,7 +152,8 @@ public class MessageManager
 			}
 			catch (JSONException e)
 			{
-				e.printStackTrace();
+				System.out.println("ERROR: JSON improperly formatted.");
+				System.out.println(e.getMessage());
 			}
 			catch (FacebookException e)
 			{
@@ -168,12 +169,13 @@ public class MessageManager
 					}
 					catch (InterruptedException e1)
 					{
+						e1.printStackTrace();
 					}
 					errorOccurred = true;
 				}
 				else if (e.getErrorCode() == FacebookTokenExpiredError.TOKEN_EXPIRED_ERROR)
 				{
-					throw new FacebookTokenExpiredError();
+					throw new FacebookTokenExpiredError(e);
 				}
 				else
 				{
@@ -206,7 +208,8 @@ public class MessageManager
 	 * @throws FacebookUnhandledException
 	 */
 	private boolean updateOldData(JSONArray jsonConvos, Facebook session,
-			boolean limitToOneMonth) throws JSONException, FacebookTokenExpiredError, FacebookUnhandledException
+			boolean limitToOneMonth) throws JSONException,
+			FacebookTokenExpiredError, FacebookUnhandledException
 	{
 		boolean conversationsLoaded = false;
 		// The outer loop goes through each of the new conversations that

@@ -20,7 +20,8 @@ public class Like
 		}
 		catch (JSONException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: JSON improperly formatted.");
+			System.out.println(e.getMessage());
 		}
 	}
 

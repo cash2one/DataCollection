@@ -60,6 +60,7 @@ public class JsonHelper
 		catch (IOException e)
 		{
 			System.out.println("ERROR: Connection to the server refused.");
+			System.out.println(e.getMessage());
 		}
 
 		return null;
@@ -92,16 +93,19 @@ public class JsonHelper
 			}
 			catch (ClientProtocolException e)
 			{
-				e.printStackTrace();
+				System.out.println("ERROR: Could not connect to the server.");
+				System.out.println(e.getMessage());				
 			}
 			catch (IOException e)
 			{
-				e.printStackTrace();
+				System.out.println("ERROR: Could not connect to the server.");
+				System.out.println(e.getMessage());
 			}
 		}
 		catch (IllegalStateException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: Illegal state.");
+			System.out.println(e.getMessage());
 		}
 
 		return resp;

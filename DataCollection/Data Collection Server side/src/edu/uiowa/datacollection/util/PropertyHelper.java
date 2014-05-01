@@ -40,13 +40,13 @@ public class PropertyHelper
 		}
 		catch (FileNotFoundException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("ERROR: Could not find file.");
+			System.out.println(e.getMessage());
 		}
 		catch (IOException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("ERROR: Could not open the file.");
+			System.out.println(e.getMessage());
 		}
 
 		for (int i = 0; i < propertyList.size(); i++)

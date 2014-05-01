@@ -11,7 +11,7 @@ import facebook4j.internal.org.json.JSONObject;
 public class CollectTwitterData
 {
 
-	public static final String BLANK_TWITTER_TOKEN = " ";
+	public static final String BLANK_TWITTER_TOKEN = "";
 
 	/**
 	 * @param args
@@ -34,11 +34,10 @@ public class CollectTwitterData
 		try
 		{
 			obj = JsonHelper.readJsonFromUrl(ph.getTwitterTokensUrl());
-
 			if (obj == null)
 			{
 				System.out
-						.println("ERROR: Could not load data from the server.");
+						.println("ERROR: Null was returned from the server.");
 				return;
 			}
 		}
@@ -46,6 +45,7 @@ public class CollectTwitterData
 		{
 			System.out.println("ERROR: could not read JSON"
 					+ " data from the server.");
+			System.out.println(e.getMessage());
 			return;
 		}
 
@@ -55,13 +55,14 @@ public class CollectTwitterData
 			JSONObject userToken = userList.getJSONObject(i);
 			User user = createUser(userToken);
 
+
+			System.out.println("Currently accessing data for "
+					+ user.getTwitterID());
+			System.out.println("\tAccess Token: " + user.getOauthToken());
+
 			if (!user.getOauthToken().equals(BLANK_TWITTER_TOKEN ))
 			{
 				DataManager manager = new DataManager(user);
-
-				System.out.println("Currently accessing data for "
-						+ user.getTwitterID());
-				System.out.println("\tAccess Token: " + user.getOauthToken());
 
 				manager.collectData(true, // Collect direct conversations
 						true); // Collect Twitter timeline
@@ -74,6 +75,10 @@ public class CollectTwitterData
 
 				JsonHelper.postJsonData(ph.getTwitterUploadUrl(),
 						manager.getJsonData());
+			}
+			else
+			{
+				System.out.println("\tSkipping user");
 			}
 		}
 

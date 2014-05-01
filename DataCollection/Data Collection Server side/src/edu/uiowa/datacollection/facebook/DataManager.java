@@ -34,11 +34,6 @@ import facebook4j.internal.org.json.JSONObject;
 public class DataManager
 {
 	/**
-	 * The URL of the server to post data to
-	 */
-	public static String SERVER_URL = "http://128.255.45.52:7777/server/postfacebook/";
-
-	/**
 	 * ArrayList holding the conversation objects.
 	 */
 	private ArrayList<Conversation> conversations = new ArrayList<Conversation>();
@@ -172,7 +167,8 @@ public class DataManager
 		}
 		catch (JSONException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: JSON improperly formatted.");
+			System.out.println(e.getMessage());
 		}
 		return result;
 	}
@@ -199,15 +195,18 @@ public class DataManager
 		}
 		catch (FileNotFoundException e)
 		{
-			System.out.println(e);
+			System.out.println("ERROR: File not found.");
+			System.out.println(e.getMessage());
 		}
 		catch (IOException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: Could not save JSON data.");
+			System.out.println(e.getMessage());
 		}
 		catch (JSONException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: JSON improperly formatted.");
+			System.out.println(e.getMessage());
 		}
 	}
 
@@ -282,7 +281,8 @@ public class DataManager
 		}
 		catch (JSONException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: JSON improperly formatted.");
+			System.out.println(e.getMessage());
 		}
 
 		messageManager.populateNames(idNameMatches);
@@ -316,11 +316,12 @@ public class DataManager
 			{
 				obj = lastConvoTimes.getJSONObject(i);
 				conversations.add(new Conversation(obj.getString("thread_id"),
-						obj.getString("updated_time")));
+						obj.getLong("updated_time")));
 			}
 			catch (JSONException e)
 			{
-				e.printStackTrace();
+				System.out.println("ERROR: JSON improperly formatted.");
+				System.out.println(e.getMessage());
 			}
 		}
 	}

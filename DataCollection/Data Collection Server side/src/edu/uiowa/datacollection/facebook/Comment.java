@@ -22,7 +22,8 @@ public class Comment
 		}
 		catch (JSONException e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: Comment json improperly formatted");
+			System.out.println(e.getMessage());
 		}
 	}
 
