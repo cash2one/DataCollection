@@ -108,9 +108,10 @@ public class MessageManager
 
 				// If there was an empty JSON result, we have all the
 				// conversations
-				if (jsonConvos.length() == 0)
+				if (jsonConvos.length() == 0){
 					conversationsLoaded = true;
-
+					break;
+				}
 				if (oldDataExists)
 				{
 					// There is loaded data so we have to handle loading

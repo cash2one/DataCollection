@@ -22,11 +22,11 @@ public class CollectFacebookData
 		String baseFilename = "facebook_data";
 		boolean saveJsonDataLocally = false;
 
-		System.out.print("Save JSON data locally? (y/n): ");
-		Scanner scan = new Scanner(System.in);
-		if (scan.nextLine().toUpperCase().charAt(0) == 'Y')
-			saveJsonDataLocally = true;
-		scan.close();
+//		System.out.print("Save JSON data locally? (y/n): ");
+//		Scanner scan = new Scanner(System.in);
+//		if (scan.nextLine().toUpperCase().charAt(0) == 'Y')
+//			saveJsonDataLocally = true;
+//		scan.close();
 
 		try
 		{
